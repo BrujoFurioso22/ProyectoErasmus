@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
 router.get("/:correo/:password", validateUser);
-router.post("/", createUser);
+router.post("/crear", createUser);
 // Agregar más rutas y consultas según sea necesario
 
 export default router;

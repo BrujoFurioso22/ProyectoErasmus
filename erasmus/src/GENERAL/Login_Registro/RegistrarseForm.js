@@ -1,30 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
+import { CrearUsuario } from "CONFIG/BACKEND/Consultas/LoginRegister";
+
 export function Registrarse() {
-  const [state, setState] = React.useState({
-    name: "",
+  const [usuario, setUsuario] = useState({
+    nombre: "",
     email: "",
-    password: ""
+    password: "",
   });
-  const handleChange = evt => {
+  const [mensajeError, setMensajeError] = useState("");
+  const [validacion, setValidacion] = useState(0);
+
+  const CreacionUsuario = async () => {
+    try {
+      const validar = await CrearUsuario(
+        usuario.nombre,
+        usuario.email,
+        usuario.password
+      );
+      if (validar.message === "1") {
+        setMensajeError("El correo ya se encuentra registrado");
+        setValidacion(0);
+      } else {
+        setMensajeError("Usuario Creado Correctamente");
+        setValidacion(1);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleChange = (evt) => {
     const value = evt.target.value;
-    setState({
-      ...state,
-      [evt.target.name]: value
+    setUsuario({
+      ...usuario,
+      [evt.target.name]: value,
     });
   };
 
-  const handleOnSubmit = evt => {
+  const handleOnSubmit = async (evt) => {
     evt.preventDefault();
 
-    const { name, email, password } = state;
-    alert(
-      `You are sign up with name: ${name} email: ${email} and password: ${password}`
-    );
+    await CreacionUsuario();
 
-    for (const key in state) {
-      setState({
-        ...state,
-        [key]: ""
+    for (const key in usuario) {
+      setUsuario({
+        ...usuario,
+        [key]: "",
       });
     }
   };
@@ -35,8 +55,8 @@ export function Registrarse() {
         <h1 className="h1Login">Crea una cuenta</h1>
         <input
           type="text"
-          name="name"
-          value={state.name}
+          name="nombre"
+          value={usuario.nombre}
           onChange={handleChange}
           placeholder="Nombre"
           className="inputLogin"
@@ -44,24 +64,24 @@ export function Registrarse() {
         <input
           type="email"
           name="email"
-          value={state.email}
+          value={usuario.email}
           onChange={handleChange}
           placeholder="Correo"
           className="inputLogin"
-
         />
         <input
           type="password"
           name="password"
-          value={state.password}
+          value={usuario.password}
           onChange={handleChange}
           placeholder="Contraseña"
           className="inputLogin"
-
         />
+        <span style={validacion === 0 ? { color: "red" } : { color: "green" }}>
+          {mensajeError}
+        </span>
         <button className="botonLogin">Registrarse</button>
       </form>
     </div>
   );
 }
-

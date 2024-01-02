@@ -1,13 +1,23 @@
 import axios from "axios";
 import url from "CONFIG/url";
 
-export async function LoginUsers(usu, contra) {
+export async function LoginUsers(correo, password) {
   // console.log(`${url}`);
-  const res = await axios.get(`${url}/usuarios/${usu}/${contra}`);
+  const res = await axios.get(`${url}/usuarios/${correo}/${password}`);
   // console.log(res.data);
   return res.data;
 }
 
+export async function CrearUsuario(nombre, correo, password) {
+  // console.log(`${url}`);
+  const res = await axios.post(`${url}/usuarios/crear`, {
+    nombre: nombre,
+    correo: correo,
+    password: password,
+  });
+  // console.log(res.data);
+  return res.data;
+}
 // export async function ListarMarcas(empresa) {
 //   const res = await axios.get(`${url}/marca/${empresa}`);
 //   // console.table(res.data)

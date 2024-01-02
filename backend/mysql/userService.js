@@ -29,17 +29,33 @@ export const validateUser = (req, res) => {
 
 export const createUser = (req, res) => {
   // Obtener datos del cuerpo de la solicitud
-  const { nombre, correo } = req.body;
+  const { nombre, correo, password } = req.body;
 
-  // Realizar la lógica para insertar un nuevo usuario en la base de datos
-  const q = `INSERT INTO usuarios (nombre, correo) VALUES ('${nombre}', '${correo}')`;
+  // Verificar si el usuario ya existe
+  const checkUserQuery = `SELECT * FROM usuarios WHERE correo = '${correo}'`;
 
-  db.query(q, (err, data) => {
-    if (err) return res.json(err);
-    return res.json({
-      message: "Usuario creado correctamente",
-      usuario: { nombre, correo },
+  db.query(checkUserQuery, (checkErr, checkData) => {
+    if (checkErr) return res.json(checkErr);
+
+    // Si el usuario ya existe, devolver un mensaje de error
+    if (checkData.length > 0) {
+      return res.json({
+        message: "1",
+      });
+    }
+
+    // Si el usuario no existe, realizar la inserción en la base de datos
+    const insertUserQuery = `INSERT INTO usuarios (nombre, correo, contrasena) VALUES ('${nombre}' ,'${correo}', '${password}')`;
+
+    db.query(insertUserQuery, (insertErr, insertData) => {
+      if (insertErr) return res.json(insertErr);
+
+      return res.json({
+        message: "Usuario creado correctamente",
+        usuario: { nombre, correo, password },
+      });
     });
   });
 };
+
 // Agregar más servicios según sea necesario
