@@ -28,6 +28,11 @@ const jsonData_NormalUser = [
         icon: "",
         path: ROUTES.JUEGOS.J3,
       },
+      {
+        title: "Lienzo",
+        icon: "",
+        path: ROUTES.JUEGOS.J4,
+      },
     ],
   },
   

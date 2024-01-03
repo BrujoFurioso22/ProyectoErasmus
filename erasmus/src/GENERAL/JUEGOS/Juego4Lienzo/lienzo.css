@@ -1,0 +1,32 @@
+.color-palette {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .color-option {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 15px;
+  }
+  
+  .color-option.selected {
+    border: 2px solid #000;
+  }
+  
+  .contenedor-lienzo{
+    background-color: #0000001e;
+    border: 1px solid #0000001e; /* Agrega un borde si lo deseas */
+  
+  }
+  .canvas-container {
+    width: 100%;
+    height: 100%; /* Usar el 100% de la altura de la ventana */
+    overflow: hidden; /* Evitar desbordamiento */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }

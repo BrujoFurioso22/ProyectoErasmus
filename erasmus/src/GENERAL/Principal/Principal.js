@@ -44,6 +44,10 @@ const juegos = [
     nombre: "JUEGO 3",
     path: ROUTES.JUEGOS.J3,
   },
+  {
+    nombre: "JUEGO 4",
+    path: ROUTES.JUEGOS.J4,
+  },
 ];
 export const Principal = () => {
   return (

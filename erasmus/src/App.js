@@ -6,6 +6,7 @@ import { LoginRegistro } from "GENERAL/Login_Registro/LoginRegistro";
 import { Principal } from "GENERAL/Principal/Principal";
 // import { G1Principal } from "GENERAL/JUEGOS/JUEGO1/G1Principal";
 // import { Game2 } from "GENERAL/JUEGOS/JUEGO2/Game2";
+import { Juego4 } from "PAGES/Juego4";
 
 import { ROUTES } from "CONFIG/ROUTES/paths";
 import { AuthContextProvider } from "CONFIG/context/authcontext";
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
         path: ROUTES.PRINCIPAL,
         element: <Principal />,
       },
+      {
+        path: ROUTES.JUEGOS.J4,
+        element: <Juego4/>
+      }
     ],
   },
 ]);
