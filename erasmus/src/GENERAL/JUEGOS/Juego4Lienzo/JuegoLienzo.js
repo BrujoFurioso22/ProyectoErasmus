@@ -121,14 +121,16 @@ export const JuegoLienzo = () => {
   };
 
   const renderColorPalette = () => {
-    return COLORS.map((color) => (
-      <div
-        key={color}
-        className={`color-option ${brushColor === color ? "selected" : ""}`}
-        style={{ background: color }}
-        onClick={() => handleBrushColorChange(color)}
-      ></div>
-    ));
+    return React.memo(
+      COLORS.map((color) => (
+        <div
+          key={color}
+          className={`color-option ${brushColor === color ? "selected" : ""}`}
+          style={{ background: color }}
+          onClick={() => handleBrushColorChange(color)}
+        ></div>
+      ))
+    );
   };
 
   const ContenedorPadre = styled.div`
@@ -232,6 +234,9 @@ export const JuegoLienzo = () => {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
+        //   onTouchStart={handleTouchStart}
+        //   onTouchMove={handleTouchMove}
+        //   onTouchEnd={handleTouchEnd}
         >
           <Layer>
             {images.map((img, index) => (
