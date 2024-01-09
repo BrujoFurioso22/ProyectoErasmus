@@ -11,6 +11,7 @@ export const ROUTES = {
     LOGINREGISTRO:"/login-registro",
     PRINCIPAL: "/",
     PERFIL: "/Perfil",
+    ACERCADE: "/AcercaDe",
     ADMINISTRACION_USUARIOS: "/AdministracionUsuarios",
     JUEGOS:{
         J1: "/Juegos/1",

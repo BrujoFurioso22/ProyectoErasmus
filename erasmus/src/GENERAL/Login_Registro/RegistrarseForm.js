@@ -4,6 +4,7 @@ import { CrearUsuario } from "CONFIG/BACKEND/Consultas/LoginRegister";
 export function Registrarse() {
   const [usuario, setUsuario] = useState({
     nombre: "",
+    tipo: "",
     email: "",
     password: "",
   });
@@ -14,6 +15,7 @@ export function Registrarse() {
     try {
       const validar = await CrearUsuario(
         usuario.nombre,
+        usuario.tipo,
         usuario.email,
         usuario.password
       );
@@ -54,14 +56,6 @@ export function Registrarse() {
       <form onSubmit={handleOnSubmit} className="formLogin">
         <h1 className="h1Login">Crea una cuenta</h1>
         <input
-          type="text"
-          name="nombre"
-          value={usuario.nombre}
-          onChange={handleChange}
-          placeholder="Nombre"
-          className="inputLogin"
-        />
-        <input
           type="email"
           name="email"
           value={usuario.email}
@@ -77,6 +71,25 @@ export function Registrarse() {
           placeholder="Contraseña"
           className="inputLogin"
         />
+        <input
+          type="text"
+          name="nombre"
+          value={usuario.nombre}
+          onChange={handleChange}
+          placeholder="Nombre"
+          className="inputLogin"
+        />
+        <select
+          type="text"
+          name="tipo"
+          value={usuario.tipo}
+          onChange={handleChange}
+          className="inputLogin"
+        >
+          <option value="">Seleccione tipo de usuario</option>
+          <option value="EST">Estudiante</option>
+          <option value="PR">Profesor</option>
+        </select>
         <span style={validacion === 0 ? { color: "red" } : { color: "green" }}>
           {mensajeError}
         </span>

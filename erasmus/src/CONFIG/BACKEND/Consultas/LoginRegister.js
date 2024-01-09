@@ -8,16 +8,24 @@ export async function LoginUsers(correo, password) {
   return res.data;
 }
 
-export async function CrearUsuario(nombre, correo, password) {
+export async function CrearUsuario(nombre,tipo, correo, password) {
   // console.log(`${url}`);
   const res = await axios.post(`${url}/usuarios/crear`, {
     nombre: nombre,
+    tipo: tipo,
     correo: correo,
     password: password,
   });
   // console.log(res.data);
   return res.data;
 }
+export async function ConsultarUsuario(correo, password) {
+  // console.log(`${url}`);
+  const res = await axios.get(`${url}/usuarios/${correo}/${password}`);
+  // console.log(res.data);
+  return res.data;
+}
+
 // export async function ListarMarcas(empresa) {
 //   const res = await axios.get(`${url}/marca/${empresa}`);
 //   // console.table(res.data)

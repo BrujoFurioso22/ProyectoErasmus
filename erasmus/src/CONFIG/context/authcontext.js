@@ -19,6 +19,7 @@ export function AuthContextProvider({ children }) {
     // localStorage.setItem("modulos", modulos);
     localStorage.setItem("correo", usuario.correo);
     localStorage.setItem("contrasena", usuario.contrasena);
+    localStorage.setItem("tipo",usuario.tipodeusuario)
     // localStorage.setItem("identificador", identificador);
     setIsAuthenticated(true);
   }, []);
@@ -27,6 +28,7 @@ export function AuthContextProvider({ children }) {
     // localStorage.removeItem("modulos");
     localStorage.removeItem("correo");
     localStorage.removeItem("contrasena");
+    localStorage.removeItem("tipo")
     // localStorage.removeItem("identificador");
     setIsAuthenticated(false);
   }, []);

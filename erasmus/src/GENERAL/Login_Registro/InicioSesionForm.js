@@ -14,12 +14,8 @@ export function InicioSesion() {
 
   const ValidarInicioSesion = async (usuario, contrasena) => {
     try {
-      const usuarios = await LoginUsers(usuario, contrasena);
-      if (usuarios.length > 0) {
-        return true;
-      } else {
-        return false;
-      }
+      const usuarioD = await LoginUsers(usuario, contrasena);
+      return usuarioD;
     } catch (error) {
       console.log(error);
     }
@@ -36,10 +32,9 @@ export function InicioSesion() {
   const handleOnSubmit = async (evt) => {
     evt.preventDefault();
     const { correo, contrasena } = usuario;
-    const valid = await ValidarInicioSesion(correo, contrasena);
-    console.log(valid);
-    if (valid) {
-      login(usuario);
+    const datosUsu = await ValidarInicioSesion(correo, contrasena);
+    if (datosUsu.length > 0) {
+      login(datosUsu[0]);
     } else {
       setMensajeError("Los datos no son correctos");
     }

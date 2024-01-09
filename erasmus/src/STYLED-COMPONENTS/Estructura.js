@@ -19,3 +19,8 @@ export const ContenedorSecciones = styled.div`
   justify-content: flex-start;
   padding-top: 6%;
 `;
+
+export const ContendorPadre = styled.div`
+  display: flex;
+  width: 100%;
+`

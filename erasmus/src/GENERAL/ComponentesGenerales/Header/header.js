@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useAuthContext } from "CONFIG/context/authcontext";
 import logo from "SOURCES/logo-uazuay.png";
+import { ROUTES } from "CONFIG/ROUTES/paths";
+import { Link } from "react-router-dom";
 
 const fadeIn = keyframes`
   from {
@@ -72,6 +74,20 @@ const SubMenu = styled.div`
     }
   }
 `;
+
+const LinkStyled = styled(Link)`
+  cursor: pointer;
+  padding: 0 10px;
+  height: 100%;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: white;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+`;
+
 const Logo = styled.img`
   max-width: 120px;
 `;
@@ -97,7 +113,9 @@ export const Header = () => {
           <span>{localStorage.getItem("correo")}</span>
         </ContenedorCuenta>
         <SubMenu open={subMenuCuenta}>
-          <div>Ver Perfil</div>
+          <LinkStyled to={ROUTES.PERFIL}>
+            <div>Ver Perfil</div>
+          </LinkStyled>
           <div onClick={logout}>Cerrar Sesión</div>
         </SubMenu>
       </ContenedorN1>
