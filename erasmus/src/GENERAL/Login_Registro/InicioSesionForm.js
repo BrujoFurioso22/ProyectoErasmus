@@ -33,6 +33,7 @@ export function InicioSesion() {
     evt.preventDefault();
     const { correo, contrasena } = usuario;
     const datosUsu = await ValidarInicioSesion(correo, contrasena);
+    console.log(datosUsu)
     if (datosUsu.length > 0) {
       login(datosUsu[0]);
     } else {

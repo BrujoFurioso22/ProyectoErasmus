@@ -4,7 +4,8 @@ import { TablaJson } from "./TablaJson";
 import { ContendorPadre } from "STYLED-COMPONENTS/Estructura";
 import {
   ConsultaEstudiantes,
-  ConsultaIDP,
+  ConsultaIDEstudiante,
+  CrearAsignacion,
 } from "CONFIG/BACKEND/Consultas/Profesor";
 
 const ContenedorTabs = styled.div`
@@ -59,21 +60,26 @@ const ButtonStyled = styled.button`
 export const ConfigEstudiantes = () => {
   const [correoEst, setCorreoEst] = useState("");
   const [data, setData] = useState([]);
+  const [mensaje, setMensaje] = useState("");
+  const idLocalStorage = localStorage.getItem("id");
+
   const ConsultaEstudiantesTabla = async () => {
-    const idPR = await ConsultaIDP(localStorage.getItem("id"));
-    if (idPR.length > 0) {
-      const datos = await ConsultaEstudiantes(idPR[0].idprofesores);
-      setData(datos);
+    const datos = await ConsultaEstudiantes(idLocalStorage);
+    setData(datos);
+  };
+
+  const ConsultarExistenciaEstudiante = async (correo) => {
+    if (correo !== "") {
+      const valid = await ConsultaIDEstudiante(correo);
+      const idEst = valid[0].idestudiantes;
+      console.log(idEst);
+      if (valid.length > 0) {
+        await CrearAsignacion(idEst, idLocalStorage, ConsultaEstudiantesTabla);
+      } else {
+        setMensaje("Correo Invalido");
+      }
     }
   };
-
-  const ConsultarExistenciaEstudiante = (correo) => {
-
-    
-  };
-  useEffect(() => {
-    ConsultarExistenciaEstudiante(correoEst);
-  }, [correoEst]);
 
   useEffect(() => {
     ConsultaEstudiantesTabla();
@@ -94,8 +100,12 @@ export const ConfigEstudiantes = () => {
             placeholder="Correo estudiante"
             onChange={(e) => setCorreoEst(e.target.value)}
           />
-          <label>{correoEst}</label>
-          <ButtonStyled>Agregar</ButtonStyled>
+          <label>{mensaje}</label>
+          <ButtonStyled
+            onClick={() => ConsultarExistenciaEstudiante(correoEst)}
+          >
+            Agregar
+          </ButtonStyled>
         </ContendorPadre>
         <div className="contenedorTablas">
           <TablaJson

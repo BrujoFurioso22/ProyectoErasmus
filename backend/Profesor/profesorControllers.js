@@ -1,7 +1,8 @@
 import {
   consultarEstudiantes,
-  consultarIDProfesor
+  idUsuario,
+  asignarEstudiantesAProfesor
 } from "./profesorService.js";
 
-export { consultarEstudiantes,consultarIDProfesor };
+export { consultarEstudiantes,idUsuario,asignarEstudiantesAProfesor };
 // Agregar más controladores según sea necesario

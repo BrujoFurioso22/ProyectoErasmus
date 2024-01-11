@@ -2,7 +2,7 @@ import {
   getAllUsers,
   getUserById,
   createUser,
-  validateUser,
+  validateUser
 } from "./userService.js";
 
 export { getAllUsers, getUserById, createUser, validateUser };

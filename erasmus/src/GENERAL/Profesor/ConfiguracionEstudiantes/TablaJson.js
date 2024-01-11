@@ -62,7 +62,7 @@ export const TablaJson = ({
       <tbody>
         {jsonData.length === 0 ? (
           <tr>
-            <td colSpan={cabeceras.length}>Ningun elemento encontrado</td>
+            <td colSpan={cabeceras.length+1}>Ningun elemento encontrado</td>
           </tr>
         ) : (
           <>

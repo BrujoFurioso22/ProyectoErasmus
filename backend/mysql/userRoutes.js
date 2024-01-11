@@ -3,7 +3,7 @@ import {
   getAllUsers,
   getUserById,
   createUser,
-  validateUser,
+  validateUser
 } from "./userControllers.js";
 
 const router = express.Router();

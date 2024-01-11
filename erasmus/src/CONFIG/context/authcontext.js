@@ -17,7 +17,11 @@ export function AuthContextProvider({ children }) {
   const login = useCallback(function (usuario) {
     localStorage.setItem(Logged, true);
     // localStorage.setItem("modulos", modulos);
-    localStorage.setItem("id", usuario.idusuarios);
+    if(usuario.tipodeusuario === "PR"){
+      localStorage.setItem("id", usuario.idprofesores);
+    }else{
+      localStorage.setItem("id", usuario.idestudiantes);
+    }
     localStorage.setItem("correo", usuario.correo);
     localStorage.setItem("contrasena", usuario.contrasena);
     localStorage.setItem("tipo",usuario.tipodeusuario)
