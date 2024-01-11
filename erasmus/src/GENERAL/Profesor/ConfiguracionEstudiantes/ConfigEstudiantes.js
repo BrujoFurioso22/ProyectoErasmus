@@ -71,12 +71,22 @@ export const ConfigEstudiantes = () => {
   const ConsultarExistenciaEstudiante = async (correo) => {
     if (correo !== "") {
       const valid = await ConsultaIDEstudiante(correo);
-      const idEst = valid[0].idestudiantes;
-      console.log(idEst);
+
       if (valid.length > 0) {
-        await CrearAsignacion(idEst, idLocalStorage, ConsultaEstudiantesTabla);
+        const idEst = valid[0].idestudiantes;
+        const mensaje = await CrearAsignacion(
+          idEst,
+          idLocalStorage,
+          ConsultaEstudiantesTabla
+        );
+        mensaje.data.message === "Usuario ya asignado" &&
+          setMensaje("*El estudiante ya esta asignado");
+        setTimeout(() => {
+          setMensaje("");
+        }, 5000);
+        setCorreoEst("")
       } else {
-        setMensaje("Correo Invalido");
+        setMensaje("*Correo Invalido");
       }
     }
   };
@@ -98,20 +108,23 @@ export const ConfigEstudiantes = () => {
           <InputStyled
             type="text"
             placeholder="Correo estudiante"
+            value={correoEst}
             onChange={(e) => setCorreoEst(e.target.value)}
           />
-          <label>{mensaje}</label>
+
           <ButtonStyled
             onClick={() => ConsultarExistenciaEstudiante(correoEst)}
           >
             Agregar
           </ButtonStyled>
+          <label style={{fontSize:"1rem", color:"red"}}>{mensaje}</label>
         </ContendorPadre>
         <div className="contenedorTablas">
           <TablaJson
             jsonData={data}
             columnasOcultas={["idestudiantes"]}
             nombresPersonalizados={nombresPersonalizados}
+            consultaDatos={ConsultaEstudiantesTabla}
           />
         </div>
       </ContenedorTabs>

@@ -17,9 +17,9 @@ export const consultarEstudiantes = (req, res) => {
 //   });
 // };
 export const eliminarEstudiantedeProfesor = (req, res) => {
-  const usuarioID = req.params.idusuario;
-  const q = `SELECT idprofesores FROM baseerasmus.profesores, baseerasmus.usuarios where usuarios.idusuarios = profesores.iddeusuario and usuarios.idusuarios = ${usuarioID};`;
-  db.query(q, (err, data) => {
+  const { idestudiante, idprofesor } = req.query;
+  const q = "DELETE FROM baseerasmus.asignados WHERE iddeestudiante = ? and iddeprofesor = ?";
+  db.query(q,[idestudiante,idprofesor], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
@@ -39,7 +39,7 @@ export const asignarEstudiantesAProfesor = (req, res) => {
   const { idestudiante, idprofesor } = req.body;
 
   // Verificar si el usuario ya existe
-  const checkUserQuery = `SELECT * FROM asignados WHERE iddeestudiante = '${idestudiante}' and iddeprofesor = '${idprofesor}'`;
+  const checkUserQuery = `SELECT * FROM baseerasmus.asignados WHERE iddeestudiante = '${idestudiante}' and iddeprofesor = '${idprofesor}'`;
 
   db.query(checkUserQuery, (checkErr, checkData) => {
     if (checkErr) return res.json(checkErr);
@@ -52,14 +52,14 @@ export const asignarEstudiantesAProfesor = (req, res) => {
     }
 
     // Si el usuario no existe, realizar la inserción en la base de datos
-    const insertUserQuery = `INSERT INTO asignados (iddeestudiante, iddeprofesor) VALUES ('${idestudiante}' ,'${idprofesor}')`;
+    const insertUserQuery = `INSERT INTO baseerasmus.asignados (iddeestudiante, iddeprofesor) VALUES ('${idestudiante}' ,'${idprofesor}')`;
 
     db.query(insertUserQuery, (insertErr, insertData) => {
       if (insertErr) return res.json(insertErr);
 
       return res.json({
         message: "Asignacion creada correctamente",
-        usuario: { idestudiante, idprofesor},
+        usuario: { idestudiante, idprofesor },
       });
     });
   });

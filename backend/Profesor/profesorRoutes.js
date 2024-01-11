@@ -2,7 +2,8 @@ import express from "express";
 import {
   consultarEstudiantes,
   idUsuario,
-  asignarEstudiantesAProfesor
+  asignarEstudiantesAProfesor,
+  eliminarEstudiantedeProfesor
 } from "./profesorControllers.js";
 
 const router = express.Router();
@@ -13,6 +14,7 @@ router.get("/:idprofesor", consultarEstudiantes);
 // router.get("/consultaridprofesor/:idusuario", consultarIDProfesor);
 router.get("/idEstudiante/:correo", idUsuario);
 router.post("/crearAsignacion", asignarEstudiantesAProfesor);
+router.delete("/eliminarAsignacion", eliminarEstudiantedeProfesor);
 
 
 // router.get("/:correo/:password", validateUser);

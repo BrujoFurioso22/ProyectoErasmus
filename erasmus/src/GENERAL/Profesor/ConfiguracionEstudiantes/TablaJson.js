@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { EliminarAsignacion } from "CONFIG/BACKEND/Consultas/Profesor";
 
 const Tabla = styled.table`
   width: 100%;
@@ -36,6 +37,7 @@ export const TablaJson = ({
   jsonData = [],
   columnasOcultas = [],
   nombresPersonalizados = {},
+  consultaDatos = null,
 }) => {
   const cabeceras =
     jsonData.length > 0
@@ -45,9 +47,13 @@ export const TablaJson = ({
     ? cabeceras.filter((columna) => !columnasOcultas.includes(columna))
     : cabeceras;
 
-  const eliminarEstudiantedeProfesor = (item) => {
-
-    console.log(item);
+  const idLocalStorage = localStorage.getItem("id");
+  const eliminarEstudiantedeProfesor = async (item) => {
+    await EliminarAsignacion(
+      item.idestudiantes,
+      idLocalStorage,
+      consultaDatos
+    );
   };
   return (
     <Tabla>
@@ -62,7 +68,7 @@ export const TablaJson = ({
       <tbody>
         {jsonData.length === 0 ? (
           <tr>
-            <td colSpan={cabeceras.length+1}>Ningun elemento encontrado</td>
+            <td colSpan={cabeceras.length + 1}>Ningun elemento encontrado</td>
           </tr>
         ) : (
           <>
