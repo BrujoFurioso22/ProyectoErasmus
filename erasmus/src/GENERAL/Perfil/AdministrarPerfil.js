@@ -87,11 +87,11 @@ export const AdministrarPerfil = () => {
   }, []);
 
   const SetearDatos = (datos) => {
-    console.log(datos);
+    // console.log(datos);
 
     setDatosUsuario({
       nombre: datos.nombre,
-      institucion: "UDA",
+      institucion: datos.institucion,
       correo: datos.correo,
       contrasena: datos.contrasena,
     });

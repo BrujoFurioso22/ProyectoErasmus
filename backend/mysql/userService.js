@@ -29,7 +29,7 @@ export const validateUser = (req, res) => {
 
 export const createUser = (req, res) => {
   // Obtener datos del cuerpo de la solicitud
-  const { nombre, tipo, correo, password } = req.body;
+  const { nombre, tipo, correo, password, institucion, sexo } = req.body;
 
   // Verificar si el usuario ya existe
   const checkUserQuery = `SELECT * FROM usuarios WHERE correo = '${correo}'`;
@@ -45,7 +45,7 @@ export const createUser = (req, res) => {
     }
 
     // Si el usuario no existe, realizar la inserción en la base de datos
-    const insertUserQuery = `INSERT INTO usuarios (nombre, correo, contrasena,tipodeusuario) VALUES ('${nombre}' ,'${correo}', '${password}', '${tipo}')`;
+    const insertUserQuery = `INSERT INTO usuarios (nombre, correo, contrasena, tipodeusuario, institucion, sexo) VALUES ('${nombre}' ,'${correo}', '${password}', '${tipo}', '${institucion}' ,'${sexo}')`;
 
     db.query(insertUserQuery, (insertErr, insertData) => {
       if (insertErr) return res.json(insertErr);

@@ -21,6 +21,7 @@ const ContenedorJuegos = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const ContenedorSecciones = styled.div`

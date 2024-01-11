@@ -17,7 +17,9 @@ export function Registrarse() {
         usuario.nombre,
         usuario.tipo,
         usuario.email,
-        usuario.password
+        usuario.password,
+        usuario.institucion,
+        usuario.sexo
       );
       if (validar.message === "1") {
         setMensajeError("El correo ya se encuentra registrado");
@@ -55,6 +57,43 @@ export function Registrarse() {
     <div className="form-container sign-up-container">
       <form onSubmit={handleOnSubmit} className="formLogin">
         <h1 className="h1Login">Crea una cuenta</h1>
+        
+        <input
+          type="text"
+          name="nombre"
+          value={usuario.nombre}
+          onChange={handleChange}
+          placeholder="Nombre"
+          className="inputLogin"
+        />
+        <input
+          type="text"
+          name="institucion"
+          value={usuario.institucion}
+          onChange={handleChange}
+          placeholder="Institucion"
+          className="inputLogin"
+        />
+        <select
+          name="tipo"
+          value={usuario.tipo}
+          onChange={handleChange}
+          className="inputLogin"
+        >
+          <option value="">Seleccione tipo de usuario</option>
+          <option value="EST">Estudiante</option>
+          <option value="PR">Profesor</option>
+        </select>
+        <select
+          name="sexo"
+          value={usuario.sexo}
+          onChange={handleChange}
+          className="inputLogin"
+        >
+          <option value="">Seleccione sexo</option>
+          <option value="M">M</option>
+          <option value="F">F</option>
+        </select>
         <input
           type="email"
           name="email"
@@ -71,25 +110,6 @@ export function Registrarse() {
           placeholder="Contraseña"
           className="inputLogin"
         />
-        <input
-          type="text"
-          name="nombre"
-          value={usuario.nombre}
-          onChange={handleChange}
-          placeholder="Nombre"
-          className="inputLogin"
-        />
-        <select
-          type="text"
-          name="tipo"
-          value={usuario.tipo}
-          onChange={handleChange}
-          className="inputLogin"
-        >
-          <option value="">Seleccione tipo de usuario</option>
-          <option value="EST">Estudiante</option>
-          <option value="PR">Profesor</option>
-        </select>
         <span style={validacion === 0 ? { color: "red" } : { color: "green" }}>
           {mensajeError}
         </span>

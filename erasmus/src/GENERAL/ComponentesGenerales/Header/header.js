@@ -63,6 +63,7 @@ const SubMenu = styled.div`
   color: white;
   opacity: ${(props) => (props.open ? 1 : 0)};
   animation: ${(props) => (props.open ? fadeIn : "none")} 0.5s ease;
+  z-index: 99;
   & > div {
     cursor: pointer;
     padding: 0 10px;
@@ -110,7 +111,7 @@ export const Header = () => {
       <ContenedorN1>
         <ContenedorCuenta onClick={toggleSubMenu}>
           <i className="bi bi-person-circle" />
-          <span>{localStorage.getItem("correo")}</span>
+          <span>{localStorage.getItem("nombre")}</span>
         </ContenedorCuenta>
         <SubMenu open={subMenuCuenta}>
           <LinkStyled to={ROUTES.PERFIL}>

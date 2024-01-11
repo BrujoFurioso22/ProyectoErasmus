@@ -17,7 +17,8 @@ export const ContenedorSecciones = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: 6%;
+  padding-top: 50px;
+  height: 100vh;
 `;
 
 export const ContendorPadre = styled.div`

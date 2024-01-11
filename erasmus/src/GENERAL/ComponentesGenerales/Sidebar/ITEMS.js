@@ -53,17 +53,17 @@ const jsonData_ProfesorUser = [
   {
     title: "Configuración Juegos",
     icon: "bi bi-controller",
-    path: ROUTES.PRINCIPAL,
+    path: ROUTES.CONFIGURACION_JUEGOS,
   },
   {
     title: "Configuración Estudiantes",
     icon: "bi bi-people",
-    path: ROUTES.PRINCIPAL,
+    path: ROUTES.CONFIGURACION_ESTUDIANTES,
   },
   {
     title: "Reportes",
     icon: "bi bi-clipboard2-data",
-    path: ROUTES.PRINCIPAL,
+    path: ROUTES.REPORTES_PROFESOR,
   },
   {
     title: "Acerca de",
@@ -82,7 +82,7 @@ const jsonDataIcons_EstudianteUser = [
   {
     title: "Juegos",
     icon: "bi bi-controller",
-    path: ROUTES.JUEGOS.J1,
+    path: ROUTES.JUEGOS.J4,
   },
   {
     title: "Acerca de",
@@ -101,17 +101,17 @@ const jsonDataIcons_ProfesorUser = [
     {
       title: "Configuración Juegos",
       icon: "bi bi-controller",
-      path: ROUTES.PRINCIPAL,
+      path: ROUTES.CONFIGURACION_JUEGOS,
     },
     {
       title: "Configuración Estudiantes",
       icon: "bi bi-people",
-      path: ROUTES.PRINCIPAL,
+      path: ROUTES.CONFIGURACION_ESTUDIANTES,
     },
     {
       title: "Reportes",
       icon: "bi bi-clipboard2-data",
-      path: ROUTES.PRINCIPAL,
+      path: ROUTES.REPORTES_PROFESOR,
     },
     {
       title: "Acerca de",

@@ -8,13 +8,22 @@ export async function LoginUsers(correo, password) {
   return res.data;
 }
 
-export async function CrearUsuario(nombre,tipo, correo, password) {
+export async function CrearUsuario(
+  nombre,
+  tipo,
+  correo,
+  password,
+  institucion,
+  sexo
+) {
   // console.log(`${url}`);
   const res = await axios.post(`${url}/usuarios/crear`, {
     nombre: nombre,
     tipo: tipo,
     correo: correo,
     password: password,
+    institucion: institucion,
+    sexo: sexo,
   });
   // console.log(res.data);
   return res.data;

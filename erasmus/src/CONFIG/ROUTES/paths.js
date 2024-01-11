@@ -13,6 +13,9 @@ export const ROUTES = {
     PERFIL: "/Perfil",
     ACERCADE: "/AcercaDe",
     ADMINISTRACION_USUARIOS: "/AdministracionUsuarios",
+    CONFIGURACION_JUEGOS: "/Configuracion_juegos",
+    CONFIGURACION_ESTUDIANTES: "/Configuracion_estudiantes",
+    REPORTES_PROFESOR: "/Reportes_profesor",
     JUEGOS:{
         J1: "/Juegos/1",
         J2: "/Juegos/2",

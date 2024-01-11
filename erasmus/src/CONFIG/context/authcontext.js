@@ -17,18 +17,22 @@ export function AuthContextProvider({ children }) {
   const login = useCallback(function (usuario) {
     localStorage.setItem(Logged, true);
     // localStorage.setItem("modulos", modulos);
+    localStorage.setItem("id", usuario.idusuarios);
     localStorage.setItem("correo", usuario.correo);
     localStorage.setItem("contrasena", usuario.contrasena);
     localStorage.setItem("tipo",usuario.tipodeusuario)
+    localStorage.setItem("nombre",usuario.nombre)
     // localStorage.setItem("identificador", identificador);
     setIsAuthenticated(true);
   }, []);
   const logout = useCallback(function () {
     localStorage.removeItem(Logged);
     // localStorage.removeItem("modulos");
+    localStorage.removeItem("id");
     localStorage.removeItem("correo");
     localStorage.removeItem("contrasena");
     localStorage.removeItem("tipo")
+    localStorage.removeItem("nombre")
     // localStorage.removeItem("identificador");
     setIsAuthenticated(false);
   }, []);
