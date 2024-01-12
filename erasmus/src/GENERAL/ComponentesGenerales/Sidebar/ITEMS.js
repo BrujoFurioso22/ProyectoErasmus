@@ -14,22 +14,22 @@ const jsonData_EstudianteUser = [
     icon: "bi bi-controller",
     children: [
       {
-        title: "Juego1",
+        title: "1. Direcciones",
         icon: "",
         path: ROUTES.JUEGOS.J1,
       },
       {
-        title: "Juego2",
+        title: "2. Memoria",
         icon: "",
         path: ROUTES.JUEGOS.J2,
       },
       {
-        title: "Juego3",
+        title: "3. Pizarra",
         icon: "",
         path: ROUTES.JUEGOS.J3,
       },
       {
-        title: "Lienzo",
+        title: "4. Globos",
         icon: "",
         path: ROUTES.JUEGOS.J4,
       },
@@ -82,7 +82,7 @@ const jsonDataIcons_EstudianteUser = [
   {
     title: "Juegos",
     icon: "bi bi-controller",
-    path: ROUTES.JUEGOS.J4,
+    path: ROUTES.JUEGOS.J1,
   },
   {
     title: "Acerca de",

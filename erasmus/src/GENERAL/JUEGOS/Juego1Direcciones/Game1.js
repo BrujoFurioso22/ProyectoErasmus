@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Botones } from "./Componentes/Botones";
 import { Puntaje } from "./Componentes/Puntaje";
+import { ConsultaRondasJuego1 } from "CONFIG/BACKEND/Consultas/Juegos";
 // import HandTracking from "./Componentes/Handtracking";
 import "./assets/styles/principal.css";
 import "./assets/styles/boton_iniciar.css";
@@ -11,9 +12,10 @@ const direcciones = {
   izquierda: "IZQUIERDA",
   derecha: "DERECHA",
 };
-const numRondas = 5;
+// const numRondas = 5;
 
-export function Game2 () {
+export function Game1() {
+  const [numRondas, setNumRondas] = useState(5);
   const [accion, setaccion] = useState(""); //Es el estado que se mostrara en el medio del juego para que el jugador sepa que tiene que tocar
   const [contador, setcontador] = useState(0); //Contador para mostrar al jugador al iniciar el juego, 3->2->1
   const [iniciarJuego, setIniciarJuego] = useState(false); //Estado para decir que el juego se empezo
@@ -40,6 +42,11 @@ export function Game2 () {
     }
     return nuevoArreglo;
   }
+
+  const ConsultarRondas = async () => {
+    const res = await ConsultaRondasJuego1(localStorage.getItem("id"));
+    console.log(res);
+  };
 
   //Funcion para poder mostrar la siguiente opcion despues de que haya seleccionado un boton el jugador
   const mostrarSiguienteAccion = () => {
@@ -92,6 +99,10 @@ export function Game2 () {
     };
     Finalizar();
   }, [finJuego]);
+
+  useEffect(() => {
+    ConsultarRondas();
+  }, []);
 
   const verificarAccion = (botonPresionado) => {
     if (!habilitar) {
@@ -214,5 +225,4 @@ export function Game2 () {
       </div>
     </div>
   );
-};
-
+}

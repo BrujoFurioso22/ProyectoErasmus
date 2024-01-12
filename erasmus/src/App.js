@@ -1,12 +1,10 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// import { Login } from "GENERAL/Login_Registro/Login";
 import { LoginRegistro } from "GENERAL/Login_Registro/LoginRegistro";
-// import { Registro } from "GENERAL/Login_Registro/Registro";
 import { Principal } from "GENERAL/Principal/Principal";
-// import { G1Principal } from "GENERAL/JUEGOS/JUEGO1/G1Principal";
-// import { Game2 } from "GENERAL/JUEGOS/JUEGO2/Game2";
-import { Juego4 } from "PAGES/Juego4";
+import { Juego1 } from "PAGES/Juego1";
+import { Juego2 } from "PAGES/Juego2";
+import { Juego3 } from "PAGES/Juego3";
 import { Perfil } from "PAGES/Perfil";
 import { AcercaDePage } from "PAGES/AcercaDePage";
 import { ConfiguracionJuegos } from "PAGES/ConfiguracionJuegos";
@@ -19,7 +17,7 @@ import ProfesorRoute from "CONFIG/COMPONENTS/ROUTER/ProfesorRoute";
 import EstudianteRoute from "CONFIG/COMPONENTS/ROUTER/EstudianteRoute";
 import { ConfiguracionEstudiantes } from "PAGES/ConfiguracionEstudiantes";
 import { ReportesProf } from "PAGES/ReportesProf";
-// import { G2Principal } from "GENERAL/JUEGOS/JUEGO2/G2Principal";
+
 
 const router = createBrowserRouter([
   {
@@ -83,8 +81,20 @@ const router = createBrowserRouter([
             element: <Principal />,
           },
           {
+            path: ROUTES.JUEGOS.J1,
+            element: <Juego1 />,
+          },
+          {
+            path: ROUTES.JUEGOS.J2,
+            element: <Juego2 />,
+          },
+          {
+            path: ROUTES.JUEGOS.J3,
+            element: <Juego3 />,
+          },
+          {
             path: ROUTES.JUEGOS.J4,
-            element: <Juego4 />,
+            element: <Juego2 />,
           },
         ],
       },

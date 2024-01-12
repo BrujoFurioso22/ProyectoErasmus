@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import jsonImages from "./images";
 import ContenedorDestino from "./ContenedorDestino";
-import "./Game1.css";
+import "./Game2.css";
 
 const ncartas = [3, 4, 5, 6];
-export function Game1() {
+export function Game2() {
   const [imagenesEnContenedor, setImagenesEnContenedor] = useState([]);
   const [ID, setID] = useState(0);
   const [iniciarJuego, setIniciarJuego] = useState(0);

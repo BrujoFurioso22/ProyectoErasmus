@@ -14,7 +14,6 @@ const COLORS = [
   "#A52A2A", // Brown
   "#00FFFF", // Cyan
   "#FF00FF", // Magenta
-  "#FF00Fd", // Magenta
 ];
 const defaultColor = "white";
 

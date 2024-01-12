@@ -2,18 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import { Header } from "GENERAL/ComponentesGenerales/Header/header";
 import { Sidebar } from "GENERAL/ComponentesGenerales/Sidebar/Sidebar";
-import { Game1 } from "GENERAL/JUEGOS/Juego1Direcciones/Game1";
+import { JuegoLienzo } from "GENERAL/JUEGOS/Juego3Pizarra/JuegoLienzo";
+import { JuegoPrueba } from "GENERAL/JUEGOS/Juego3Pizarra/JuegoPrueba";
 import { ContenedorPrincipal, ContenedorHome,ContenedorSecciones } from "STYLED-COMPONENTS/Estructura";
 
-export const Juego1 = () => {
-  
+export const Juego3 = () => {
   return (
     <ContenedorPrincipal>
       <Sidebar />
       <ContenedorHome>
         <Header />
         <ContenedorSecciones>
-          <Game1/>
+          <JuegoPrueba/>
+          
         </ContenedorSecciones>
       </ContenedorHome>
     </ContenedorPrincipal>
