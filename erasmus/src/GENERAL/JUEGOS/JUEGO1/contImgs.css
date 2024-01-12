@@ -1,0 +1,26 @@
+.contenedor-imagenes-arrastradas {
+  background-color: rgba(185, 185, 185, 0.159);
+  min-width: 200px;
+  width: fit-content;
+  height: 120px;
+  display: flex;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 2px dashed rgba(152, 152, 152, 0.654);
+}
+.destino-contenedor {
+  user-select: none;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  z-index: 50;
+  padding: 10px 25px;
+  filter: drop-shadow(5px 5px 6px #515151);
+}
+.destino-imagen {
+  object-fit: contain;
+}
+.destino-contenedor:hover {
+  cursor: not-allowed;
+}
