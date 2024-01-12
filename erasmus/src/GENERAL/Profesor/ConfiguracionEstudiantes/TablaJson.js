@@ -15,7 +15,8 @@ const Tabla = styled.table`
   }
 
   th {
-    background-color: #f2f2f2;
+    background-color: rgba(21, 78, 210, 1);
+    color: white;
   }
 
   tr:hover {

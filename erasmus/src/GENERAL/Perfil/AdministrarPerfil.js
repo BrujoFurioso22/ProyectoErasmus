@@ -51,7 +51,7 @@ const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
   padding: 35px 45px;
-  background-color: rgba(227, 168, 226, 0.2);
+  background-color: whitesmoke;
   row-gap: 10px;
   border-radius: 20px;
   div {
@@ -59,6 +59,9 @@ const FormStyled = styled.form`
     justify-content: space-between;
     column-gap: 20px;
     align-items: center;
+    label{
+      font-weight: 600;
+    }
   }
 `;
 
@@ -126,7 +129,7 @@ export const AdministrarPerfil = () => {
     >
       <h2>AdministrarPerfil</h2>
       <ContenedorN1>
-        <ContenedorN2>
+        {/* <ContenedorN2>
           <ImageContainer>
             <img src={imageURL} alt="Imagen" style={{ maxWidth: "100%" }} />
             <HiddenInput
@@ -139,7 +142,7 @@ export const AdministrarPerfil = () => {
               Cambiar Imagen
             </ChangeImageButton>
           </ImageContainer>
-        </ContenedorN2>
+        </ContenedorN2> */}
         <ContenedorN2>
           <FormStyled>
             <div>

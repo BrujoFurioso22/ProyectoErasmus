@@ -32,6 +32,7 @@ const ContenedorTabs = styled.div`
     left: 0;
     padding: 40px;
     border-radius: 15px;
+    background-color: whitesmoke;
 
     li {
       display: flex;
@@ -62,6 +63,8 @@ const ContenedorConfiguraciones = styled.div`
   align-items: center;
   min-width: 500px;
   border-radius: 15px;
+  background-color: whitesmoke;
+
 `;
 
 export const ConfigJuegos = () => {
@@ -108,10 +111,10 @@ export const ConfigJuegos = () => {
           </li>
         </ul>
         <ContenedorConfiguraciones>
-          {activeTab === 0 && <SeccionesConf1/>}
-          {activeTab === 1 && <SeccionesConf2/>}
-          {activeTab === 2 && <SeccionesConf3/>}
-          {activeTab === 3 && <SeccionesConf4/>}
+          {activeTab === 0 && <SeccionesConf1 />}
+          {activeTab === 1 && <SeccionesConf2 />}
+          {activeTab === 2 && <SeccionesConf3 />}
+          {activeTab === 3 && <SeccionesConf4 />}
         </ContenedorConfiguraciones>
       </ContenedorTabs>
     </ContendorPadre>

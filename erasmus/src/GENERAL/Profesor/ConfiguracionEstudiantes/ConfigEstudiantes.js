@@ -21,6 +21,7 @@ const ContenedorTabs = styled.div`
 
   .contenedorTablas {
     display: flex;
+    background-color: whitesmoke;
     box-shadow: 0 10px 20px -2px rgba(0, 0, 0, 0.32);
     position: relative;
     row-gap: 40px;
@@ -53,7 +54,7 @@ const ButtonStyled = styled.button`
   border-radius: 8px;
   border: none;
   padding: 5px 10px;
-  background-color: rgba(21, 78, 210, 0.82);
+  background-color: rgba(21, 78, 210, 1);
   color: white;
 `;
 

@@ -1,11 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import logo1 from "SOURCES/diego.svg";
+import logo2 from "SOURCES/pedro.svg";
+import logo3 from "SOURCES/tef.svg";
 
 // Estilos para el componente
 const AboutContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  background-color: whitesmoke;
+  margin-top: 15px;
+  border-radius: 20px;
+
 `;
 
 const Title = styled.h1`
@@ -19,14 +26,28 @@ const Description = styled.p`
 const TeamList = styled.ul`
   list-style: none;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
 `;
 
 const TeamMember = styled.li`
-  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 5px;
+  background-color: rgba(0, 0, 0, 0.14);
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  p{
+    font-weight: 600;
+  }
 `;
 
 const Image = styled.img`
-  max-width: 100%;
+  width: 80px;
   border-radius: 50%;
 `;
 
@@ -37,7 +58,7 @@ export const AcercaDe = () => {
       <Title>Acerca De Nosotros</Title>
       <Description>
         Bienvenido a nuestra página de "Acerca De". Aquí encontrarás información
-        sobre nuestro equipo y nuestra misión.
+        sobre nuestro equipo de trabajo.
       </Description>
       <Description>
         Proyecto Erasmus
@@ -45,16 +66,16 @@ export const AcercaDe = () => {
 
       <TeamList>
         <TeamMember>
-          <Image src="url_del_miembro_1.jpg" alt="Miembro 1" />
+          <Image src={logo1} alt="Miembro 1" />
           <p>Diego Barbecho</p>
         </TeamMember>
         <TeamMember>
-          <Image src="url_del_miembro_2.jpg" alt="Miembro 2" />
+          <Image src={logo2} alt="Miembro 2" />
           <p>Pedro Figueroa</p>
         </TeamMember>
         <TeamMember>
-          <Image src="url_del_miembro_3.jpg" alt="Miembro 3" />
-          <p>Stephany Peñafiel</p>
+          <Image src={logo3} alt="Miembro 3" />
+          <p>Sthefany Peñafiel</p>
         </TeamMember>
       </TeamList>
 
