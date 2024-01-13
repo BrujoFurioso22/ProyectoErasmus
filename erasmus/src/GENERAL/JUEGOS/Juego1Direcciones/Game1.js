@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Botones } from "./Componentes/Botones";
 import { Puntaje } from "./Componentes/Puntaje";
 import { ConsultaRondasJuego1 } from "CONFIG/BACKEND/Consultas/Juegos";
-// import HandTracking from "./Componentes/Handtracking";
-import "./assets/styles/principal.css";
+
+import styled from "styled-components";
+
 import "./assets/styles/boton_iniciar.css";
 
 const direcciones = {
@@ -12,6 +13,69 @@ const direcciones = {
   izquierda: "IZQUIERDA",
   derecha: "DERECHA",
 };
+
+const ContenedorGlobal = styled.div`
+  width: 100%;
+  height: calc(100%);
+  padding: 0 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const ContenedorBotones = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 50px;
+  grid-row-gap: 20px;
+  width: 100%;
+  height: 85vh;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .mensaje-central {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .boton-arriba {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .boton-izquierda {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .boton-derecha {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  .boton-abajo {
+    grid-column: 2;
+    grid-row: 3;
+  }
+`;
+const PuntajeStyled = styled.div`
+  grid-column: 1;
+  grid-row: 1;
+  span:first-child {
+    font-weight: 800;
+    padding-right: 10px;
+  }
+`;
+
+const ContenedorCentral = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-direction: column;
+  .iniciado {
+    gap: 10px;
+  }
+`;
+
 export function Game1() {
   const [numRondas, setNumRondas] = useState(5);
   const [accion, setaccion] = useState(""); //Es el estado que se mostrara en el medio del juego para que el jugador sepa que tiene que tocar
@@ -44,8 +108,8 @@ export function Game1() {
   const ConsultarRondas = async () => {
     const res = await ConsultaRondasJuego1(localStorage.getItem("id"));
     console.log(res);
-    if(res.length > 0){
-      setNumRondas(res[0].numRondas)
+    if (res.length > 0) {
+      setNumRondas(res[0].numRondas);
     }
   };
 
@@ -151,11 +215,11 @@ export function Game1() {
   };
 
   return (
-    <div className="contenedor-global">
-      <div className="contenedor-botones">
-        <div className="puntaje">
+    <ContenedorGlobal>
+      <ContenedorBotones>
+        <PuntajeStyled>
           <Puntaje puntaje={puntaje} puntajetotal={numRondas} />
-        </div>
+        </PuntajeStyled>
         <div className="boton-arriba">
           <Botones
             habilitar={habilitar}
@@ -185,7 +249,7 @@ export function Game1() {
               <span>{accion}</span>
             </div>
           ) : iniciarJuego === false && hajugado === true ? (
-            <div className="contenedor-centro">
+            <ContenedorCentral>
               <span>
                 Puntaje juego anterior: {puntajeAnterior}/{numRondas}
               </span>
@@ -195,7 +259,7 @@ export function Game1() {
               >
                 JUGAR DE NUEVO
               </button>
-            </div>
+            </ContenedorCentral>
           ) : (
             <button
               className="iniciar-juego"
@@ -223,7 +287,7 @@ export function Game1() {
             verificarAccion={verificarAccion}
           />
         </div>
-      </div>
-    </div>
+      </ContenedorBotones>
+    </ContenedorGlobal>
   );
 }
