@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import actividad from "SOURCES/actividad1.jpg";
 import styled from "styled-components";
 const COLORES = [
   "#000000",
@@ -150,12 +151,61 @@ export const CanvasApp = () => {
     }
   };
 
+  // const guardarImagen = () => {
+  //   const dataURL = mainCanvasRef.current.toDataURL();
+  //   const link = document.createElement("a");
+  //   link.href = dataURL;
+  //   link.download = "pizarra.png";
+  //   link.click();
+  // };
+
   const guardarImagen = () => {
-    const dataURL = mainCanvasRef.current.toDataURL();
-    const link = document.createElement("a");
-    link.href = dataURL;
-    link.download = "pizarra.png";
-    link.click();
+    const fondoCanvas = document.createElement("canvas");
+    fondoCanvas.width = mainCanvasRef.current.width;
+    fondoCanvas.height = mainCanvasRef.current.height;
+    const fondoContext = fondoCanvas.getContext("2d");
+
+    const fondo = new Image();
+
+    // Reemplaza la URL con la ruta local donde has descargado la imagen
+    fondo.src = actividad;
+
+    fondo.onload = () => {
+      // Calcular las dimensiones para mantener la relación de aspecto y usar "contain"
+      const aspectRatio = fondo.width / fondo.height;
+      const canvasAspectRatio = fondoCanvas.width / fondoCanvas.height;
+
+      let drawWidth, drawHeight, offsetX, offsetY;
+
+      if (aspectRatio > canvasAspectRatio) {
+        drawWidth = fondoCanvas.width;
+        drawHeight = fondoCanvas.width / aspectRatio;
+        offsetX = 0;
+        offsetY = (fondoCanvas.height - drawHeight) / 2;
+      } else {
+        drawWidth = fondoCanvas.height * aspectRatio;
+        drawHeight = fondoCanvas.height;
+        offsetX = (fondoCanvas.width - drawWidth) / 2;
+        offsetY = 0;
+      }
+
+      // Dibujar la imagen de fondo con "contain"
+      fondoContext.drawImage(fondo, offsetX, offsetY, drawWidth, drawHeight);
+
+      // Dibujar la imagen original encima del fondo
+      fondoContext.drawImage(mainCanvasRef.current, 0, 0);
+
+      // Obtener la URL de la imagen resultante
+      const dataURLConFondo = fondoCanvas.toDataURL();
+
+      // Crear un enlace para descargar la imagen resultante
+      const link = document.createElement("a");
+      link.href = dataURLConFondo;
+      link.download = "pizarra_con_fondo.png";
+
+      // Simular un clic en el enlace para iniciar la descarga
+      link.click();
+    };
   };
 
   const limpiarPizarron = () => {
@@ -246,7 +296,8 @@ export const CanvasApp = () => {
         height={window.innerHeight <= 768 ? 550 : 650}
         style={{
           border: "1px solid #000",
-          backgroundColor: "white",
+          background:
+            "url('https://www.dibujos.org/img/encuentra-el-camino-a-los-ninos-b2528.jpg') center/contain no-repeat no-repeat, white",
           borderRadius: "25px",
         }}
       ></canvas>

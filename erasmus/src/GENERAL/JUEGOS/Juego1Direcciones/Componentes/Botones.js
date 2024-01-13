@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const Boton = styled.div`
-  width: 300px;
+  width: 200px;
   height: 80px;
-  background-color: rgba(238, 130, 238, 0.507);
+  background-color: rgb(165, 56, 165);
+  color: white;
   border: 2px dashed rgba(0, 0, 0, 0.431);
   border-radius: 25px;
   user-select: none;
