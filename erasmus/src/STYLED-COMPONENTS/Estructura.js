@@ -11,7 +11,7 @@ export const ContenedorPrincipal = styled.div`
 export const ContenedorHome = styled.div`
   display: inline-block;
   width: 100%;
-  position: relative;
+  height: calc(100vh);
 `;
 
 export const ContenedorSecciones = styled.div`
@@ -20,7 +20,6 @@ export const ContenedorSecciones = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   padding-top: 50px;
-  height: 100vh;
 `;
 
 export const ContendorPadre = styled.div`

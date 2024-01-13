@@ -20,9 +20,6 @@ const ContenedorPrincipal = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
   background-color: orangered;
   min-height: 50px;
   width: 100%;

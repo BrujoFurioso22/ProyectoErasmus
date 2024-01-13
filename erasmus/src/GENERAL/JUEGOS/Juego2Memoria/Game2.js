@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import jsonImages from "./images";
 import ContenedorDestino from "./ContenedorDestino";
 import "./Game2.css";
+import { ConsultaCartasJuego2 } from "CONFIG/BACKEND/Consultas/Juegos";
 
-const ncartas = [3, 4, 5, 6];
+
 export function Game2() {
   const [imagenesEnContenedor, setImagenesEnContenedor] = useState([]);
   const [ID, setID] = useState(0);
   const [iniciarJuego, setIniciarJuego] = useState(0);
-  const [NumeroImagenes, setNumeroImagenes] = useState(3);
   const [imagenesAleatorias, setImagenesAleatorias] = useState([]);
   const [mostrarImagenes, setMostrarImagenes] = useState(0);
   const [win, setwin] = useState("");
@@ -16,6 +16,19 @@ export function Game2() {
   const [mostrarVerificar, setMostrarVerificar] = useState(true);
   const [mostrarJugar, setMostrarJugar] = useState(true);
   const [haJugado, setHaJugado] = useState(0);
+
+  const [numCartas,setNumCartas] = useState(3)
+
+  const ConsultarNumeroCartas = async ()=>{
+    const res= await ConsultaCartasJuego2(localStorage.getItem("id"))
+    console.log(res);
+    if(res.length > 0){
+      setNumCartas(res[0].numCartas)
+    }
+  }
+  useEffect(() => {
+    ConsultarNumeroCartas()
+  }, []);
 
   const handleDragStart = (id) => {
     setID(id);
@@ -28,7 +41,7 @@ export function Game2() {
     // console.log(ID);
     if (imagenArrastrada) {
       if (!verificarRep) {
-        if (imagenesEnContenedor.length < NumeroImagenes) {
+        if (imagenesEnContenedor.length < numCartas) {
           setImagenesEnContenedor([...imagenesEnContenedor, imagenArrastrada]);
         }
       }
@@ -53,7 +66,7 @@ export function Game2() {
   const IniciarJuego = () => {
     Resetear();
     setIniciarJuego(1);
-    obtenerImagenesAleatorias(jsonImages, NumeroImagenes);
+    obtenerImagenesAleatorias(jsonImages, numCartas);
     setMostrarImagenes(1);
     setMostrarJugar(false);
     setHaJugado(1);
@@ -116,18 +129,7 @@ export function Game2() {
         <div className="contendor-2">
           <div>
             <span>Numero de cartas: </span>
-            <select
-              name="nim"
-              id="nim"
-              onChange={(e) => {
-                console.log(e.target.value);
-                setNumeroImagenes(e.target.value);
-              }}
-            >
-              {ncartas.map((n) => (
-                <option value={n}>{n}</option>
-              ))}
-            </select>
+            <label>{numCartas}</label>
           </div>
           <div>
             <button
@@ -185,7 +187,7 @@ export function Game2() {
                   ))}
                 </div>
               )}
-              {imagenesEnContenedor.length == NumeroImagenes &&
+              {imagenesEnContenedor.length === numCartas &&
                 mostrarVerificar && (
                   <button
                     className="boton-jugar"

@@ -1,13 +1,32 @@
 import { db } from "../db.js";
 
-export const consultarRondasJuego1 = (req, res) => {
+export const consultarConfigJuego1Estudiante = (req, res) => {
   const estudianteID = req.params.idestudiante;
-  const q = `SELECT estudiantes.idestudiantes,juego1.idjuego1,juego1.numRondas FROM baseerasmus.profesores, baseerasmus.asignados,baseerasmus.juego1,baseerasmus.estudiantes Where profesores.idprofesores=asignados.iddeprofesor and estudiantes.idestudiantes = asignados.iddeestudiante and estudiantes.idestudiantes = ${estudianteID} and profesores.idjdej1 = juego1.idjuego1 `;
+  const q = `SELECT juego1.idjuego1, juego1.img1, juego1.img2, juego1.img3, juego1.img4, juego1.numRondas, juego1.idprofesor  FROM baseerasmus.estudiantes, baseerasmus.juego1, baseerasmus.asignados WHERE estudiantes.idestudiantes = asignados.iddeestudiante and asignados.iddeprofesor = juego1.idprofesor and iddeestudiante ='${estudianteID}' `;
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 };
+export const consultarConfigJuego2Estudiante = (req, res) => {
+  const estudianteID = req.params.idestudiante;
+  const q = `SELECT juego2.idjuego2, juego2.img1, juego2.img2, juego2.img3, juego2.img4, juego2.img5, juego2.img6, juego2.img7, juego2.img8, juego2.img9, juego2.numCartas, juego2.idprofesor  FROM baseerasmus.estudiantes, baseerasmus.juego2, baseerasmus.asignados WHERE estudiantes.idestudiantes = asignados.iddeestudiante and asignados.iddeprofesor = juego2.idprofesor and iddeestudiante = '${estudianteID}' `;
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+};
+export const consultarConfigJuego3Estudiante = (req, res) => {
+  const estudianteID = req.params.idestudiante;
+  const q = `SELECT juego3.idjuego3, juego3.img1, juego3.idprofesor FROM baseerasmus.estudiantes, baseerasmus.juego3, baseerasmus.asignados WHERE estudiantes.idestudiantes = asignados.iddeestudiante and asignados.iddeprofesor = juego3.idprofesor and iddeestudiante = '${estudianteID}' `;
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+};
+
+
+
 
 export const consultarAsignacionProfesorEstudiante = (req, res) => {
   const estudianteID = req.params.idestudiante;
@@ -17,6 +36,9 @@ export const consultarAsignacionProfesorEstudiante = (req, res) => {
     return res.json(data);
   });
 };
+
+
+
 export const consultarConfJuego1 = (req, res) => {
   const profesorID = req.params.idprofesor;
   const q = `SELECT * FROM baseerasmus.juego1 WHERE juego1.idprofesor = ${profesorID} ;`;

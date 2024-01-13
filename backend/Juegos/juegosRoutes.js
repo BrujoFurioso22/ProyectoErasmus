@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  consultarRondasJuego1,
   consultarAsignacionProfesorEstudiante,
   consultarConfJuego1,
   consultarImagenesJuego1,
@@ -14,11 +13,17 @@ import {
   crearConfiguracionesJuegos2,
   crearConfiguracionesJuegos3,
   crearConfiguracionesJuegos4,
+  consultarConfigJuego1Estudiante,
+  consultarConfigJuego2Estudiante,
+  consultarConfigJuego3Estudiante
 } from "./juegosControllers.js";
 
 const router = express.Router();
 
-router.get("/juego1/rondas/:idestudiante", consultarRondasJuego1);
+router.get("/juego1/consultaConfiguracion/:idestudiante", consultarConfigJuego1Estudiante);
+router.get("/juego2/consultaConfiguracion/:idestudiante", consultarConfigJuego2Estudiante);
+router.get("/juego3/consultaConfiguracion/:idestudiante", consultarConfigJuego3Estudiante);
+
 router.get(
   "/profesorAsignado/:idestudiante",
   consultarAsignacionProfesorEstudiante

@@ -1,5 +1,4 @@
 import {
-  consultarRondasJuego1,
   consultarAsignacionProfesorEstudiante,
   consultarConfJuego1,
   consultarImagenesJuego1,
@@ -13,10 +12,12 @@ import {
   crearConfiguracionesJuegos2,
   crearConfiguracionesJuegos3,
   crearConfiguracionesJuegos4,
+  consultarConfigJuego1Estudiante,
+  consultarConfigJuego2Estudiante,
+  consultarConfigJuego3Estudiante,
 } from "./juegosService.js";
 
 export {
-  consultarRondasJuego1,
   consultarAsignacionProfesorEstudiante,
   consultarConfJuego1,
   consultarImagenesJuego1,
@@ -30,5 +31,8 @@ export {
   crearConfiguracionesJuegos2,
   crearConfiguracionesJuegos3,
   crearConfiguracionesJuegos4,
+  consultarConfigJuego1Estudiante,
+  consultarConfigJuego2Estudiante,
+  consultarConfigJuego3Estudiante
 };
 // Agregar más controladores según sea necesario

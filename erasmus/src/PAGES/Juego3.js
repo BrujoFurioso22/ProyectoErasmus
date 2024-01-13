@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Header } from "GENERAL/ComponentesGenerales/Header/header";
 import { Sidebar } from "GENERAL/ComponentesGenerales/Sidebar/Sidebar";
 import { JuegoLienzo } from "GENERAL/JUEGOS/Juego3Pizarra/JuegoLienzo";
+import { CanvasApp } from "GENERAL/JUEGOS/Juego3Pizarra/Canvas";
 import { JuegoPrueba } from "GENERAL/JUEGOS/Juego3Pizarra/JuegoPrueba";
 import { ContenedorPrincipal, ContenedorHome,ContenedorSecciones } from "STYLED-COMPONENTS/Estructura";
 import { ConsultaSiTieneProfesor } from "CONFIG/BACKEND/Consultas/Juegos";
@@ -26,7 +27,7 @@ export const Juego3 = () => {
       <ContenedorHome>
         <Header />
         <ContenedorSecciones>
-        {asignado ? <JuegoPrueba /> : <PaginaSinAsignacion />}
+        {asignado ? <CanvasApp /> : <PaginaSinAsignacion />}
         </ContenedorSecciones>
       </ContenedorHome>
     </ContenedorPrincipal>

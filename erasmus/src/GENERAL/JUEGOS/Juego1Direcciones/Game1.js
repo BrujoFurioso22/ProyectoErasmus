@@ -43,6 +43,7 @@ export function Game1() {
 
   const ConsultarRondas = async () => {
     const res = await ConsultaRondasJuego1(localStorage.getItem("id"));
+    console.log(res);
     if(res.length > 0){
       setNumRondas(res[0].numRondas)
     }

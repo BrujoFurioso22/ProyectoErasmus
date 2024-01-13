@@ -3,13 +3,25 @@ import url from "CONFIG/url";
 
 export async function ConsultaRondasJuego1(idestudiante) {
   try {
-    const res = await axios.get(`${url}/juegos/juego1/rondas/${idestudiante}`);
+    const res = await axios.get(`${url}/juegos/juego1/consultaConfiguracion/${idestudiante}`);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+}
+export async function ConsultaCartasJuego2(idestudiante) {
+  try {
+    const res = await axios.get(`${url}/juegos/juego2/consultaConfiguracion/${idestudiante}`);
     return res.data;
   } catch (err) {
     return err;
   }
 }
 
+
+
+
+/*------------------------------------ Configuracion de los juegos--------------------------------------- */
 export async function ConsultaSiTieneProfesor(idestudiante) {
   try {
     const res = await axios.get(`${url}/juegos/profesorAsignado/${idestudiante}`);
