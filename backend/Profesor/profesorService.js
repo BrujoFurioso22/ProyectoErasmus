@@ -19,8 +19,9 @@ export const obtenerIDprofesor = (req, res) => {
 };
 export const eliminarEstudiantedeProfesor = (req, res) => {
   const { idestudiante, idprofesor } = req.query;
-  const q = "DELETE FROM baseerasmus.asignados WHERE iddeestudiante = ? and iddeprofesor = ?";
-  db.query(q,[idestudiante,idprofesor], (err, data) => {
+  const q =
+    "DELETE FROM baseerasmus.asignados WHERE iddeestudiante = ? and iddeprofesor = ?";
+  db.query(q, [idestudiante, idprofesor], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
@@ -65,6 +66,8 @@ export const asignarEstudiantesAProfesor = (req, res) => {
     });
   });
 };
+
+
 
 // export const getUserById = (req, res) => {
 //   const userId = req.params.id;

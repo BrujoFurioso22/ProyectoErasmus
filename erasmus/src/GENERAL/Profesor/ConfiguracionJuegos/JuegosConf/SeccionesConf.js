@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import {
+  ActualizarConfiguracion2,
+  ActualizarConfiguracion3,
+  ActualizarConfiguracion4,
   ConsultaConfiguracionJuego1,
+  ConsultaConfiguracionJuego2,
+  ConsultaConfiguracionJuego3,
+  ConsultaConfiguracionJuego4,
   ConsultaImagenesJuego1,
+  ConsultaImagenesJuego2,
+  ConsultaImagenesJuego3,
+  ConsultaImagenesJuego4,
 } from "CONFIG/BACKEND/Consultas/Juegos";
+import { ActualizarConfiguracion1 } from "CONFIG/BACKEND/Consultas/Juegos";
 
 const datos1 = [
   {
@@ -147,23 +157,9 @@ const BotonStyled = styled.button`
   border-radius: 15px;
 `;
 
-const SelectOptions = (data, label) => {
-  return (
-    <Contenedor style={{ gap: "5px", alignItems: "center" }}>
-      <label>{label}</label>
-      <SelectStyled id="">
-        <option value="0">Seleccionar</option>
-        {data.map((item, index) => (
-          <option key={index} value={item.value}>
-            {item.texto}
-          </option>
-        ))}
-      </SelectStyled>
-    </Contenedor>
-  );
-};
 export const SeccionesConf1 = () => {
-  const [valorPuntaje, setValorPuntaje] = useState(0);
+  const [mensaje,setMensaje]=useState("")
+  const [numRondas, setNumRondas] = useState(0);
   const [imagenes, setImagenes] = useState([]);
   const [valorImagenes, setValorImagenes] = useState([
     { id: 1, imgid: 0 },
@@ -194,16 +190,16 @@ export const SeccionesConf1 = () => {
     if (resp.length > 0) {
       setImagenes(resp);
       if (resp1.length > 0) {
-        setValorPuntaje(resp1[0].numRondas);
-        actualizarValorImgId(1, resp1[0].img1);
-        actualizarValorImgId(2, resp1[0].img2);
-        actualizarValorImgId(3, resp1[0].img3);
-        actualizarValorImgId(4, resp1[0].img4);
+        setNumRondas(resp1[0].numRondas);
+        actualizarValorImgId(1, resp1[0].img1 === null ? 0 : resp1[0].img1);
+        actualizarValorImgId(2, resp1[0].img2 === null ? 0 : resp1[0].img2);
+        actualizarValorImgId(3, resp1[0].img3 === null ? 0 : resp1[0].img3);
+        actualizarValorImgId(4, resp1[0].img4 === null ? 0 : resp1[0].img4);
       }
     }
   };
   useEffect(() => {
-    ConsultarImagenesyConfiguraciones()
+    ConsultarImagenesyConfiguraciones();
   }, []);
 
   const SelectOptions1Juego1 = (data, label, queimg) => {
@@ -234,10 +230,9 @@ export const SeccionesConf1 = () => {
         <label>{label}</label>
         <SelectStyled
           id=""
-          value={valorPuntaje}
-          onChange={(e) => setValorPuntaje(e.target.value)}
+          value={numRondas}
+          onChange={(e) => setNumRondas(e.target.value)}
         >
-          <option value="0">Seleccionar</option>
           {data.map((item, index) => (
             <option key={index} value={item.value}>
               {item.texto}
@@ -248,8 +243,24 @@ export const SeccionesConf1 = () => {
     );
   };
 
-  const GuardarConfiguracionJuego1 = async(valorP,valorI,fetch) => {
-    
+  const GuardarConfiguracionJuego1 = async (valorP, fetch) => {
+    const idp = localStorage.getItem("id");
+    const res = await ActualizarConfiguracion1(
+      valueImgs(1),
+      valueImgs(2),
+      valueImgs(3),
+      valueImgs(4),
+      valorP,
+      idp,
+      fetch
+    );
+    res.message === "Actualizada Correcta del Juego"
+      ? setMensaje("¡Actualización Correcta!")
+      : setMensaje("¡Ha ocurrido un error!");
+    setTimeout(() => {
+      setMensaje("");
+    }, 3000);
+    console.log(res);
   };
 
   return (
@@ -270,105 +281,442 @@ export const SeccionesConf1 = () => {
       >
         {SelectOptions2Juego1(puntajejuego1, "Puntaje/Estrellas")}
       </Contenedor>
-      <Contenedor style={{ paddingTop: "15px" }}>
-        <BotonStyled onClick={() => GuardarConfiguracionJuego1(valorPuntaje,valorImagenes,ConsultarImagenesyConfiguraciones)}>
+      <Contenedor style={{ paddingTop: "15px", flexDirection:"column", alignItems:"center", gap:"15px"  }}>
+        <BotonStyled
+          onClick={() =>
+            GuardarConfiguracionJuego1(
+              numRondas,
+              ConsultarImagenesyConfiguraciones
+            )
+          }
+        >
           Guardar Configuración
         </BotonStyled>
+        {mensaje === "¡Actualización Correcta!" && (<label style={{color:"green"}}>{mensaje}</label>)}
+        {mensaje === "¡Ha ocurrido un error!" && (<label style={{color:"red"}}>{mensaje}</label>)}
       </Contenedor>
     </Contenedor>
   );
 };
 export const SeccionesConf2 = () => {
-  const GuardarConfiguracionJuego2 = () => {};
+  const [mensaje, setMensaje]= useState("")
+  const [numCartas, setNumCartas] = useState(0);
+  const [imagenes, setImagenes] = useState([]);
+  const [valorImagenes, setValorImagenes] = useState([
+    { id: 1, imgid: 0 },
+    { id: 2, imgid: 0 },
+    { id: 3, imgid: 0 },
+    { id: 4, imgid: 0 },
+    { id: 5, imgid: 0 },
+    { id: 6, imgid: 0 },
+    { id: 7, imgid: 0 },
+    { id: 8, imgid: 0 },
+    { id: 9, imgid: 0 },
+  ]);
+
+  const actualizarValorImgId = (id, nuevoValor) => {
+    const nuevoEstado = [...valorImagenes];
+
+    const objetoActualizado = nuevoEstado.find((item) => item.id === id);
+    if (objetoActualizado) {
+      objetoActualizado.imgid = nuevoValor;
+    }
+    setValorImagenes(nuevoEstado);
+  };
+
+  const valueImgs = (id) => {
+    const res = valorImagenes.find((item) => item.id === id);
+    const re = res.imgid;
+    return re;
+  };
+
+  const ConsultarImagenesyConfiguraciones = async () => {
+    const resp = await ConsultaImagenesJuego2();
+    const resp1 = await ConsultaConfiguracionJuego2(localStorage.getItem("id"));
+    if (resp.length > 0) {
+      setImagenes(resp);
+      if (resp1.length > 0) {
+        setNumCartas(resp1[0].numCartas);
+        actualizarValorImgId(1, resp1[0].img1 === null ? 0 : resp1[0].img1);
+        actualizarValorImgId(2, resp1[0].img2 === null ? 0 : resp1[0].img2);
+        actualizarValorImgId(3, resp1[0].img3 === null ? 0 : resp1[0].img3);
+        actualizarValorImgId(4, resp1[0].img4 === null ? 0 : resp1[0].img4);
+        actualizarValorImgId(5, resp1[0].img5 === null ? 0 : resp1[0].img5);
+        actualizarValorImgId(6, resp1[0].img6 === null ? 0 : resp1[0].img6);
+        actualizarValorImgId(7, resp1[0].img7 === null ? 0 : resp1[0].img7);
+        actualizarValorImgId(8, resp1[0].img8 === null ? 0 : resp1[0].img8);
+        actualizarValorImgId(9, resp1[0].img9 === null ? 0 : resp1[0].img9);
+      }
+    }
+  };
+  useEffect(() => {
+    ConsultarImagenesyConfiguraciones();
+  }, []);
+
+  const SelectOptions1Juego2 = (data, label, queimg) => {
+    return (
+      <Contenedor style={{ gap: "5px", alignItems: "center" }}>
+        <label>{label}</label>
+        <SelectStyled
+          id=""
+          value={valueImgs(queimg)}
+          onChange={(e) =>
+            actualizarValorImgId(queimg, parseInt(e.target.value))
+          }
+        >
+          <option value="0">Seleccionar</option>
+          {data.map((item, index) => (
+            <option key={index} value={item.idimagenes}>
+              {item.nombreimagen}
+            </option>
+          ))}
+        </SelectStyled>
+      </Contenedor>
+    );
+  };
+
+  const SelectOptions2Juego2 = (data, label) => {
+    return (
+      <Contenedor style={{ gap: "5px", alignItems: "center" }}>
+        <label>{label}</label>
+        <SelectStyled
+          id=""
+          value={numCartas}
+          onChange={(e) => setNumCartas(e.target.value)}
+        >
+          {data.map((item, index) => (
+            <option key={index} value={item.value}>
+              {item.texto}
+            </option>
+          ))}
+        </SelectStyled>
+      </Contenedor>
+    );
+  };
+
+  const GuardarConfiguracionJuego2 = async (valorC, fetch) => {
+    const idp = localStorage.getItem("id");
+    const res = await ActualizarConfiguracion2(
+      valueImgs(1),
+      valueImgs(2),
+      valueImgs(3),
+      valueImgs(4),
+      valueImgs(5),
+      valueImgs(6),
+      valueImgs(7),
+      valueImgs(8),
+      valueImgs(9),
+      valorC,
+      idp,
+      fetch
+    );
+    res.message === "Actualizada Correcta del Juego"
+      ? setMensaje("¡Actualización Correcta!")
+      : setMensaje("¡Ha ocurrido un error!");
+    setTimeout(() => {
+      setMensaje("");
+    }, 3000);
+    console.log(res);
+  };
 
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 2</h5>
       <h6>Selecciona que imagenes desea mostrar</h6>
-      <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
-        {SelectOptions(datos2, "1")}
-        {SelectOptions(datos2, "2")}
-        {SelectOptions(datos2, "3")}
+      <Contenedor
+        style={{ flexDirection: "row", gap: "10px", flexWrap: "wrap" }}
+      >
+        {SelectOptions1Juego2(imagenes, "1", 1)}
+        {SelectOptions1Juego2(imagenes, "2", 2)}
+        {SelectOptions1Juego2(imagenes, "3", 3)}
       </Contenedor>
-      <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
-        {SelectOptions(datos2, "4")}
-        {SelectOptions(datos2, "5")}
-        {SelectOptions(datos2, "6")}
+      <Contenedor
+        style={{ flexDirection: "row", gap: "10px", flexWrap: "wrap" }}
+      >
+        {SelectOptions1Juego2(imagenes, "4", 4)}
+        {SelectOptions1Juego2(imagenes, "5", 5)}
+        {SelectOptions1Juego2(imagenes, "6", 6)}
       </Contenedor>
-      <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
-        {SelectOptions(datos2, "7")}
-        {SelectOptions(datos2, "8")}
-        {SelectOptions(datos2, "9")}
+      <Contenedor
+        style={{ flexDirection: "row", gap: "10px", flexWrap: "wrap" }}
+      >
+        {SelectOptions1Juego2(imagenes, "7", 7)}
+        {SelectOptions1Juego2(imagenes, "8", 8)}
+        {SelectOptions1Juego2(imagenes, "9", 9)}
       </Contenedor>
-      <h6>Selecciona número de imagenes a memorizar</h6>
+      <h6>Selecciona número de cartas a memorizar</h6>
       <Contenedor
         style={{ flexDirection: "row", gap: "10px", justifyContent: "start" }}
       >
-        {SelectOptions(puntajejuego2, "Puntaje/Estrellas")}
+        {SelectOptions2Juego2(puntajejuego2, "Puntaje/Estrellas")}
       </Contenedor>
-      <Contenedor style={{ paddingTop: "15px" }}>
-        <BotonStyled onClick={() => GuardarConfiguracionJuego2()}>
+      <Contenedor style={{ paddingTop: "15px", flexDirection:"column", alignItems:"center", gap:"15px" }}>
+        <BotonStyled
+          onClick={() =>
+            GuardarConfiguracionJuego2(
+              numCartas,
+              ConsultarImagenesyConfiguraciones
+            )
+          }
+        >
           Guardar Configuración
         </BotonStyled>
+        {mensaje === "¡Actualización Correcta!" && (<label style={{color:"green"}}>{mensaje}</label>)}
+        {mensaje === "¡Ha ocurrido un error!" && (<label style={{color:"red"}}>{mensaje}</label>)}
       </Contenedor>
     </Contenedor>
   );
 };
 export const SeccionesConf3 = () => {
-  const GuardarConfiguracionJuego3 = () => {};
+  const [mensaje,setMensaje]=useState("")
+  const [imagenes, setImagenes] = useState([]);
+  const [valorImagenes, setValorImagenes] = useState([{ id: 1, imgid: 0 }]);
+
+  const actualizarValorImgId = (id, nuevoValor) => {
+    const nuevoEstado = [...valorImagenes];
+
+    const objetoActualizado = nuevoEstado.find((item) => item.id === id);
+    if (objetoActualizado) {
+      objetoActualizado.imgid = nuevoValor;
+    }
+    setValorImagenes(nuevoEstado);
+  };
+
+  const valueImgs = (id) => {
+    const res = valorImagenes.find((item) => item.id === id);
+    const re = res.imgid;
+    return re;
+  };
+
+  const ConsultarImagenesyConfiguraciones = async () => {
+    const resp = await ConsultaImagenesJuego3();
+    const resp1 = await ConsultaConfiguracionJuego3(localStorage.getItem("id"));
+    if (resp.length > 0) {
+      setImagenes(resp);
+      if (resp1.length > 0) {
+        actualizarValorImgId(1, resp1[0].img1 === null ? 0 : resp1[0].img1);
+      }
+    }
+  };
+  useEffect(() => {
+    ConsultarImagenesyConfiguraciones();
+  }, []);
+
+  const SelectOptions1Juego3 = (data, label, queimg) => {
+    return (
+      <Contenedor style={{ gap: "5px", alignItems: "center" }}>
+        <label>{label}</label>
+        <SelectStyled
+          id=""
+          value={valueImgs(queimg)}
+          onChange={(e) =>
+            actualizarValorImgId(queimg, parseInt(e.target.value))
+          }
+        >
+          <option value="0">Seleccionar</option>
+          {data.map((item, index) => (
+            <option key={index} value={item.idimagenes}>
+              {item.nombreimagen}
+            </option>
+          ))}
+        </SelectStyled>
+      </Contenedor>
+    );
+  };
+
+  const GuardarConfiguracionJuego3 = async (fetch) => {
+    const idp = localStorage.getItem("id");
+    const res = await ActualizarConfiguracion3(valueImgs(1), idp, fetch);
+    res.message === "Actualizada Correcta del Juego"
+      ? setMensaje("¡Actualización Correcta!")
+      : setMensaje("¡Ha ocurrido un error!");
+    setTimeout(() => {
+      setMensaje("");
+    }, 3000);
+    console.log(res);
+  };
 
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 3</h5>
       <h6>Selecciona la imagen a mostrar</h6>
       <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
-        {SelectOptions(datos3, "Imagen a dibujar")}
+        {SelectOptions1Juego3(imagenes, "Imagen a dibujar", 1)}
       </Contenedor>
-      <h6>En este juego no se lleva puntaje, es para entretenimiento</h6>
-      <Contenedor style={{ paddingTop: "15px" }}>
-        <BotonStyled onClick={() => GuardarConfiguracionJuego3()}>
+      <h6>En este juego no se lleva puntaje, es para tareas y dibujo libre</h6>
+      <Contenedor style={{ paddingTop: "15px", flexDirection:"column", alignItems:"center", gap:"15px" }}>
+        <BotonStyled
+          onClick={() =>
+            GuardarConfiguracionJuego3(ConsultarImagenesyConfiguraciones)
+          }
+        >
           Guardar Configuración
         </BotonStyled>
+        {mensaje === "¡Actualización Correcta!" && (<label style={{color:"green"}}>{mensaje}</label>)}
+        {mensaje === "¡Ha ocurrido un error!" && (<label style={{color:"red"}}>{mensaje}</label>)}
       </Contenedor>
     </Contenedor>
   );
 };
+
 export const SeccionesConf4 = () => {
+  const [mensaje, setMensaje] = useState("");
+  const [idcorrecto, setIdCorrecto] = useState(1);
   const [velocidad, setVelocidad] = useState(1);
-  const GuardarConfiguracionJuego4 = () => {};
+  const [imagenes, setImagenes] = useState([]);
+  const [valorImagenes, setValorImagenes] = useState([
+    { id: 1, imgid: 0 },
+    { id: 2, imgid: 0 },
+    { id: 3, imgid: 0 },
+  ]);
+
+  const actualizarValorImgId = (id, nuevoValor) => {
+    const nuevoEstado = [...valorImagenes];
+
+    const objetoActualizado = nuevoEstado.find((item) => item.id === id);
+    if (objetoActualizado) {
+      objetoActualizado.imgid = nuevoValor;
+    }
+    setValorImagenes(nuevoEstado);
+  };
+
+  const valueImgs = (id) => {
+    const res = valorImagenes.find((item) => item.id === id);
+    const re = res.imgid;
+    return re;
+  };
+
+  const ConsultarImagenesyConfiguraciones = async () => {
+    const resp = await ConsultaImagenesJuego4();
+    const resp1 = await ConsultaConfiguracionJuego4(localStorage.getItem("id"));
+    if (resp.length > 0) {
+      setImagenes(resp);
+      if (resp1.length > 0) {
+        setIdCorrecto(resp1[0].idcorrecto);
+        setVelocidad(resp1[0].velocidad);
+        actualizarValorImgId(1, resp1[0].img1 === null ? 0 : resp1[0].img1);
+        actualizarValorImgId(2, resp1[0].img2 === null ? 0 : resp1[0].img2);
+        actualizarValorImgId(3, resp1[0].img3 === null ? 0 : resp1[0].img3);
+      }
+    }
+  };
+  useEffect(() => {
+    ConsultarImagenesyConfiguraciones();
+  }, []);
+
+  const SelectOptions1Juego4 = (data, label, queimg) => {
+    return (
+      <Contenedor style={{ gap: "5px", alignItems: "center" }}>
+        <label>{label}</label>
+        <SelectStyled
+          id=""
+          value={valueImgs(queimg)}
+          onChange={(e) =>
+            actualizarValorImgId(queimg, parseInt(e.target.value))
+          }
+        >
+          <option value="0">Seleccionar</option>
+          {data.map((item, index) => (
+            <option key={index} value={item.idimagenes}>
+              {item.nombreimagen}
+            </option>
+          ))}
+        </SelectStyled>
+      </Contenedor>
+    );
+  };
+  const SelectOptions2Juego4 = (vel) => {
+    return (
+      <Contenedor style={{ gap: "5px", alignItems: "center" }}>
+        <input
+          type="range"
+          min={1}
+          max={3}
+          value={vel}
+          onChange={(e) => setVelocidad(e.target.value)}
+        />{" "}
+        <label>{vel}</label>
+      </Contenedor>
+    );
+  };
+
+  const SelectOptions3Juego4 = (data, label) => {
+    return (
+      <Contenedor style={{ gap: "5px", alignItems: "center" }}>
+        <label>{label}</label>
+        <SelectStyled
+          id=""
+          value={idcorrecto === null ? 0 : idcorrecto}
+          onChange={(e) => setIdCorrecto(e.target.value)}
+        >
+          <option value="0">Seleccionar</option>
+          {data.map((item, index) => (
+            <option key={index} value={item.idimagenes}>
+              {item.nombreimagen}
+            </option>
+          ))}
+        </SelectStyled>
+      </Contenedor>
+    );
+  };
+
+  const GuardarConfiguracionJuego4 = async (vel, idc, fetch) => {
+    const idp = localStorage.getItem("id");
+    const res = await ActualizarConfiguracion4(
+      valueImgs(1),
+      valueImgs(2),
+      valueImgs(3),
+      vel,
+      idc,
+      idp,
+      fetch
+    );
+    res.message === "Actualizada Correcta del Juego"
+      ? setMensaje("¡Actualización Correcta!")
+      : setMensaje("¡Ha ocurrido un error!");
+    setTimeout(() => {
+      setMensaje("");
+    }, 3000);
+    console.log(res);
+  };
 
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 4</h5>
       <h6>Selecciona que imagenes desea mostrar</h6>
-      <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
-        {SelectOptions(datos4, "Imagen 1")}
-        {SelectOptions(datos4, "Imagen 2")}
-        {SelectOptions(datos4, "Imagen 3")}
+      <Contenedor
+        style={{ flexDirection: "row", gap: "10px", flexWrap: "wrap" }}
+      >
+        {SelectOptions1Juego4(imagenes, "1", 1)}
+        {SelectOptions1Juego4(imagenes, "2", 2)}
+        {SelectOptions1Juego4(imagenes, "3", 3)}
       </Contenedor>
-      <h6>Nivel de velocidad</h6>
-      <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
-        <input
-          type="range"
-          min={1}
-          max={3}
-          value={velocidad}
-          onChange={(e) => setVelocidad(e.target.value)}
-        />{" "}
-        <label>{velocidad}</label>
+      <h6>Selecciona la velocidad</h6>
+      <Contenedor
+        style={{ flexDirection: "row", gap: "10px", flexWrap: "wrap" }}
+      >
+        {SelectOptions2Juego4(velocidad)}
       </Contenedor>
-      <h6>Selecciona que color de globo va a tener que acertar</h6>
-      <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
-        {SelectOptions(datos4, "Color a acertar")}
+      <h6>Selecciona el color correcto correcta</h6>
+      <Contenedor
+        style={{ flexDirection: "row", gap: "10px", justifyContent: "start" }}
+      >
+        {SelectOptions3Juego4(imagenes, "Color Correcto")}
       </Contenedor>
-      <h6>
-        Aquí si termina con las 3/3 vidas tendrá 2 estrellas y 2/3 vidas tendrá
-        1 estrella
-      </h6>
-      <Contenedor style={{ paddingTop: "15px" }}>
-        <BotonStyled onClick={() => GuardarConfiguracionJuego4()}>
+      <Contenedor style={{ paddingTop: "15px", flexDirection:"column", alignItems:"center", gap:"15px" }}>
+        <BotonStyled
+          onClick={() =>
+            GuardarConfiguracionJuego4(
+              velocidad,
+              idcorrecto,
+              ConsultarImagenesyConfiguraciones
+            )
+          }
+        >
           Guardar Configuración
         </BotonStyled>
+        {mensaje === "¡Actualización Correcta!" && (<label style={{color:"green"}}>{mensaje}</label>)}
+        {mensaje === "¡Ha ocurrido un error!" && (<label style={{color:"red"}}>{mensaje}</label>)}
       </Contenedor>
     </Contenedor>
   );

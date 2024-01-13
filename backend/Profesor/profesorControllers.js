@@ -3,7 +3,7 @@ import {
   idUsuario,
   asignarEstudiantesAProfesor,
   eliminarEstudiantedeProfesor,
-  obtenerIDprofesor
+  obtenerIDprofesor,
 } from "./profesorService.js";
 
 export { consultarEstudiantes,idUsuario,asignarEstudiantesAProfesor,eliminarEstudiantedeProfesor,obtenerIDprofesor};

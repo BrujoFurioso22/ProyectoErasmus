@@ -16,7 +16,7 @@ export async function ConsultaIDEstudiante(correoEstudiante) {
     );
     return res.data;
   } catch (err) {
-    return []
+    return [];
   }
   // console.log(res.data);
 }
@@ -41,10 +41,11 @@ export async function EliminarAsignacion(idestudiante, idprofesor, fetch) {
 
 export async function ConsultaIDprofesor(correoprofesor) {
   try {
-    const res = await axios.get(`${url}/profesor/obtenerIDprofesor/${correoprofesor}`);
-  return res.data;
+    const res = await axios.get(
+      `${url}/profesor/obtenerIDprofesor/${correoprofesor}`
+    );
+    return res.data;
   } catch (err) {
-    return []
+    return [];
   }
-  
 }
