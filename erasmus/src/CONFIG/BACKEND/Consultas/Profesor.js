@@ -38,3 +38,13 @@ export async function EliminarAsignacion(idestudiante, idprofesor, fetch) {
   fetch();
   return res;
 }
+
+export async function ConsultaIDprofesor(correoprofesor) {
+  try {
+    const res = await axios.get(`${url}/profesor/obtenerIDprofesor/${correoprofesor}`);
+  return res.data;
+  } catch (err) {
+    return []
+  }
+  
+}

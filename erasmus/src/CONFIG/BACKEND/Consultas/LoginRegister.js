@@ -28,6 +28,16 @@ export async function CrearUsuario(
   // console.log(res.data);
   return res.data;
 }
+export async function CrearConfiguraciones(idprofesor) {
+  try {
+    const res = await axios.post(`${url}/usuarios/crearConfiguraciones`, {
+      idprofesor: idprofesor,
+    });
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+}
 export async function ConsultarUsuario(correo, password) {
   // console.log(`${url}`);
   const res = await axios.get(`${url}/usuarios/${correo}/${password}`);

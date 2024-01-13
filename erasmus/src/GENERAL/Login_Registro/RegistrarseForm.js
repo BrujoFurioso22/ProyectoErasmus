@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { CrearUsuario } from "CONFIG/BACKEND/Consultas/LoginRegister";
+import { CrearConfiguraciones, CrearUsuario } from "CONFIG/BACKEND/Consultas/LoginRegister";
+import { ConsultaIDprofesor } from "CONFIG/BACKEND/Consultas/Profesor";
 
 export function Registrarse() {
   const [usuario, setUsuario] = useState({
@@ -27,6 +28,14 @@ export function Registrarse() {
       } else {
         setMensajeError("Usuario Creado Correctamente");
         setValidacion(1);
+        if (usuario.tipo === "PR") {
+          const res = await ConsultaIDprofesor(usuario.email);
+          if(res.length > 0){
+            const idprof = res[0].idprofesores;
+            const res1 = await CrearConfiguraciones(idprof);
+            console.log(res1)
+          }
+        }
       }
     } catch (err) {
       console.log(err);
@@ -44,6 +53,7 @@ export function Registrarse() {
     evt.preventDefault();
 
     await CreacionUsuario();
+    
 
     for (const key in usuario) {
       setUsuario({
@@ -57,7 +67,7 @@ export function Registrarse() {
     <div className="form-container sign-up-container">
       <form onSubmit={handleOnSubmit} className="formLogin">
         <h1 className="h1Login">Crea una cuenta</h1>
-        
+
         <input
           type="text"
           name="nombre"

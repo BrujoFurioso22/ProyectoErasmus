@@ -12,8 +12,6 @@ const direcciones = {
   izquierda: "IZQUIERDA",
   derecha: "DERECHA",
 };
-// const numRondas = 5;
-
 export function Game1() {
   const [numRondas, setNumRondas] = useState(5);
   const [accion, setaccion] = useState(""); //Es el estado que se mostrara en el medio del juego para que el jugador sepa que tiene que tocar
@@ -45,7 +43,9 @@ export function Game1() {
 
   const ConsultarRondas = async () => {
     const res = await ConsultaRondasJuego1(localStorage.getItem("id"));
-    console.log(res);
+    if(res.length > 0){
+      setNumRondas(res[0].numRondas)
+    }
   };
 
   //Funcion para poder mostrar la siguiente opcion despues de que haya seleccionado un boton el jugador

@@ -95,6 +95,7 @@ export const ConfigEstudiantes = () => {
   useEffect(() => {
     ConsultaEstudiantesTabla();
   }, []);
+  
   return (
     <ContendorPadre>
       <ContenedorTabs>

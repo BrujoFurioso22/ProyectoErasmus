@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import {
+  ConsultaConfiguracionJuego1,
+  ConsultaImagenesJuego1,
+} from "CONFIG/BACKEND/Consultas/Juegos";
 
 const datos1 = [
   {
@@ -158,27 +162,116 @@ const SelectOptions = (data, label) => {
     </Contenedor>
   );
 };
-
-const GuardarConfiguracionJuego1 = () => {};
 export const SeccionesConf1 = () => {
+  const [valorPuntaje, setValorPuntaje] = useState(0);
+  const [imagenes, setImagenes] = useState([]);
+  const [valorImagenes, setValorImagenes] = useState([
+    { id: 1, imgid: 0 },
+    { id: 2, imgid: 0 },
+    { id: 3, imgid: 0 },
+    { id: 4, imgid: 0 },
+  ]);
+
+  const actualizarValorImgId = (id, nuevoValor) => {
+    const nuevoEstado = [...valorImagenes];
+
+    const objetoActualizado = nuevoEstado.find((item) => item.id === id);
+    if (objetoActualizado) {
+      objetoActualizado.imgid = nuevoValor;
+    }
+    setValorImagenes(nuevoEstado);
+  };
+
+  const valueImgs = (id) => {
+    const res = valorImagenes.find((item) => item.id === id);
+    const re = res.imgid;
+    return re;
+  };
+
+  const ConsultarImagenesyConfiguraciones = async () => {
+    const resp = await ConsultaImagenesJuego1();
+    const resp1 = await ConsultaConfiguracionJuego1(localStorage.getItem("id"));
+    if (resp.length > 0) {
+      setImagenes(resp);
+      if (resp1.length > 0) {
+        setValorPuntaje(resp1[0].numRondas);
+        actualizarValorImgId(1, resp1[0].img1);
+        actualizarValorImgId(2, resp1[0].img2);
+        actualizarValorImgId(3, resp1[0].img3);
+        actualizarValorImgId(4, resp1[0].img4);
+      }
+    }
+  };
+  useEffect(() => {
+    ConsultarImagenesyConfiguraciones()
+  }, []);
+
+  const SelectOptions1Juego1 = (data, label, queimg) => {
+    return (
+      <Contenedor style={{ gap: "5px", alignItems: "center" }}>
+        <label>{label}</label>
+        <SelectStyled
+          id=""
+          value={valueImgs(queimg)}
+          onChange={(e) =>
+            actualizarValorImgId(queimg, parseInt(e.target.value))
+          }
+        >
+          <option value="0">Seleccionar</option>
+          {data.map((item, index) => (
+            <option key={index} value={item.idimagenes}>
+              {item.nombreimagen}
+            </option>
+          ))}
+        </SelectStyled>
+      </Contenedor>
+    );
+  };
+
+  const SelectOptions2Juego1 = (data, label) => {
+    return (
+      <Contenedor style={{ gap: "5px", alignItems: "center" }}>
+        <label>{label}</label>
+        <SelectStyled
+          id=""
+          value={valorPuntaje}
+          onChange={(e) => setValorPuntaje(e.target.value)}
+        >
+          <option value="0">Seleccionar</option>
+          {data.map((item, index) => (
+            <option key={index} value={item.value}>
+              {item.texto}
+            </option>
+          ))}
+        </SelectStyled>
+      </Contenedor>
+    );
+  };
+
+  const GuardarConfiguracionJuego1 = async(valorP,valorI,fetch) => {
+    
+  };
+
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 1</h5>
       <h6>Selecciona que imagenes desea mostrar</h6>
-      <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
-        {SelectOptions(datos1, "Arriba")}
-        {SelectOptions(datos1, "Derecha")}
-        {SelectOptions(datos1, "Abajo")}
-        {SelectOptions(datos1, "Izquierda")}
+      <Contenedor
+        style={{ flexDirection: "row", gap: "10px", flexWrap: "wrap" }}
+      >
+        {SelectOptions1Juego1(imagenes, "Arriba", 1)}
+        {SelectOptions1Juego1(imagenes, "Derecha", 2)}
+        {SelectOptions1Juego1(imagenes, "Abajo", 3)}
+        {SelectOptions1Juego1(imagenes, "Izquierda", 4)}
       </Contenedor>
       <h6>Selecciona las rondas</h6>
       <Contenedor
         style={{ flexDirection: "row", gap: "10px", justifyContent: "start" }}
       >
-        {SelectOptions(puntajejuego1, "Puntaje/Estrellas")}
+        {SelectOptions2Juego1(puntajejuego1, "Puntaje/Estrellas")}
       </Contenedor>
       <Contenedor style={{ paddingTop: "15px" }}>
-        <BotonStyled onClick={() => GuardarConfiguracionJuego1()}>
+        <BotonStyled onClick={() => GuardarConfiguracionJuego1(valorPuntaje,valorImagenes,ConsultarImagenesyConfiguraciones)}>
           Guardar Configuración
         </BotonStyled>
       </Contenedor>
@@ -186,6 +279,8 @@ export const SeccionesConf1 = () => {
   );
 };
 export const SeccionesConf2 = () => {
+  const GuardarConfiguracionJuego2 = () => {};
+
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 2</h5>
@@ -212,7 +307,7 @@ export const SeccionesConf2 = () => {
         {SelectOptions(puntajejuego2, "Puntaje/Estrellas")}
       </Contenedor>
       <Contenedor style={{ paddingTop: "15px" }}>
-        <BotonStyled onClick={() => GuardarConfiguracionJuego1()}>
+        <BotonStyled onClick={() => GuardarConfiguracionJuego2()}>
           Guardar Configuración
         </BotonStyled>
       </Contenedor>
@@ -220,6 +315,8 @@ export const SeccionesConf2 = () => {
   );
 };
 export const SeccionesConf3 = () => {
+  const GuardarConfiguracionJuego3 = () => {};
+
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 3</h5>
@@ -229,7 +326,7 @@ export const SeccionesConf3 = () => {
       </Contenedor>
       <h6>En este juego no se lleva puntaje, es para entretenimiento</h6>
       <Contenedor style={{ paddingTop: "15px" }}>
-        <BotonStyled onClick={() => GuardarConfiguracionJuego1()}>
+        <BotonStyled onClick={() => GuardarConfiguracionJuego3()}>
           Guardar Configuración
         </BotonStyled>
       </Contenedor>
@@ -238,6 +335,8 @@ export const SeccionesConf3 = () => {
 };
 export const SeccionesConf4 = () => {
   const [velocidad, setVelocidad] = useState(1);
+  const GuardarConfiguracionJuego4 = () => {};
+
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 4</h5>
@@ -262,9 +361,12 @@ export const SeccionesConf4 = () => {
       <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
         {SelectOptions(datos4, "Color a acertar")}
       </Contenedor>
-      <h6>Aquí si termina con las 3/3 vidas tendrá 2 estrellas y 2/3 vidas tendrá 1 estrella</h6>
+      <h6>
+        Aquí si termina con las 3/3 vidas tendrá 2 estrellas y 2/3 vidas tendrá
+        1 estrella
+      </h6>
       <Contenedor style={{ paddingTop: "15px" }}>
-        <BotonStyled onClick={() => GuardarConfiguracionJuego1()}>
+        <BotonStyled onClick={() => GuardarConfiguracionJuego4()}>
           Guardar Configuración
         </BotonStyled>
       </Contenedor>

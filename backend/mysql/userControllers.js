@@ -2,8 +2,9 @@ import {
   getAllUsers,
   getUserById,
   createUser,
-  validateUser
+  validateUser,
+  crearConfiguracionesJuegos
 } from "./userService.js";
 
-export { getAllUsers, getUserById, createUser, validateUser };
+export { getAllUsers, getUserById, createUser, validateUser, crearConfiguracionesJuegos };
 // Agregar más controladores según sea necesario

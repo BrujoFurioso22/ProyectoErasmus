@@ -3,7 +3,8 @@ import {
   consultarEstudiantes,
   idUsuario,
   asignarEstudiantesAProfesor,
-  eliminarEstudiantedeProfesor
+  eliminarEstudiantedeProfesor,
+  obtenerIDprofesor
 } from "./profesorControllers.js";
 
 const router = express.Router();
@@ -11,7 +12,7 @@ const router = express.Router();
 // Definir rutas
 // router.get("/", getAllUsers);
 router.get("/:idprofesor", consultarEstudiantes);
-// router.get("/consultaridprofesor/:idusuario", consultarIDProfesor);
+router.get("/obtenerIDprofesor/:correoProfesor", obtenerIDprofesor);
 router.get("/idEstudiante/:correo", idUsuario);
 router.post("/crearAsignacion", asignarEstudiantesAProfesor);
 router.delete("/eliminarAsignacion", eliminarEstudiantedeProfesor);

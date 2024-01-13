@@ -23,9 +23,9 @@ export const validateUser = (req, res) => {
   const q = `SELECT * FROM estudiantes WHERE correo = '${correo}' and contrasena = '${contrasena}'`;
   db.query(q, (err, data) => {
     if (err) return res.json(err);
-    if(data.length>0){
+    if (data.length > 0) {
       return res.json(data);
-    }else{
+    } else {
       const q = `SELECT * FROM profesores WHERE correo = '${correo}' and contrasena = '${contrasena}'`;
       db.query(q, (err, data) => {
         if (err) return res.json(err);
@@ -61,7 +61,6 @@ export const createUser = (req, res) => {
 
     // Si el usuario no existe, realizar la inserción en la base de datos
     const insertUserQuery = `INSERT INTO ${tabla} (nombre, correo, contrasena, tipodeusuario, institucion, sexo) VALUES ('${nombre}' ,'${correo}', '${password}', '${tipo}', '${institucion}' ,'${sexo}')`;
-
     db.query(insertUserQuery, (insertErr, insertData) => {
       if (insertErr) return res.json(insertErr);
 
@@ -72,7 +71,38 @@ export const createUser = (req, res) => {
     });
   });
 };
+export const crearConfiguracionesJuegos = (req, res) => {
+  // Obtener datos del cuerpo de la solicitud
+  const { idprofesor } = req.body;
+  let contador = 0;
 
+  const insertUserQuery = `INSERT INTO baseerasmus.juego1 (idprofesor) VALUES ('${idprofesor}')`;
+  db.query(insertUserQuery, (insertErr, insertData) => {
+    if (insertErr) return res.json(insertErr);
+    contador++;
 
+    const insertUserQuery1 = `INSERT INTO baseerasmus.juego2 (idprofesor) VALUES ('${idprofesor}')`;
+    db.query(insertUserQuery1, (insertErr, insertData) => {
+      if (insertErr) return res.json(insertErr);
+      contador++;
+
+      const insertUserQuery1 = `INSERT INTO baseerasmus.juego3 (idprofesor) VALUES ('${idprofesor}')`;
+      db.query(insertUserQuery1, (insertErr, insertData) => {
+        if (insertErr) return res.json(insertErr);
+        contador++;
+
+        const insertUserQuery1 = `INSERT INTO baseerasmus.juego4 (idprofesor) VALUES ('${idprofesor}')`;
+        db.query(insertUserQuery1, (insertErr, insertData) => {
+          if (insertErr) return res.json(insertErr);
+          contador++;
+
+          return res.json({
+            message: `Insertado ${contador}/4, correcta`
+          });
+        });
+      });
+    });
+  });
+};
 
 // Agregar más servicios según sea necesario

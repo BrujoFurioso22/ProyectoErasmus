@@ -8,14 +8,15 @@ export const consultarEstudiantes = (req, res) => {
     return res.json(data);
   });
 };
-// export const consultarIDProfesor = (req, res) => {
-//   const usuarioID = req.params.idusuario;
-//   const q = `SELECT idprofesores FROM baseerasmus.profesores, baseerasmus.usuarios where usuarios.idusuarios = profesores.iddeusuario and usuarios.idusuarios = ${usuarioID};`;
-//   db.query(q, (err, data) => {
-//     if (err) return res.json(err);
-//     return res.json(data);
-//   });
-// };
+
+export const obtenerIDprofesor = (req, res) => {
+  const { correoProfesor } = req.params;
+  const q = `SELECT profesores.idprofesores FROM baseerasmus.profesores WHERE profesores.correo = '${correoProfesor}'`;
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+};
 export const eliminarEstudiantedeProfesor = (req, res) => {
   const { idestudiante, idprofesor } = req.query;
   const q = "DELETE FROM baseerasmus.asignados WHERE iddeestudiante = ? and iddeprofesor = ?";
