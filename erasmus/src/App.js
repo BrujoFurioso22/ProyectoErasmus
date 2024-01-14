@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   createBrowserRouter,
   Navigate,
@@ -24,110 +24,105 @@ import { ReportesProf } from "PAGES/ReportesProf";
 import AdminRoute from "CONFIG/COMPONENTS/ROUTER/AdminRoute";
 import { AdminPage } from "PAGES/Administrador/AdministrarImagenes";
 
-const tipoUsu = localStorage.getItem("tipo");
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <PublicRoute />,
-    children: [
-      {
-        index: true,
-        path: ROUTES.LOGINREGISTRO,
-        element: <LoginRegistro />,
-      },
-    ],
-  },
-  {
-    path: ROUTES.PORTAL,
-    element: <PrivateRoute />,
-    children:
-      tipoUsu !== "ADM"
-        ? [
+export default function App() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <PublicRoute />,
+      children: [
+        {
+          index: true,
+          path: ROUTES.LOGINREGISTRO,
+          element: <LoginRegistro />,
+        },
+      ],
+    },
+    {
+      path: ROUTES.PORTAL,
+      element: <PrivateRoute />,
+      children: [
+        {
+          index: true,
+          path: ROUTES.PRINCIPAL,
+          element: <Principal />,
+        },
+        {
+          path: ROUTES.PERFIL,
+          element: <Perfil />,
+        },
+        {
+          path: ROUTES.ACERCADE,
+          element: <AcercaDePage />,
+        },
+        {
+          path: "/",
+          element: <ProfesorRoute />,
+          children: [
             {
               index: true,
               path: ROUTES.PRINCIPAL,
               element: <Principal />,
             },
             {
-              path: ROUTES.PERFIL,
-              element: <Perfil />,
+              path: ROUTES.CONFIGURACION_JUEGOS,
+              element: <ConfiguracionJuegos />,
             },
             {
-              path: ROUTES.ACERCADE,
-              element: <AcercaDePage />,
+              path: ROUTES.CONFIGURACION_ESTUDIANTES,
+              element: <ConfiguracionEstudiantes />,
             },
             {
-              path: "/",
-              element: <ProfesorRoute />,
-              children: [
-                {
-                  index: true,
-                  path: ROUTES.PRINCIPAL,
-                  element: <Principal />,
-                },
-                {
-                  path: ROUTES.CONFIGURACION_JUEGOS,
-                  element: <ConfiguracionJuegos />,
-                },
-                {
-                  path: ROUTES.CONFIGURACION_ESTUDIANTES,
-                  element: <ConfiguracionEstudiantes />,
-                },
-                {
-                  path: ROUTES.REPORTES_PROFESOR,
-                  element: <ReportesProf />,
-                },
-              ],
-            },
-            {
-              path: "/",
-              element: <EstudianteRoute />,
-              children: [
-                {
-                  index: true,
-                  path: ROUTES.PRINCIPAL,
-                  element: <Principal />,
-                },
-                {
-                  path: ROUTES.JUEGOS.J1,
-                  element: <Juego1 />,
-                },
-                {
-                  path: ROUTES.JUEGOS.J2,
-                  element: <Juego2 />,
-                },
-                {
-                  path: ROUTES.JUEGOS.J3,
-                  element: <Juego3 />,
-                },
-                {
-                  path: ROUTES.JUEGOS.J4,
-                  element: <Juego2 />,
-                },
-              ],
-            },
-          ]
-        : [
-            {
-              path: "/",
-              element: <AdminRoute />,
-              children: [
-                {
-                  index: true,
-                  path: ROUTES.ADMINISTRADOR,
-                  element: <AdminPage />,
-                },
-              ],
+              path: ROUTES.REPORTES_PROFESOR,
+              element: <ReportesProf />,
             },
           ],
-  },
-  {
-    path: "*",
-    element: <Navigate to="/" replace />,
-  },
-]);
+        },
+        {
+          path: "/",
+          element: <EstudianteRoute />,
+          children: [
+            {
+              index: true,
+              path: ROUTES.PRINCIPAL,
+              element: <Principal />,
+            },
+            {
+              path: ROUTES.JUEGOS.J1,
+              element: <Juego1 />,
+            },
+            {
+              path: ROUTES.JUEGOS.J2,
+              element: <Juego2 />,
+            },
+            {
+              path: ROUTES.JUEGOS.J3,
+              element: <Juego3 />,
+            },
+            {
+              path: ROUTES.JUEGOS.J4,
+              element: <Juego2 />,
+            },
+          ],
+        },
+        {
+          path: "/",
+          element: <AdminRoute />,
+          children: [
+            {
+              index: true,
+              path: ROUTES.ADMINISTRADOR,
+              element: <AdminPage />,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: "*",
+      element: <Navigate to="/" replace />,
+    },
+  ]);
 
-export default function App() {
   return (
     <AuthContextProvider>
       <RouterProvider router={router} />
