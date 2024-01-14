@@ -1,11 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { Botones } from "./Componentes/Botones";
 import { Puntaje } from "./Componentes/Puntaje";
-import { ConsultaRondasJuego1 } from "CONFIG/BACKEND/Consultas/Juegos";
+import {
+  ConsultaRondasJuego1,
+  guardarPuntaje,
+} from "CONFIG/BACKEND/Consultas/Juegos";
+import { BotonJugar } from "STYLED-COMPONENTS/Botones";
+import star from "SOURCES/star.svg";
+import neutral from "SOURCES/neutral.svg";
+
+import img1 from "SOURCES/JUEGO1/arrow-up.svg";
+import img2 from "SOURCES/JUEGO1/arrow-down.svg";
+import img3 from "SOURCES/JUEGO1/arrow-izquierda.svg";
+import img4 from "SOURCES/JUEGO1/arrow-derecha.svg";
 
 import styled from "styled-components";
 
 import "./assets/styles/boton_iniciar.css";
+
+const numJuego = "juego1";
+
+const direcciones1 = [
+  { direccion: "ARRIBA", imagen: img1 },
+  { direccion: "ABAJO", imagen: img2 },
+  { direccion: "IZQUIERDA", imagen: img3 },
+  { direccion: "DERECHA", imagen: img4 },
+];
 
 const direcciones = {
   arriba: "ARRIBA",
@@ -26,8 +46,8 @@ const ContenedorBotones = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  grid-column-gap: 50px;
-  grid-row-gap: 20px;
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
   width: 100%;
   height: 85vh;
   div {
@@ -60,8 +80,12 @@ const PuntajeStyled = styled.div`
   grid-column: 1;
   grid-row: 1;
   span:first-child {
-    font-weight: 800;
+    font-weight: 700;
     padding-right: 10px;
+    background-color: white;
+    text-align: center;
+    padding: 3px 10px;
+    border-radius: 8px;
   }
 `;
 
@@ -69,10 +93,40 @@ const ContenedorCentral = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 8px;
   flex-direction: column;
   .iniciado {
     gap: 10px;
+  }
+`;
+
+const ContenedorStars = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  padding: 10px;
+  gap: 15px;
+  animation: entrance 1.3s ease;
+
+  img {
+    width: 80px;
+    object-fit: contain;
+  }
+
+  @keyframes entrance {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    70% {
+      opacity: 0.8;
+      transform: scale(1.15);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 `;
 
@@ -84,23 +138,21 @@ export function Game1() {
   const [AccionInicioJuego, setAccionInicioJuego] = useState(false); //Estado para hacer que la logica del juego inicie
   const [hajugado, setHaJugado] = useState(false); //Estado para indicar si el jugador ya jugo una vez, true es que ya jugo, false es que es la primera vez
   const [puntaje, setPuntaje] = useState(0); // Estado para el puntaje
-  const [puntajeAnterior, setPuntajeAnterior] = useState(puntaje); // Estado para mostrar el puntaje del juego anterior
   const [arregloAleatorio, setArregloAleatorio] = useState([]); //Arreglo el cual se generara aleatoriamente
   const [indiceActual, setIndiceActual] = useState(0); //Estado para indicar en que ronda va el juego
   const [habilitar, sethabilitar] = useState(true); // Estado para activar o desactivar los botones
   const [finJuego, setFinJuego] = useState(false); //Estado para decir que el juego se acabo y poder guardar algunos datos
-  const opciones = [
-    direcciones.arriba,
-    direcciones.abajo,
-    direcciones.izquierda,
-    direcciones.derecha,
-  ];
+
+  const opcionesDirecciones = direcciones1.map((item) => item.direccion);
+  const opcionesImagenes = direcciones1.map((item) => item.imagen);
 
   function generarArregloAleatorio() {
     const nuevoArreglo = [];
     for (let i = 0; i < numRondas; i++) {
-      const indiceAleatorio = Math.floor(Math.random() * opciones.length);
-      nuevoArreglo.push(opciones[indiceAleatorio]);
+      const indiceAleatorio = Math.floor(
+        Math.random() * opcionesDirecciones.length
+      );
+      nuevoArreglo.push(opcionesDirecciones[indiceAleatorio]);
     }
     return nuevoArreglo;
   }
@@ -112,6 +164,12 @@ export function Game1() {
       setNumRondas(res[0].numRondas);
     }
   };
+  const guardarResultados = async () => {
+    const idest = localStorage.getItem("id");
+    const fechaActual = obtenerFechaActual();
+    const res = await guardarPuntaje(idest, numJuego, fechaActual, puntaje);
+    console.log(res);
+  };
 
   //Funcion para poder mostrar la siguiente opcion despues de que haya seleccionado un boton el jugador
   const mostrarSiguienteAccion = () => {
@@ -121,11 +179,24 @@ export function Game1() {
     } else {
       setaccion("Fin del Juego");
       sethabilitar(true);
+      guardarResultados();
       setTimeout(() => {
         finalizarJuego();
       }, 2000);
     }
   };
+
+  const obtenerFechaActual = () => {
+    const fecha = new Date();
+    const dia = fecha.getDate().toString().padStart(2, "0");
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, "0"); // Meses van de 0 a 11
+    const año = fecha.getFullYear();
+
+    const fechaFormateada = `${dia}-${mes}-${año}`;
+    return fechaFormateada;
+  };
+
+ 
 
   //Funcion a llamar para poder finalize el juego, aqui se colocan las variables para que el juego se ponga en 0 de nuevo
   const finalizarJuego = () => {
@@ -155,15 +226,15 @@ export function Game1() {
     IniJuego();
   }, [AccionInicioJuego]);
 
-  useEffect(() => {
-    const Finalizar = () => {
-      setPuntajeAnterior(puntaje);
-      setTimeout(() => {
-        setPuntaje(0);
-      }, 800);
-    };
-    Finalizar();
-  }, [finJuego]);
+  // useEffect(() => {
+  //   const Finalizar = () => {
+  //     setPuntajeAnterior(puntaje);
+  //     // setTimeout(() => {
+  //     //   setPuntaje(0);
+  //     // }, 800);
+  //   };
+  //   Finalizar();
+  // }, [finJuego]);
 
   useEffect(() => {
     ConsultarRondas();
@@ -204,21 +275,35 @@ export function Game1() {
 
   //Funcion para iniciar el juego
   const handleIniciarJuego = (value) => {
-    setIniciarJuego(value);
-    setcontador(4);
     setTimeout(() => {
-      setAccionInicioJuego(true);
-    }, 5000);
+      setIniciarJuego(value);
+      setcontador(4);
+      setPuntaje(0);
+      setTimeout(() => {
+        setAccionInicioJuego(true);
+      }, 5000);
 
-    const nuevoArreglo = generarArregloAleatorio();
-    setArregloAleatorio(nuevoArreglo);
+      const nuevoArreglo = generarArregloAleatorio();
+      setArregloAleatorio(nuevoArreglo);
+    }, 1000);
+  };
+
+  const renderStars = (numRondas) => {
+    const stars = [];
+    for (let i = 0; i < numRondas / 5; i++) {
+      stars.push(<img key={i} src={star} alt="Imagen Estrella" />);
+    }
+
+    return <ContenedorStars>{stars}</ContenedorStars>;
   };
 
   return (
     <ContenedorGlobal>
       <ContenedorBotones>
         <PuntajeStyled>
-          <Puntaje puntaje={puntaje} puntajetotal={numRondas} />
+          {/* <Puntaje  puntaje={puntaje} puntajetotal={numRondas} />
+           */}
+          <span>Número de rondas: {numRondas}</span>
         </PuntajeStyled>
         <div className="boton-arriba">
           <Botones
@@ -227,6 +312,7 @@ export function Game1() {
             indicacion={direcciones.arriba}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
+            imagen={opcionesImagenes[0]}
           />
         </div>
         <div className="boton-izquierda">
@@ -236,37 +322,49 @@ export function Game1() {
             indicacion={direcciones.izquierda}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
+            imagen={opcionesImagenes[2]}
           />
         </div>
         <div className="mensaje-central">
           {iniciarJuego === true ? (
-            <div className="contenedor-centro iniciado">
-              {AccionInicioJuego ? (
-                <span>Ronda: {indiceActual}</span>
-              ) : (
-                <React.Fragment></React.Fragment>
-              )}
-              <span>{accion}</span>
-            </div>
+            <ContenedorCentral>
+              {AccionInicioJuego && <span>Ronda: {indiceActual}</span>}
+              <span style={{ fontWeight: "600", fontSize: "25px" }}>
+                {accion}
+              </span>
+            </ContenedorCentral>
           ) : iniciarJuego === false && hajugado === true ? (
             <ContenedorCentral>
-              <span>
-                Puntaje juego anterior: {puntajeAnterior}/{numRondas}
-              </span>
-              <button
-                className="iniciar-juego"
-                onClick={() => handleIniciarJuego(true)}
+              <h3
+                style={{
+                  backgroundColor: "white",
+                  padding: "4px 8px",
+                  borderRadius: "8px",
+                  textAlign: "center",
+                }}
               >
-                JUGAR DE NUEVO
-              </button>
+                {puntaje === numRondas
+                  ? "Felicidades has acertado todo"
+                  : "Lo siento, intenta de nuevo"}
+              </h3>
+              {puntaje === numRondas ? (
+                <React.Fragment>{renderStars(numRondas)}</React.Fragment>
+              ) : (
+                <ContenedorStars>
+                  <img src={neutral} alt="Imagen Neutral" />
+                </ContenedorStars>
+              )}
+
+              <BotonJugar
+                handleClick={() => handleIniciarJuego(true)}
+                texto="JUGAR DE NUEVO"
+              />
             </ContenedorCentral>
           ) : (
-            <button
-              className="iniciar-juego"
-              onClick={() => handleIniciarJuego(true)}
-            >
-              JUGAR
-            </button>
+            <BotonJugar
+              handleClick={() => handleIniciarJuego(true)}
+              texto="JUGAR"
+            />
           )}
         </div>
         <div className="boton-derecha">
@@ -276,6 +374,7 @@ export function Game1() {
             indicacion={direcciones.derecha}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
+            imagen={opcionesImagenes[3]}
           />
         </div>
         <div className="boton-abajo">
@@ -285,6 +384,7 @@ export function Game1() {
             indicacion={direcciones.abajo}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
+            imagen={opcionesImagenes[1]}
           />
         </div>
       </ContenedorBotones>

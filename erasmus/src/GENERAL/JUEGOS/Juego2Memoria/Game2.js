@@ -356,6 +356,7 @@ export function Game2() {
                   backgroundColor: "white",
                   padding: "15px",
                   borderRadius: "15px",
+                  textAlign:"center"
                 }}
               >
                 {win ? "Felicidades has ganado" : "Lo siento, intenta de nuevo"}

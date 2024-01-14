@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const Boton = styled.div`
-  width: 200px;
-  height: 80px;
+  width: 150px;
+  min-height: 100px;
+  height: auto;
   background-color: rgb(165, 56, 165);
   color: white;
   border: 2px dashed rgba(0, 0, 0, 0.431);
   border-radius: 25px;
   user-select: none;
   transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   &.seleccionado {
     background-color: rgba(130, 238, 231, 0.507);
     transform: scale(1.2);
@@ -18,15 +22,39 @@ const Boton = styled.div`
     cursor: pointer;
     transform: scale(1.2);
   }
+  img {
+    width: 100px;
+    object-fit: contain;
+    animation: anim 1s ease;
+
+    @keyframes anim {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+  span {
+    font-weight: 600;
+  }
 `;
 
-export const Botones = (props) => {
+export const Botones = ({
+  habilitar,
+  texto,
+  indicacion,
+  setaccion,
+  verificarAccion,
+  imagen,
+}) => {
   const [botonSeleccionado, setBotonSeleccionado] = useState("");
   const handleClickButton = (direccion) => {
     console.log(direccion);
     setBotonSeleccionado(direccion);
-    props.setaccion(direccion);
-    props.verificarAccion(direccion);
+    setaccion(direccion);
+    verificarAccion(direccion);
     setTimeout(() => {
       setBotonSeleccionado("");
     }, 500);
@@ -34,11 +62,12 @@ export const Botones = (props) => {
   return (
     <div>
       <Boton
-        disabled={props.habilitar}
+        disabled={habilitar}
         className={`${botonSeleccionado !== "" ? "seleccionado" : ""}`}
-        onClick={() => handleClickButton(props.indicacion)}
+        onClick={() => handleClickButton(indicacion)}
       >
-        {props.texto}
+        <span>{texto}</span>
+        {!habilitar && <img src={imagen} alt="img" />}
       </Boton>
     </div>
   );
