@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import jsonImages from "./images";
 import ContenedorDestino from "./ContenedorDestino";
-import { ConsultaCartasJuego2 } from "CONFIG/BACKEND/Consultas/Juegos";
+import {
+  ConsultaCartasJuego2,
+  guardarPuntaje,
+} from "CONFIG/BACKEND/Consultas/Juegos";
 import styled from "styled-components";
 import "./boton.css";
-import "./botonVerificar.css"
+import "./botonVerificar.css";
+import star from "SOURCES/star.svg";
+import neutral from "SOURCES/neutral.svg";
+
+const numJuego = "juego2";
 
 const ContendorGlobal = styled.div`
   display: flex;
@@ -26,6 +33,16 @@ const ContendorContenido = styled.div`
     grid-template-rows: repeat(3, 1fr);
     grid-column-gap: 2px;
     grid-row-gap: 2px;
+    animation: aparecer 1s ease-in-out;
+
+    @keyframes aparecer {
+      0% {
+        transform: scale(0) rotate(360deg);
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
+    }
   }
   .contendor-2 {
     min-width: 50px;
@@ -104,6 +121,16 @@ const ContenedorImagenesArrastradas = styled.div`
   padding: 10px 20px;
   border-radius: 20px;
   border: 2px dashed rgba(0, 0, 0);
+  animation: aparecer 1s ease-in-out;
+
+  @keyframes aparecer {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;
 
 const DestinoContenedor = styled.div`
@@ -119,11 +146,41 @@ const DestinoContenedor = styled.div`
   .destino-imagen {
     object-fit: contain;
     width: auto;
-    height: 5.5rem;
+    height: 4.5rem;
     filter: drop-shadow(5px 5px 6px #515151);
   }
   .destino-contenedor:hover {
     cursor: not-allowed;
+  }
+`;
+
+const ContenedorStars = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  padding: 10px;
+  gap: 15px;
+  animation: entrance 1.3s ease;
+
+  img {
+    width: 80px;
+    object-fit: contain;
+  }
+
+  @keyframes entrance {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    70% {
+      opacity: 0.8;
+      transform: scale(1.15);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 `;
 
@@ -140,6 +197,7 @@ export function Game2() {
   const [haJugado, setHaJugado] = useState(0);
 
   const [numCartas, setNumCartas] = useState(3);
+  const [estrellas, setEstrellas] = useState(-1);
 
   const ConsultarNumeroCartas = async () => {
     const res = await ConsultaCartasJuego2(localStorage.getItem("id"));
@@ -183,6 +241,7 @@ export function Game2() {
     setEditable(false);
     setImagenesEnContenedor([]);
     setMostrarVerificar(true);
+    setEstrellas(-1);
   };
 
   const IniciarJuego = () => {
@@ -217,36 +276,121 @@ export function Game2() {
     setImagenesAleatorias(imgAl);
   };
 
-  const VerificarJuego = () => {
-    const sonIdenticos =
-      JSON.stringify(imagenesEnContenedor) ===
-      JSON.stringify(imagenesAleatorias);
+  const VerificarJuego = async () => {
+    setTimeout(() => {
+      const sonIdenticos =
+        JSON.stringify(imagenesEnContenedor) ===
+        JSON.stringify(imagenesAleatorias);
 
-    setwin(sonIdenticos);
-    setMostrarVerificar(false);
-    setMostrarJugar(true);
+      setwin(sonIdenticos);
+      setMostrarVerificar(false);
+      setMostrarJugar(true);
+      if (sonIdenticos) {
+        setEstrellas(numCartas - 2);
+      } else {
+        setEstrellas(0);
+      }
+    }, 1500);
   };
+
+  const handleTouchStart = (id, e) => {
+    e.preventDefault();
+    setID(id);
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+  };
+
+  const handleTouchEnd = () => {
+    handleDrop();
+  };
+  const obtenerFechaActual = () => {
+    const fecha = new Date();
+    const dia = fecha.getDate().toString().padStart(2, "0");
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, "0"); // Meses van de 0 a 11
+    const año = fecha.getFullYear();
+
+    const fechaFormateada = `${dia}-${mes}-${año}`;
+    return fechaFormateada;
+  };
+
+  const renderStars = (numCartas) => {
+    const stars = [];
+    for (let i = 0; i < numCartas - 2; i++) {
+      stars.push(<img key={i} src={star} alt="Imagen Estrella" />);
+    }
+
+    return <ContenedorStars>{stars}</ContenedorStars>;
+  };
+
+  useEffect(() => {
+    if (estrellas !== -1) {
+      const guardarResultados = async () => {
+        const idest = localStorage.getItem("id");
+        const fechaActual = obtenerFechaActual();
+        const res = await guardarPuntaje(
+          idest,
+          numJuego,
+          fechaActual,
+          estrellas
+        );
+        console.log(res);
+        setEstrellas(-1);
+      };
+      guardarResultados();
+    }
+  }, [estrellas]);
 
   return (
     <ContendorGlobal>
       <ContendorContenido>
-        <div className="contendor-1">
-          {jsonImages.map((imagen, index) => (
-            <div
-              key={index}
-              className="cuadro"
-              id={imagen.id}
-              draggable
-              onDragOver={handleDragOver}
-              onDragStart={() => handleDragStart(imagen.id)}
-            >
-              <img
-                className="cuadro-imagen"
-                src={imagen.src}
-                alt={imagen.nombre}
-              />
+        <div
+          className="contendor-1"
+          style={{ display: win !== "" ? "flex" : "grid" }}
+        >
+          {win !== "" ? (
+            <div style={{ padding: "20px", borderBottom: "1px solid black" }}>
+              <h3
+                style={{
+                  backgroundColor: "white",
+                  padding: "15px",
+                  borderRadius: "15px",
+                }}
+              >
+                {win ? "Felicidades has ganado" : "Lo siento, intenta de nuevo"}
+              </h3>
+              {win ? (
+                <React.Fragment>{renderStars(numCartas)}</React.Fragment>
+              ) : (
+                <ContenedorStars>
+                  <img src={neutral} alt="Imagen Neutral" />
+                </ContenedorStars>
+              )}
             </div>
-          ))}
+          ) : (
+            <React.Fragment>
+              {jsonImages.map((imagen, index) => (
+                <div
+                  key={index}
+                  className="cuadro"
+                  id={imagen.id}
+                  draggable
+                  onDragOver={handleDragOver}
+                  onDragStart={() => handleDragStart(imagen.id)}
+                  onTouchStart={(e) => handleTouchStart(imagen.id, e)}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  <img
+                    className="cuadro-imagen"
+                    src={imagen.src}
+                    alt={imagen.nombre}
+                  />
+                </div>
+              ))}
+            </React.Fragment>
+          )}
         </div>
         <div className="contendor-2">
           <ContenedorCentrados style={{ gap: "20px" }}>
@@ -260,16 +404,17 @@ export function Game2() {
               Numero de cartas
               <br /> a memorizar: {numCartas}
             </span>
-            <div class="buttons">
+            <div className="buttons">
               <button
                 disabled={!mostrarJugar}
+                style={{ opacity: mostrarJugar ? "1" : "0" }}
                 onClick={IniciarJuego}
-                class="btn"
+                className="btn"
               >
                 <span></span>
                 <p
                   data-start="Go"
-                  data-text="iniciar"
+                  data-text="jugando"
                   data-title={haJugado === 0 ? "Jugar" : "Jugar de nuevo"}
                 ></p>
               </button>
@@ -277,14 +422,7 @@ export function Game2() {
           </ContenedorCentrados>
           {iniciarJuego === 1 && (
             <ContenedorCuadrosContenedores>
-              <ContenedorDestino
-                imagenesEnContenedor={imagenesEnContenedor}
-                dejar={() => (editable ? handleDrop() : "")}
-                idimg={ID}
-                jsonImages={jsonImages}
-                removeImage={removeImage}
-              />
-              {mostrarImagenes === 1 && (
+              {mostrarImagenes === 1 ? (
                 <ContenedorImagenesArrastradas>
                   {imagenesAleatorias.map((imagen, index) => (
                     <DestinoContenedor key={index} id={imagen.id}>
@@ -296,6 +434,14 @@ export function Game2() {
                     </DestinoContenedor>
                   ))}
                 </ContenedorImagenesArrastradas>
+              ) : (
+                <ContenedorDestino
+                  imagenesEnContenedor={imagenesEnContenedor}
+                  dejar={() => (editable ? handleDrop() : "")}
+                  idimg={ID}
+                  jsonImages={jsonImages}
+                  removeImage={removeImage}
+                />
               )}
               {win !== "" && (
                 <ContenedorImagenesArrastradas
@@ -316,30 +462,15 @@ export function Game2() {
                 mostrarVerificar && (
                   <button
                     onClick={() => VerificarJuego()}
-                    class="botonVerificar"
+                    className="botonVerificar"
                   >
                     Verificar Respuesta
                   </button>
                 )}
-              {win !== "" && (
-                <div>
-                  <span>
-                    {win ? "Has Ganado" : "Lo siento mucho, intenta de nuevo"}
-                  </span>
-                </div>
-              )}
             </ContenedorCuadrosContenedores>
           )}
         </div>
       </ContendorContenido>
     </ContendorGlobal>
   );
-}
-{
-  /* <button
-                    className="boton-jugar"
-                   
-                  >
-                    VERIFICAR
-                  </button> */
 }

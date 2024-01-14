@@ -223,13 +223,14 @@ export const CanvasApp = () => {
   };
 
   return (
-    <div>
+    <ContenedorTools style={{flexDirection:"column"}}>
       <ContenedorTools
         style={{
           gap: "30px",
           backgroundColor: "white",
           borderRadius: "0 0 15px 15px",
-          padding: "10px 0",
+          padding: "10px 15px",
+          flexWrap:"wrap"
         }}
       >
         <ContenedorTools style={{ gap: "10px" }}>
@@ -292,7 +293,7 @@ export const CanvasApp = () => {
       </ContenedorTools>
       <canvas
         ref={mainCanvasRef}
-        width={window.innerWidth <= 1000 ? 600 : 1000}
+        width={window.innerWidth <= 1024 ? 800 : 1000}
         height={window.innerHeight <= 768 ? 550 : 650}
         style={{
           border: "1px solid #000",
@@ -301,6 +302,6 @@ export const CanvasApp = () => {
           borderRadius: "25px",
         }}
       ></canvas>
-    </div>
+    </ContenedorTools>
   );
 };

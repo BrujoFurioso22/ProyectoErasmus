@@ -15,7 +15,8 @@ import {
   crearConfiguracionesJuegos4,
   consultarConfigJuego1Estudiante,
   consultarConfigJuego2Estudiante,
-  consultarConfigJuego3Estudiante
+  consultarConfigJuego3Estudiante,
+  guardarPuntajeJuego
 } from "./juegosControllers.js";
 
 const router = express.Router();
@@ -40,6 +41,8 @@ router.post("/actualizarConfig1", crearConfiguracionesJuegos1);
 router.post("/actualizarConfig2", crearConfiguracionesJuegos2);
 router.post("/actualizarConfig3", crearConfiguracionesJuegos3);
 router.post("/actualizarConfig4", crearConfiguracionesJuegos4);
+
+router.post("/guardarPuntaje",guardarPuntajeJuego)
 
 
 export default router;

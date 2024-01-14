@@ -35,19 +35,19 @@ const ContenedorSecciones = styled.div`
 
 const juegos = [
   {
-    nombre: "JUEGO 1",
+    nombre: "Direcciones",
     path: ROUTES.JUEGOS.J1,
   },
   {
-    nombre: "JUEGO 2",
+    nombre: "Memoria",
     path: ROUTES.JUEGOS.J2,
   },
   {
-    nombre: "JUEGO 3",
+    nombre: "Pizarrón",
     path: ROUTES.JUEGOS.J3,
   },
   {
-    nombre: "JUEGO 4",
+    nombre: "Globos Colores",
     path: ROUTES.JUEGOS.J4,
   },
 ];

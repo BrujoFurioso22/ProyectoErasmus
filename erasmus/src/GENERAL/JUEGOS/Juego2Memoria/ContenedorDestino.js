@@ -27,7 +27,7 @@ const DestinoContenedor = styled.div`
   .destino-imagen {
     object-fit: contain;
     width: auto;
-    height: 5.5rem;
+    height: 4.5rem;
     filter: drop-shadow(5px 5px 6px #515151);
   }
   .destino-contenedor:hover {

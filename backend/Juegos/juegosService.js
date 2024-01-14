@@ -25,9 +25,6 @@ export const consultarConfigJuego3Estudiante = (req, res) => {
   });
 };
 
-
-
-
 export const consultarAsignacionProfesorEstudiante = (req, res) => {
   const estudianteID = req.params.idestudiante;
   const q = `SELECT * FROM baseerasmus.asignados WHERE asignados.iddeestudiante = ${estudianteID} `;
@@ -36,8 +33,6 @@ export const consultarAsignacionProfesorEstudiante = (req, res) => {
     return res.json(data);
   });
 };
-
-
 
 export const consultarConfJuego1 = (req, res) => {
   const profesorID = req.params.idprofesor;
@@ -166,13 +161,29 @@ export const crearConfiguracionesJuegos3 = (req, res) => {
 };
 export const crearConfiguracionesJuegos4 = (req, res) => {
   // Obtener datos del cuerpo de la solicitud
-  const { idimg1, idimg2, idimg3, velocidad, idcorrecto, idprofesor } = req.body;
+  const { idimg1, idimg2, idimg3, velocidad, idcorrecto, idprofesor } =
+    req.body;
   const insertUserQuery1 = `UPDATE baseerasmus.juego4 SET juego4.img1 = '${idimg1}', juego4.img2 = '${idimg2}', juego4.img3 = '${idimg3}', juego4.velocidad = '${velocidad}', juego4.idcorrecto = '${idcorrecto}' WHERE juego4.idprofesor = '${idprofesor}'`;
   db.query(insertUserQuery1, (insertErr, insertData) => {
     if (insertErr) return res.json(insertErr);
     return res.json({
       message: `Actualizada Correcta del Juego`,
       datas: { idimg1, idimg2, idimg3, velocidad, idcorrecto, idprofesor },
+    });
+  });
+};
+
+/* ------------------------------------------------------------------------ Registros de resultados ------------------------------------------------------------------------ */
+
+export const guardarPuntajeJuego = (req, res) => {
+  // Obtener datos del cuerpo de la solicitud
+  const { juego, fechajugada, calificacion, idestudiante } = req.body;
+  const insertUserQuery1 = `INSERT INTO baseerasmus.jugada (idestudiante,juego,fecha_jugada,calificacion) VALUES('${idestudiante}','${juego}','${fechajugada}','${calificacion}');`;
+  db.query(insertUserQuery1, (insertErr, insertData) => {
+    if (insertErr) return res.json(insertErr);
+    return res.json({
+      message: `Correcto`,
+      datas: { juego, fechajugada, calificacion, idestudiante },
     });
   });
 };
