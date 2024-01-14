@@ -201,7 +201,7 @@ export const CanvasApp = () => {
       // Crear un enlace para descargar la imagen resultante
       const link = document.createElement("a");
       link.href = dataURLConFondo;
-      link.download = "pizarra_con_fondo.png";
+      link.download = "pizarra_con_fondo.jpg";
 
       // Simular un clic en el enlace para iniciar la descarga
       link.click();

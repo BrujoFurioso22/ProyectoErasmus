@@ -24,15 +24,20 @@ const Boton = styled(Link)`
   border-radius: 20px;
   text-decoration: none;
 `;
+const Titulo = styled.h2`
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+`
 
 export const PaginaSinAsignacion = () => {
   return (
     <Contenedor>
-      <h2>
+      <Titulo >
         No tiene ningun profesor asignado, consulte con su profesor para poder
         solucionar el problema
-      </h2>
-      <Boton to={ROUTES.PRINCIPAL}>Regresar</Boton>
+      </Titulo>
+      <Boton to={ROUTES.PRINCIPAL}>{"<- "} Regresar</Boton>
     </Contenedor>
   );
 };
