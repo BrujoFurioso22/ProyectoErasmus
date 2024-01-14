@@ -3,6 +3,8 @@ import jsonImages from "./images";
 import ContenedorDestino from "./ContenedorDestino";
 import { ConsultaCartasJuego2 } from "CONFIG/BACKEND/Consultas/Juegos";
 import styled from "styled-components";
+import "./boton.css";
+import "./botonVerificar.css"
 
 const ContendorGlobal = styled.div`
   display: flex;
@@ -30,7 +32,7 @@ const ContendorContenido = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 20px;
+    gap: 7px;
   }
   .cuadro {
     display: flex;
@@ -70,30 +72,59 @@ const BotonJugar = styled.button`
 `;
 
 const ContenedorCuadrosContenedores = styled.div`
-  width: min-content;
-  gap: 20px;
+  width: 100%;
+  gap: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 
-  & > * {
-    margin: 10px 0;
-  }
   .correcto {
     background-color: rgba(0, 128, 0, 0.438);
   }
   .erroneo {
     background-color: rgba(128, 0, 0, 0.438);
   }
-  .contenedor-imagenes-arrastrada{
-    width: 100px;
-  }
 `;
 const ContenedorCentrados = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const ContenedorImagenesArrastradas = styled.div`
+  background-color: rgb(185, 185, 185);
+  min-width: 200px;
+  max-width: 100%;
+  width: max-content;
+  height: auto;
+  min-height: 100px;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 2px dashed rgba(0, 0, 0);
+`;
+
+const DestinoContenedor = styled.div`
+  user-select: none;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  z-index: 50;
+  padding: 10px 25px;
+  gap: 20px;
+
+  .destino-imagen {
+    object-fit: contain;
+    width: auto;
+    height: 5.5rem;
+    filter: drop-shadow(5px 5px 6px #515151);
+  }
+  .destino-contenedor:hover {
+    cursor: not-allowed;
+  }
 `;
 
 export function Game2() {
@@ -218,13 +249,31 @@ export function Game2() {
           ))}
         </div>
         <div className="contendor-2">
-          <ContenedorCentrados>
-            <span>Numero de cartas: {numCartas}</span>
-          </ContenedorCentrados>
-          <ContenedorCentrados>
-            <BotonJugar disabled={!mostrarJugar} onClick={IniciarJuego}>
-              {haJugado === 0 ? "Jugar" : "Jugar de nuevo"}
-            </BotonJugar>
+          <ContenedorCentrados style={{ gap: "20px" }}>
+            <span
+              style={{
+                backgroundColor: "white",
+                padding: "3px 10px",
+                borderRadius: "10px",
+              }}
+            >
+              Numero de cartas
+              <br /> a memorizar: {numCartas}
+            </span>
+            <div class="buttons">
+              <button
+                disabled={!mostrarJugar}
+                onClick={IniciarJuego}
+                class="btn"
+              >
+                <span></span>
+                <p
+                  data-start="Go"
+                  data-text="iniciar"
+                  data-title={haJugado === 0 ? "Jugar" : "Jugar de nuevo"}
+                ></p>
+              </button>
+            </div>
           </ContenedorCentrados>
           {iniciarJuego === 1 && (
             <ContenedorCuadrosContenedores>
@@ -236,50 +285,40 @@ export function Game2() {
                 removeImage={removeImage}
               />
               {mostrarImagenes === 1 && (
-                <div className="contenedor-imagenes-arrastradas">
+                <ContenedorImagenesArrastradas>
                   {imagenesAleatorias.map((imagen, index) => (
-                    <div
-                      key={index}
-                      className="destino-contenedor"
-                      id={imagen.id}
-                    >
+                    <DestinoContenedor key={index} id={imagen.id}>
                       <img
                         className="destino-imagen"
                         src={imagen.src}
                         alt={imagen.nombre}
                       />
-                    </div>
+                    </DestinoContenedor>
                   ))}
-                </div>
+                </ContenedorImagenesArrastradas>
               )}
               {win !== "" && (
-                <div
-                  className={`contenedor-imagenes-arrastradas ${
-                    win ? "correcto" : "erroneo"
-                  }`}
+                <ContenedorImagenesArrastradas
+                  className={`${win ? "correcto" : "erroneo"}`}
                 >
                   {imagenesAleatorias.map((imagen, index) => (
-                    <div
-                      key={index}
-                      className="destino-contenedor"
-                      id={imagen.id}
-                    >
+                    <DestinoContenedor key={index} id={imagen.id}>
                       <img
                         className="destino-imagen"
                         src={imagen.src}
                         alt={imagen.nombre}
                       />
-                    </div>
+                    </DestinoContenedor>
                   ))}
-                </div>
+                </ContenedorImagenesArrastradas>
               )}
               {imagenesEnContenedor.length === numCartas &&
                 mostrarVerificar && (
                   <button
-                    className="boton-jugar"
                     onClick={() => VerificarJuego()}
+                    class="botonVerificar"
                   >
-                    VERIFICAR
+                    Verificar Respuesta
                   </button>
                 )}
               {win !== "" && (
@@ -295,4 +334,12 @@ export function Game2() {
       </ContendorContenido>
     </ContendorGlobal>
   );
+}
+{
+  /* <button
+                    className="boton-jugar"
+                   
+                  >
+                    VERIFICAR
+                  </button> */
 }

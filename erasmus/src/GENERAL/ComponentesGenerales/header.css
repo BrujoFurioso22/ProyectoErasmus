@@ -3,9 +3,9 @@
     background-color: antiquewhite;
     padding: 15px 0 ;
     display: flex;
+    position: relative;
     justify-content: space-around;
     align-items: center;
-    position: relative;
 }
 .contenedor-usuario{
     display: flex;

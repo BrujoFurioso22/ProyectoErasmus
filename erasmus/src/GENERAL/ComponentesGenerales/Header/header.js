@@ -23,6 +23,7 @@ const ContenedorPrincipal = styled.div`
   background-color: orangered;
   min-height: 50px;
   width: 100%;
+  position: relative;
   padding: 0 40px;
   color: white;
 `;
