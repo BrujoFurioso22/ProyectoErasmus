@@ -4,6 +4,7 @@ import { ROUTES } from "CONFIG/ROUTES/paths";
 
 export default function PrivateRoute() {
   const { isAuthenticated } = useAuthContext();
+
   if (!isAuthenticated) {
     return <Navigate to={ROUTES.LOGINREGISTRO} />;
   }

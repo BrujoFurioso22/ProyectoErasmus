@@ -29,7 +29,15 @@ export const validateUser = (req, res) => {
       const q = `SELECT * FROM profesores WHERE correo = '${correo}' and contrasena = '${contrasena}'`;
       db.query(q, (err, data) => {
         if (err) return res.json(err);
-        return res.json(data);
+        if (data.length > 0) {
+          return res.json(data);
+        } else {
+          const q = `SELECT * FROM administrador WHERE correo = '${correo}' and contrasena = '${contrasena}'`;
+          db.query(q, (err, data) => {
+            if (err) return res.json(err);
+            return res.json(data);
+          });
+        }
       });
     }
   });
@@ -97,7 +105,7 @@ export const crearConfiguracionesJuegos = (req, res) => {
           contador++;
 
           return res.json({
-            message: `Insertado ${contador}/4, correcta`
+            message: `Insertado ${contador}/4, correcta`,
           });
         });
       });

@@ -41,7 +41,7 @@ const ContenedorCuenta = styled.div`
   flex-direction: row;
   gap: 10px;
   cursor: pointer;
-  margin: 0;
+  margin: 0 15px 0 0;
   padding: 0 12px;
   transition: all 0.5s ease;
   height: 50px;
@@ -55,7 +55,7 @@ const SubMenu = styled.div`
   position: absolute;
   top: 100%;
   background-color: orangered;
-  min-width: 180px;
+  max-width: 160px;
   display: ${(props) => (props.open ? "flex" : "none")};
   flex-direction: column;
   color: white;

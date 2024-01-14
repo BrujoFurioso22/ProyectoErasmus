@@ -167,7 +167,13 @@ export function Game1() {
   const guardarResultados = async () => {
     const idest = localStorage.getItem("id");
     const fechaActual = obtenerFechaActual();
-    const res = await guardarPuntaje(idest, numJuego, fechaActual, puntaje);
+    let estrellas = 0
+    if(puntaje === numRondas){
+      if(puntaje % 5 === 0){
+        estrellas = puntaje / 5;
+      }
+    }
+    const res = await guardarPuntaje(idest, numJuego, fechaActual, estrellas);
     console.log(res);
   };
 
@@ -179,10 +185,7 @@ export function Game1() {
     } else {
       setaccion("Fin del Juego");
       sethabilitar(true);
-      guardarResultados();
-      setTimeout(() => {
-        finalizarJuego();
-      }, 2000);
+
     }
   };
 
@@ -201,6 +204,7 @@ export function Game1() {
   //Funcion a llamar para poder finalize el juego, aqui se colocan las variables para que el juego se ponga en 0 de nuevo
   const finalizarJuego = () => {
     setaccion("");
+    guardarResultados();
     if (!hajugado) {
       setHaJugado(true);
     }
@@ -226,15 +230,17 @@ export function Game1() {
     IniJuego();
   }, [AccionInicioJuego]);
 
-  // useEffect(() => {
-  //   const Finalizar = () => {
-  //     setPuntajeAnterior(puntaje);
-  //     // setTimeout(() => {
-  //     //   setPuntaje(0);
-  //     // }, 800);
-  //   };
-  //   Finalizar();
-  // }, [finJuego]);
+  useEffect(() => {
+    if(indiceActual === numRondas){
+      const Finalizar = () => {
+        setTimeout(() => {
+          finalizarJuego();
+        }, 2000);
+      };
+      Finalizar();
+    }
+    
+  }, [habilitar]);
 
   useEffect(() => {
     ConsultarRondas();

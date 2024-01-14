@@ -6,7 +6,7 @@ import React, {
   useContext,
 } from "react";
 import PropTypes from "prop-types";
-const Logged = "Autentificado";
+const Logged = "Autenticado";
 
 export const AuthContext = createContext();
 export function AuthContextProvider({ children }) {
@@ -19,8 +19,11 @@ export function AuthContextProvider({ children }) {
     // localStorage.setItem("modulos", modulos);
     if(usuario.tipodeusuario === "PR"){
       localStorage.setItem("id", usuario.idprofesores);
-    }else{
+    }else if(usuario.tipodeusuario === "EST"){
       localStorage.setItem("id", usuario.idestudiantes);
+    }else{
+      localStorage.setItem("id", usuario.idadministrador);
+
     }
     localStorage.setItem("correo", usuario.correo);
     localStorage.setItem("contrasena", usuario.contrasena);

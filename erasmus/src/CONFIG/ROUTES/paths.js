@@ -21,6 +21,7 @@ export const ROUTES = {
         J2: "/Juegos/2",
         J3: "/Juegos/3",
         J4: "/Juegos/4"
-    }
+    },
+    ADMINISTRADOR:"/Admin9090"
   };
   

@@ -44,7 +44,7 @@ export const consultarConfJuego1 = (req, res) => {
 };
 
 export const consultarImagenesJuego1 = (req, res) => {
-  const q = `SELECT * FROM baseerasmus.imagenes WHERE imagenes.grupoimagen = 1`;
+  const q = `SELECT * FROM baseerasmus.imagenes WHERE imagenes.grupoimagen = 1 and imagenes.estado = 1`;
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -60,7 +60,7 @@ export const consultarConfJuego2 = (req, res) => {
 };
 
 export const consultarImagenesJuego2 = (req, res) => {
-  const q = `SELECT * FROM baseerasmus.imagenes WHERE imagenes.grupoimagen = 2`;
+  const q = `SELECT * FROM baseerasmus.imagenes WHERE imagenes.grupoimagen = 2 imagenes.estado = 1`;
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -76,7 +76,7 @@ export const consultarConfJuego3 = (req, res) => {
 };
 
 export const consultarImagenesJuego3 = (req, res) => {
-  const q = `SELECT * FROM baseerasmus.imagenes WHERE imagenes.grupoimagen = 3`;
+  const q = `SELECT * FROM baseerasmus.imagenes WHERE imagenes.grupoimagen = 3 imagenes.estado = 1`;
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -92,7 +92,7 @@ export const consultarConfJuego4 = (req, res) => {
 };
 
 export const consultarImagenesJuego4 = (req, res) => {
-  const q = `SELECT * FROM baseerasmus.imagenes WHERE imagenes.grupoimagen = 4`;
+  const q = `SELECT * FROM baseerasmus.imagenes WHERE imagenes.grupoimagen = 4 imagenes.estado = 1`;
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
