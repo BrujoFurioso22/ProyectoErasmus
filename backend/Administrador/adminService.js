@@ -1,4 +1,16 @@
 import { db } from "../db.js";
+import multer from "multer";
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../imagenesJuegos"); // Ruta donde se guardarán los archivos subidos
+  },
+  filename: function (req, file, cb) {
+    // Modificar el nombre del archivo si es necesario
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 
 export const ConsultarImagenesAdmin = (req, res) => {
   const { numJuego } = req.params;
@@ -24,11 +36,41 @@ export const EstadoImagenAdmin = (req, res) => {
 
 export const SubirImagen = (req, res, next) => {
   const { file } = req;
-  const { juego } = req.params;
+  const { numJuego, nombreimagen } = req.params;
 
-  // file.mv(`/erasmus/src/SOURCES/JUEGO${juego}/${file.name}`, (err) => {
-  //   if (err) return res.status(500).send({ message: err });
+  const q = `SELECT imagenes.nombreimagen FROM baseerasmus.imagenes WHERE imagenes.nombreimagen = '${nombreimagen}';`;
+  db.query(q, (err, data) => {
+    if (err) {
+      return res.json({
+        message: "Error al insertar en la base de datos",
+        correcta: 0,
+      });
+    }
 
-  //   return res.status(200).send({ message: "Archivo Cargado Correctamente" });
-  // });
+    if (data.length <= 0) {
+      const q = `INSERT INTO baseerasmus.imagenes (nombreimagen,rutaimagen,grupoimagen) VALUES('${nombreimagen}','${
+        file.destination + "/" + file.originalname
+      }','${numJuego}');`;
+      db.query(q, (err, data) => {
+        if (err) {
+          return res.json({
+            message: "Llave duplicada",
+            correcta: 0,
+          });
+        }
+
+        return res.json({
+          message: "Imagen cargada correctamente",
+          correcta: 1,
+          imagen: { file, numJuego },
+        });
+      });
+    } else {
+      return res.json({
+        message: "Existente",
+        correcta: 1,
+        imagen: { file, numJuego },
+      });
+    }
+  });
 };

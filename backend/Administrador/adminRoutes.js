@@ -24,6 +24,6 @@ const upload = multer({ storage: storage });
 router.get("/consultarImagenes/:numJuego", ConsultarImagenesAdmin);
 router.get("/consultarImagenes/:numJuego", ConsultarImagenesAdmin);
 router.post("/cambiarEstadoImagenAdmin", EstadoImagenAdmin);
-router.post("/subirImagen/:numJuego", upload.single("file"), SubirImagen);
+router.post("/subirImagen/:numJuego/:nombreimagen", upload.single("file"), SubirImagen);
 
 export default router;

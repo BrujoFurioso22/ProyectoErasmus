@@ -62,6 +62,48 @@ const Cont1 = styled.div`
 `;
 
 const TablaStyled = styled.table``;
+const FormStyled = styled.form`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  input[type="text"] {
+    border: none;
+    background-color: rgba(109, 109, 109, 0.25);
+    border-bottom: 1px solid black;
+    border-radius: 10px;
+    padding: 2px 15px;
+    outline: none;
+  }
+  label {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    span {
+      font-size: 12px;
+    }
+  }
+  .botonSubir {
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(9, 21, 196);
+    color: white;
+    padding: 4px 10px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.6);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  input[type="submit"] {
+    border: none;
+    background-color: rgba(2, 252, 135, 0.81);
+    border-radius: 10px;
+    padding: 15px 15px;
+    outline: none;
+    font-weight: 700;
+    color: rgb(0, 0, 0);
+  }
+`;
 
 export const AdminPage = () => {
   const [activo, setActivo] = useState(1);
@@ -72,6 +114,7 @@ export const AdminPage = () => {
     const [data, setData] = useState([]);
     const [nombreArchivo, setNombreArchivo] = useState("");
     const [archivo, setArchivo] = useState(null);
+    const [mensaje, setMensaje] = useState("");
 
     const Consulta = async () => {
       const res = await ConsultaImagenesAdmin(juego);
@@ -85,11 +128,16 @@ export const AdminPage = () => {
 
     const HandleChangeArchivo = (target) => {
       console.log(target);
-      const archivo = target[0];
-      if (archivo.size > 0) {
-        setNombreArchivo(archivo.name);
-        setArchivo(archivo);
+      if (target.length > 0) {
+        const archivo = target[0];
+        if (archivo.size > 0) {
+          setArchivo(archivo);
+        }
       }
+    };
+
+    const HandleNombreImagen = (value) => {
+      setNombreArchivo(value);
     };
 
     const SubirImagenes = async (e) => {
@@ -98,28 +146,54 @@ export const AdminPage = () => {
       const formData = new FormData();
       formData.append("file", archivo);
 
-      const res = await CargarImagen(activo, formData);
-      console.log(res)
+      let nombreimagen = "";
+      if (nombreArchivo.replace(" ", "").trim === "") {
+        nombreimagen = archivo.name;
+      } else {
+        nombreimagen = nombreArchivo;
+      }
+
+      const res = await CargarImagen(activo, nombreimagen, formData, Consulta);
+      if (res) {
+        res.data.message === "Existente" &&
+          setMensaje("*Ya existe ese nombre, intente otro");
+        setTimeout(() => {
+          setMensaje("");
+        }, 4000);
+        console.log(res);
+      }
     };
 
     return (
       <Cont1>
-        <span>{nombre}</span>
-        <form
-          onSubmit={SubirImagenes}
-        >
+        <h3>{nombre}</h3>
+        <FormStyled onSubmit={SubirImagenes}>
+          <input
+            type="text"
+            placeholder="Nombre Imagen"
+            onChange={(e) => HandleNombreImagen(e.target.value)}
+          />
+          <label htmlFor="fileInput">
+            <div className="botonSubir">Subir Archivo</div>
+            <span>Archivo: {archivo ? archivo.name : "---"}</span>
+          </label>
+
           <input
             type="file"
             id="fileInput"
+            style={{ display: "none" }}
             accept="image/*"
             onChange={(e) => HandleChangeArchivo(e.target.files)}
           />
-          <input disabled={nombreArchivo === ""} type="submit" value="Subir" />
-        </form>
+          <input
+            disabled={nombreArchivo === ""}
+            style={{ display: archivo ? "flex" : "none" }}
+            type="submit"
+            value="Cargar Imagen"
+          />
+        </FormStyled>
 
-        <label htmlFor="fileInput">
-          Nombre Archivo: {nombreArchivo !== "" ? nombreArchivo : "---"}
-        </label>
+        <span style={{ fontWeight: "13px", color: "red" }}>{mensaje}</span>
         <TablaJsonImgs
           jsonData={data}
           nombresPersonalizados={nombresPersonalizados}
