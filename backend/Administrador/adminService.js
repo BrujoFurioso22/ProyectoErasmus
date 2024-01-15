@@ -1,6 +1,7 @@
 import { db } from "../db.js";
 import multer from "multer";
 
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "../imagenesJuegos"); // Ruta donde se guardarán los archivos subidos
@@ -37,6 +38,7 @@ export const EstadoImagenAdmin = (req, res) => {
 export const SubirImagen = (req, res, next) => {
   const { file } = req;
   const { numJuego, nombreimagen } = req.params;
+  console.log(file);
 
   const q = `SELECT imagenes.nombreimagen FROM baseerasmus.imagenes WHERE imagenes.nombreimagen = '${nombreimagen}';`;
   db.query(q, (err, data) => {
@@ -49,7 +51,7 @@ export const SubirImagen = (req, res, next) => {
 
     if (data.length <= 0) {
       const q = `INSERT INTO baseerasmus.imagenes (nombreimagen,rutaimagen,grupoimagen) VALUES('${nombreimagen}','${
-        file.destination + "/" + file.originalname
+        "/imagenesJuego/" + file.originalname
       }','${numJuego}');`;
       db.query(q, (err, data) => {
         if (err) {

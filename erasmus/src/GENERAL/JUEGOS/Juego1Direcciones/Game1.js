@@ -3,6 +3,7 @@ import { Botones } from "./Componentes/Botones";
 import { Puntaje } from "./Componentes/Puntaje";
 import {
   ConsultaRondasJuego1,
+  ConsultarInfoImagenes,
   guardarPuntaje,
 } from "CONFIG/BACKEND/Consultas/Juegos";
 import { BotonJugar } from "STYLED-COMPONENTS/Botones";
@@ -18,7 +19,7 @@ import styled from "styled-components";
 
 import "./assets/styles/boton_iniciar.css";
 
-const numJuego = "juego1";
+const numJuego = "juego1"; //no tocar esto
 
 const direcciones1 = [
   { direccion: "ARRIBA", imagen: img1 },
@@ -142,6 +143,12 @@ export function Game1() {
   const [indiceActual, setIndiceActual] = useState(0); //Estado para indicar en que ronda va el juego
   const [habilitar, sethabilitar] = useState(true); // Estado para activar o desactivar los botones
   const [finJuego, setFinJuego] = useState(false); //Estado para decir que el juego se acabo y poder guardar algunos datos
+  const [imagenesJuego, setImagenesJuego] = useState({
+    img1: "",
+    img2: "",
+    img3: "",
+    img4: "",
+  });
 
   const opcionesDirecciones = direcciones1.map((item) => item.direccion);
   const opcionesImagenes = direcciones1.map((item) => item.imagen);
@@ -156,20 +163,47 @@ export function Game1() {
     }
     return nuevoArreglo;
   }
+  const buscarRutaImagenPorId = (idimg, jsonArr) => {
+    // Buscar el objeto en el arreglo que coincida con el idimg proporcionado
+    const imagenEncontrada = jsonArr.find(
+      (imagen) => imagen.idimagenes === idimg
+    );
+  
+    // Si se encuentra la imagen, devolver el objeto de la imagen, de lo contrario, devolver un objeto con la ruta predeterminada
+    return imagenEncontrada
+      ? imagenEncontrada
+      : { idimagenes: 0, rutaimagen: "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg" };
+  };
+  
 
   const ConsultarRondas = async () => {
     const res = await ConsultaRondasJuego1(localStorage.getItem("id"));
     console.log(res);
     if (res.length > 0) {
       setNumRondas(res[0].numRondas);
+      console.log(res[0]);
+      const resimg = await ConsultarInfoImagenes();
+
+      if (resimg.length > 0) {
+        setImagenesJuego((prev) => ({
+          ...prev,
+          img1: buscarRutaImagenPorId(res[0].img1, resimg),
+          img2: buscarRutaImagenPorId(res[0].img2, resimg),
+          img3: buscarRutaImagenPorId(res[0].img3, resimg),
+          img4: buscarRutaImagenPorId(res[0].img4, resimg),
+        }));
+      }
+
+      console.log(buscarRutaImagenPorId(res[0].img1, resimg));
     }
   };
+
   const guardarResultados = async () => {
     const idest = localStorage.getItem("id");
     const fechaActual = obtenerFechaActual();
-    let estrellas = 0
-    if(puntaje === numRondas){
-      if(puntaje % 5 === 0){
+    let estrellas = 0;
+    if (puntaje === numRondas) {
+      if (puntaje % 5 === 0) {
         estrellas = puntaje / 5;
       }
     }
@@ -185,7 +219,6 @@ export function Game1() {
     } else {
       setaccion("Fin del Juego");
       sethabilitar(true);
-
     }
   };
 
@@ -198,8 +231,6 @@ export function Game1() {
     const fechaFormateada = `${dia}-${mes}-${año}`;
     return fechaFormateada;
   };
-
- 
 
   //Funcion a llamar para poder finalize el juego, aqui se colocan las variables para que el juego se ponga en 0 de nuevo
   const finalizarJuego = () => {
@@ -231,7 +262,7 @@ export function Game1() {
   }, [AccionInicioJuego]);
 
   useEffect(() => {
-    if(indiceActual === numRondas){
+    if (indiceActual === numRondas) {
       const Finalizar = () => {
         setTimeout(() => {
           finalizarJuego();
@@ -239,7 +270,6 @@ export function Game1() {
       };
       Finalizar();
     }
-    
   }, [habilitar]);
 
   useEffect(() => {
@@ -318,7 +348,7 @@ export function Game1() {
             indicacion={direcciones.arriba}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
-            imagen={opcionesImagenes[0]}
+            imagen={imagenesJuego.img1}
           />
         </div>
         <div className="boton-izquierda">
@@ -328,7 +358,7 @@ export function Game1() {
             indicacion={direcciones.izquierda}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
-            imagen={opcionesImagenes[2]}
+            imagen={imagenesJuego.img4}
           />
         </div>
         <div className="mensaje-central">
@@ -380,7 +410,7 @@ export function Game1() {
             indicacion={direcciones.derecha}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
-            imagen={opcionesImagenes[3]}
+            imagen={imagenesJuego.img2}
           />
         </div>
         <div className="boton-abajo">
@@ -390,7 +420,7 @@ export function Game1() {
             indicacion={direcciones.abajo}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
-            imagen={opcionesImagenes[1]}
+            imagen={imagenesJuego.img3}
           />
         </div>
       </ContenedorBotones>

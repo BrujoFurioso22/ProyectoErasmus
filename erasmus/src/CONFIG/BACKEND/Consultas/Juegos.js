@@ -221,3 +221,14 @@ export async function guardarPuntaje(
     return [];
   }
 }
+
+/* ---------------------------------------- Imagenes Juegos ----------------------------------- */
+
+export async function ConsultarInfoImagenes() {
+  try {
+    const res = await axios.get(`${url}/juegos/obtenerInfoImagenes`);
+    return res.data;
+  } catch (err) {
+    return [];
+  }
+}

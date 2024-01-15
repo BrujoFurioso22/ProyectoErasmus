@@ -187,3 +187,16 @@ export const guardarPuntajeJuego = (req, res) => {
     });
   });
 };
+
+/* ------------------------------------------------------------------------ Imagenes de juegos ------------------------------------------------------------------------ */
+export const obtenerInfoImagenes = (req, res) => {
+  // Obtener datos del cuerpo de la solicitud
+  const insertUserQuery1 = `SELECT * FROM baseerasmus.imagenes WHERE imagenes.estado = 1;`;
+  db.query(insertUserQuery1, (err, data) => {
+    if (err) {
+      return res.json(err);
+    }
+    // Envía la respuesta
+    return res.json(data);
+  });
+};

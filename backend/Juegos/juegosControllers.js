@@ -16,6 +16,7 @@ import {
   consultarConfigJuego2Estudiante,
   consultarConfigJuego3Estudiante,
   guardarPuntajeJuego,
+  obtenerInfoImagenes
 } from "./juegosService.js";
 
 export {
@@ -35,6 +36,7 @@ export {
   consultarConfigJuego1Estudiante,
   consultarConfigJuego2Estudiante,
   consultarConfigJuego3Estudiante,
-  guardarPuntajeJuego
+  guardarPuntajeJuego,
+  obtenerInfoImagenes
 };
 // Agregar más controladores según sea necesario

@@ -67,7 +67,7 @@ export const Botones = ({
         onClick={() => handleClickButton(indicacion)}
       >
         <span>{texto}</span>
-        {!habilitar && <img src={imagen} alt="img" />}
+        {!habilitar && <img src={imagen.rutaimagen} alt="img" />}
       </Boton>
     </div>
   );
