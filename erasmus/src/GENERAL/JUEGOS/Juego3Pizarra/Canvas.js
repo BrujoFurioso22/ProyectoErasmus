@@ -1,3 +1,7 @@
+import {
+  ConsultarInfoImagenes,
+  ConsultaTareaJuego3,
+} from "CONFIG/BACKEND/Consultas/Juegos";
 import React, { useState, useRef, useEffect } from "react";
 import actividad from "SOURCES/actividad1.jpg";
 import styled from "styled-components";
@@ -42,6 +46,38 @@ export const CanvasApp = () => {
   const [brushColor, setBrushColor] = useState("#000000");
   const [eraserMode, setEraserMode] = useState(false);
   const [colorGuard, setColorGuard] = useState("#000000");
+  const [imgTarea, setImgTarea] = useState("white");
+
+  const buscarRutaImagenPorId = (idimg, jsonArr) => {
+    // Buscar el objeto en el arreglo que coincida con el idimg proporcionado
+    const imagenEncontrada = jsonArr.find(
+      (imagen) => imagen.idimagenes === idimg
+    );
+
+    // Si se encuentra la imagen, devolver el objeto de la imagen, de lo contrario, devolver un objeto con la ruta predeterminada
+    return imagenEncontrada
+      ? imagenEncontrada
+      : {
+          idimagenes: 0,
+          nombreimagen: "sn",
+          rutaimagen: "",
+        };
+  };
+  const ConsultarImagen = async () => {
+    const res = await ConsultaTareaJuego3(localStorage.getItem("id"));
+    if (res.length > 0) {
+      const resimg = await ConsultarInfoImagenes();
+      if (resimg.length > 0) {
+        const resp = buscarRutaImagenPorId(res[0].img1, resimg);
+        console.log(resp);
+        setImgTarea(resp);
+      }
+    }
+  };
+
+  useEffect(() => {
+    ConsultarImagen();
+  }, []);
 
   useEffect(() => {
     const mainCanvas = mainCanvasRef.current;
@@ -49,6 +85,9 @@ export const CanvasApp = () => {
 
     let initialX, initialY;
     let isDrawing = false;
+    // Establecer el fondo blanco
+    context.fillStyle = '#ffffff'; // Puedes ajustar el color al que desees
+    context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
 
     const preventDefault = (evt) => {
       evt.preventDefault();
@@ -151,15 +190,20 @@ export const CanvasApp = () => {
     }
   };
 
-  // const guardarImagen = () => {
-  //   const dataURL = mainCanvasRef.current.toDataURL();
-  //   const link = document.createElement("a");
-  //   link.href = dataURL;
-  //   link.download = "pizarra.png";
-  //   link.click();
-  // };
-
   const guardarImagen = () => {
+    const canvas = mainCanvasRef.current;
+    // Resto de tu lógica para dibujar en el canvas
+  
+    // Guardar la imagen
+    const dataURL = canvas.toDataURL();
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "pizarra.png";
+    link.click();
+  };
+  
+
+  const guardarImagenConTarea = () => {
     const fondoCanvas = document.createElement("canvas");
     fondoCanvas.width = mainCanvasRef.current.width;
     fondoCanvas.height = mainCanvasRef.current.height;
@@ -168,7 +212,7 @@ export const CanvasApp = () => {
     const fondo = new Image();
 
     // Reemplaza la URL con la ruta local donde has descargado la imagen
-    fondo.src = actividad;
+    fondo.src = imgTarea.rutaimagen;
 
     fondo.onload = () => {
       // Calcular las dimensiones para mantener la relación de aspecto y usar "contain"
@@ -212,6 +256,8 @@ export const CanvasApp = () => {
     const mainCanvas = mainCanvasRef.current;
     const context = mainCanvas.getContext("2d");
     context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+    context.fillStyle = '#ffffff'; // Puedes ajustar el color al que desees
+    context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
   };
   const toggleBorrador = () => {
     if (eraserMode) {
@@ -223,14 +269,14 @@ export const CanvasApp = () => {
   };
 
   return (
-    <ContenedorTools style={{flexDirection:"column"}}>
+    <ContenedorTools style={{ flexDirection: "column" }}>
       <ContenedorTools
         style={{
           gap: "30px",
           backgroundColor: "white",
           borderRadius: "0 0 15px 15px",
           padding: "10px 15px",
-          flexWrap:"wrap"
+          flexWrap: "wrap",
         }}
       >
         <ContenedorTools style={{ gap: "10px" }}>
@@ -284,7 +330,14 @@ export const CanvasApp = () => {
             borderRadius: "0 0 15px 15px",
           }}
         >
-          <BotonTools onClick={guardarImagen}>Guardar Imagen</BotonTools>
+          <BotonTools
+            onClick={
+              ()=>
+              imgTarea.rutaimagen === "" ? guardarImagen() : guardarImagenConTarea()
+            }
+          >
+            Guardar Imagen
+          </BotonTools>
           <BotonTools onClick={limpiarPizarron}>Limpiar</BotonTools>
           <BotonTools onClick={toggleBorrador}>
             {eraserMode ? "Pincel" : "Borrador"}
@@ -298,7 +351,9 @@ export const CanvasApp = () => {
         style={{
           border: "1px solid #000",
           background:
-            "url('https://www.dibujos.org/img/encuentra-el-camino-a-los-ninos-b2528.jpg') center/contain no-repeat no-repeat, white",
+            imgTarea.rutaimagen === ""
+              ? "white"
+              : "url('https://www.dibujos.org/img/encuentra-el-camino-a-los-ninos-b2528.jpg') center/contain no-repeat no-repeat, white",
           borderRadius: "25px",
         }}
       ></canvas>

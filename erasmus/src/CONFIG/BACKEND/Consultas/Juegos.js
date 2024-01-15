@@ -21,6 +21,16 @@ export async function ConsultaCartasJuego2(idestudiante) {
     return err;
   }
 }
+export async function ConsultaTareaJuego3(idestudiante) {
+  try {
+    const res = await axios.get(
+      `${url}/juegos/juego3/consultaConfiguracion/${idestudiante}`
+    );
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+}
 
 /*------------------------------------ Configuracion de los juegos--------------------------------------- */
 export async function ConsultaSiTieneProfesor(idestudiante) {
