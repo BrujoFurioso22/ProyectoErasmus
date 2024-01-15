@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import jsonImages from "./images";
 import ContenedorDestino from "./ContenedorDestino";
 import {
   ConsultaCartasJuego2,
+  ConsultarInfoImagenes,
   guardarPuntaje,
 } from "CONFIG/BACKEND/Consultas/Juegos";
 import styled from "styled-components";
@@ -198,12 +198,58 @@ export function Game2() {
 
   const [numCartas, setNumCartas] = useState(3);
   const [estrellas, setEstrellas] = useState(-1);
+  const [jsonImages, setJsonImages] = useState([]);
+
+
+  const buscarRutaImagenPorId = (idimg, jsonArr) => {
+    // Buscar el objeto en el arreglo que coincida con el idimg proporcionado
+    const imagenEncontrada = jsonArr.find(
+      (imagen) => imagen.idimagenes === idimg
+    );
+
+    // Si se encuentra la imagen, devolver el objeto de la imagen, de lo contrario, devolver un objeto con la ruta predeterminada
+    return imagenEncontrada
+      ? imagenEncontrada
+      : {
+          idimagenes: 0,
+          nombreimagen: "sn",
+          rutaimagen:
+            "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg",
+        };
+  };
+
+  const CrearJsonImage = (jsonInfo, ids) => {
+    let jsonFiltrado = {};
+    for (const key in ids) {
+      if (key.startsWith("img")) {
+        jsonFiltrado[key] = ids[key];
+      }
+    }
+    let jsonFinal = []
+
+    for (const key in jsonFiltrado) {
+      if (key.startsWith("img")) {
+        const id = parseInt(key.replace("img", ""));
+        const imagenInfo = buscarRutaImagenPorId(jsonFiltrado[key], jsonInfo);
+        jsonFinal.push({
+          nombreimagen: key,
+          rutaimagen: imagenInfo.rutaimagen,
+          idimagenes: id,
+        });
+      }
+    }
+    return jsonFinal;
+  };
 
   const ConsultarNumeroCartas = async () => {
     const res = await ConsultaCartasJuego2(localStorage.getItem("id"));
-    console.log(res);
     if (res.length > 0) {
       setNumCartas(res[0].numCartas);
+      const resimg = await ConsultarInfoImagenes();
+      if (resimg.length > 0) {
+        const resp = CrearJsonImage(resimg, res[0]);
+        setJsonImages(resp);
+      }
     }
   };
   useEffect(() => {
@@ -215,10 +261,13 @@ export function Game2() {
   };
 
   const handleDrop = () => {
-    const imagenArrastrada = jsonImages.find((imagen) => imagen.id === ID);
-    const verificarRep = imagenesEnContenedor.some((img) => img.id === ID);
+    const imagenArrastrada = jsonImages.find(
+      (imagen) => imagen.idimagenes === ID
+    );
+    const verificarRep = imagenesEnContenedor.some(
+      (img) => img.idimagenes === ID
+    );
 
-    // console.log(ID);
     if (imagenArrastrada) {
       if (!verificarRep) {
         if (imagenesEnContenedor.length < numCartas) {
@@ -356,7 +405,7 @@ export function Game2() {
                   backgroundColor: "white",
                   padding: "15px",
                   borderRadius: "15px",
-                  textAlign:"center"
+                  textAlign: "center",
                 }}
               >
                 {win ? "Felicidades has ganado" : "Lo siento, intenta de nuevo"}
@@ -375,18 +424,18 @@ export function Game2() {
                 <div
                   key={index}
                   className="cuadro"
-                  id={imagen.id}
+                  id={imagen.idimagenes}
                   draggable
                   onDragOver={handleDragOver}
-                  onDragStart={() => handleDragStart(imagen.id)}
-                  onTouchStart={(e) => handleTouchStart(imagen.id, e)}
+                  onDragStart={() => handleDragStart(imagen.idimagenes)}
+                  onTouchStart={(e) => handleTouchStart(imagen.idimagenes, e)}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
                 >
                   <img
                     className="cuadro-imagen"
-                    src={imagen.src}
-                    alt={imagen.nombre}
+                    src={imagen.rutaimagen}
+                    alt={imagen.nombreimagen}
                   />
                 </div>
               ))}
@@ -426,11 +475,11 @@ export function Game2() {
               {mostrarImagenes === 1 ? (
                 <ContenedorImagenesArrastradas>
                   {imagenesAleatorias.map((imagen, index) => (
-                    <DestinoContenedor key={index} id={imagen.id}>
+                    <DestinoContenedor key={index} id={imagen.idimagenes}>
                       <img
                         className="destino-imagen"
-                        src={imagen.src}
-                        alt={imagen.nombre}
+                        src={imagen.rutaimagen}
+                        alt={imagen.nombreimagen}
                       />
                     </DestinoContenedor>
                   ))}
@@ -449,11 +498,11 @@ export function Game2() {
                   className={`${win ? "correcto" : "erroneo"}`}
                 >
                   {imagenesAleatorias.map((imagen, index) => (
-                    <DestinoContenedor key={index} id={imagen.id}>
+                    <DestinoContenedor key={index} id={imagen.idimagenes}>
                       <img
                         className="destino-imagen"
-                        src={imagen.src}
-                        alt={imagen.nombre}
+                        src={imagen.rutaimagen}
+                        alt={imagen.nombreimagen}
                       />
                     </DestinoContenedor>
                   ))}

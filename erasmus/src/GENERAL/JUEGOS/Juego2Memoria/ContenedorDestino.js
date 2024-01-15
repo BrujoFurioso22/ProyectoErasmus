@@ -47,7 +47,7 @@ const ContenedorDestino = ({ imagenesEnContenedor, dejar, removeImage }) => {
   const handleImageClick = (id) => {
     // Eliminar la imagen del estado imagenesEnContenedor
     const nuevasImagenes = imagenesEnContenedor.filter(
-      (imagen) => imagen.id !== id
+      (imagen) => imagen.idimagenes !== id
     );
     removeImage(nuevasImagenes);
   };
@@ -60,11 +60,11 @@ const ContenedorDestino = ({ imagenesEnContenedor, dejar, removeImage }) => {
       <DestinoContenedor>
         {imagenesEnContenedor.map((imagen) => (
           <img
-            key={imagen.id}
-            onClick={() => handleImageClick(imagen.id)}
+            key={imagen.idimagenes}
+            onClick={() => handleImageClick(imagen.idimagenes)}
             className="destino-imagen"
-            src={imagen.src}
-            alt={imagen.nombre}
+            src={imagen.rutaimagen}
+            alt={imagen.nombreimagen}
           />
         ))}
       </DestinoContenedor>

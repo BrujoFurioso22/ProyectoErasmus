@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import img1 from "./images/imagen1.png";
 import img2 from "./images/imagen2.png";
 import img3 from "./images/imagen3.png";
@@ -8,52 +9,50 @@ import img7 from "./images/imagen7.png";
 import img8 from "./images/imagen8.png";
 import img9 from "./images/imagen9.png";
 
-const jsonImages = [
+export const jsonImages = [
   {
-    nombre: "img1",
-    src: img1,
-    id: 1,
+    nombreimagen: "img1",
+    rutaimagen: img1,
+    idimagenes: 1,
   },
   {
-    nombre: "img2",
-    src: img2,
-    id: 2,
+    nombreimagen: "img2",
+    rutaimagen: img2,
+    idimagenes: 2,
   },
   {
-    nombre: "img3",
-    src: img3,
-    id: 3,
+    nombreimagen: "img3",
+    rutaimagen: img3,
+    idimagenes: 3,
   },
   {
-    nombre: "img4",
-    src: img4,
-    id: 4,
+    nombreimagen: "img4",
+    rutaimagen: img4,
+    idimagenes: 4,
   },
   {
-    nombre: "img5",
-    src: img5,
-    id: 5,
+    nombreimagen: "img5",
+    rutaimagen: img5,
+    idimagenes: 5,
   },
   {
-    nombre: "img6",
-    src: img6,
-    id: 6,
+    nombreimagen: "img6",
+    rutaimagen: img6,
+    idimagenes: 6,
   },
   {
-    nombre: "img7",
-    src: img7,
-    id: 7,
+    nombreimagen: "img7",
+    rutaimagen: img7,
+    idimagenes: 7,
   },
   {
-    nombre: "img8",
-    src: img8,
-    id: 8,
+    nombreimagen: "img8",
+    rutaimagen: img8,
+    idimagenes: 8,
   },
   {
-    nombre: "img9",
-    src: img9,
-    id: 9,
+    nombreimagen: "img9",
+    rutaimagen: img9,
+    idimagenes: 9,
   },
 ];
-
-export default jsonImages;

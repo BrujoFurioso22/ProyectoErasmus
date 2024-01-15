@@ -11,7 +11,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../backend/public/imagenesJuegos/"); // Ruta donde se guardarán los archivos subidos
+    cb(null, "../backend/public/imagenesJuego/"); // Ruta donde se guardarán los archivos subidos
   },
   filename: function (req, file, cb) {
     // Modificar el nombre del archivo si es necesario
