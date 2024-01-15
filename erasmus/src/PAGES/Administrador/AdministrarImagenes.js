@@ -7,7 +7,10 @@ import {
 } from "STYLED-COMPONENTS/Estructura";
 import styled from "styled-components";
 import { TablaJsonImgs } from "./TablaJsonImgs";
-import { ConsultaImagenesAdmin } from "CONFIG/BACKEND/Consultas/Administrador";
+import {
+  CargarImagen,
+  ConsultaImagenesAdmin,
+} from "CONFIG/BACKEND/Consultas/Administrador";
 
 const nombresPersonalizados = {
   idimagenes: "ID",
@@ -67,6 +70,8 @@ export const AdminPage = () => {
   };
   const SeccionesAdministrador = ({ nombre, juego }) => {
     const [data, setData] = useState([]);
+    const [nombreArchivo, setNombreArchivo] = useState("");
+    const [archivo, setArchivo] = useState(null);
 
     const Consulta = async () => {
       const res = await ConsultaImagenesAdmin(juego);
@@ -77,10 +82,44 @@ export const AdminPage = () => {
     useEffect(() => {
       Consulta();
     }, []);
+
+    const HandleChangeArchivo = (target) => {
+      console.log(target);
+      const archivo = target[0];
+      if (archivo.size > 0) {
+        setNombreArchivo(archivo.name);
+        setArchivo(archivo);
+      }
+    };
+
+    const SubirImagenes = async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append("file", archivo);
+
+      const res = await CargarImagen(activo, formData);
+      console.log(res)
+    };
+
     return (
       <Cont1>
         <span>{nombre}</span>
-        <input type="file" name="" id="" />
+        <form
+          onSubmit={SubirImagenes}
+        >
+          <input
+            type="file"
+            id="fileInput"
+            accept="image/*"
+            onChange={(e) => HandleChangeArchivo(e.target.files)}
+          />
+          <input disabled={nombreArchivo === ""} type="submit" value="Subir" />
+        </form>
+
+        <label htmlFor="fileInput">
+          Nombre Archivo: {nombreArchivo !== "" ? nombreArchivo : "---"}
+        </label>
         <TablaJsonImgs
           jsonData={data}
           nombresPersonalizados={nombresPersonalizados}

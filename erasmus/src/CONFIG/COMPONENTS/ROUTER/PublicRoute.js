@@ -8,7 +8,6 @@ export default function PublicRoute() {
   if (isAuthenticated) {
     const tipoUsu = localStorage.getItem("tipo");
     const vf = tipoUsu === "ADM" ;
-    console.log(vf);
     if (vf) {
       return <Navigate to={ROUTES.ADMINISTRADOR} />;
     } else {

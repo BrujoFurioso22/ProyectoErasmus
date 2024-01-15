@@ -17,3 +17,16 @@ export async function CambiarEstadoImagen(idimagen, estado, fetch) {
   fetch();
   return res;
 }
+export async function CargarImagen(numJuego, formData) {
+  try {
+    const res = await axios.post(`${url}/admin/subirImagen/${numJuego}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+}

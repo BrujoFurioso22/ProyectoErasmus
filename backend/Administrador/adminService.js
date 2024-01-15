@@ -11,7 +11,7 @@ export const ConsultarImagenesAdmin = (req, res) => {
 
 export const EstadoImagenAdmin = (req, res) => {
   const { idimagen, estado } = req.body;
-  const q = `UPDATE baseerasmus.imagenes SET estado = ${estado} WHERE idimagenes = ${idimagen};` ;
+  const q = `UPDATE baseerasmus.imagenes SET estado = ${estado} WHERE idimagenes = ${idimagen};`;
   db.query(q, [estado, idimagen], (err, data) => {
     if (err) return res.json(err);
     return res.json({
@@ -20,4 +20,15 @@ export const EstadoImagenAdmin = (req, res) => {
       imagen: { idimagen, estado },
     });
   });
+};
+
+export const SubirImagen = (req, res, next) => {
+  const { file } = req;
+  const { juego } = req.params;
+
+  // file.mv(`/erasmus/src/SOURCES/JUEGO${juego}/${file.name}`, (err) => {
+  //   if (err) return res.status(500).send({ message: err });
+
+  //   return res.status(200).send({ message: "Archivo Cargado Correctamente" });
+  // });
 };
