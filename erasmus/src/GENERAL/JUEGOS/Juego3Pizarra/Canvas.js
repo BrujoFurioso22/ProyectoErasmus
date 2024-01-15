@@ -3,7 +3,6 @@ import {
   ConsultaTareaJuego3,
 } from "CONFIG/BACKEND/Consultas/Juegos";
 import React, { useState, useRef, useEffect } from "react";
-import actividad from "SOURCES/actividad1.jpg";
 import styled from "styled-components";
 const COLORES = [
   "#000000",
@@ -86,8 +85,11 @@ export const CanvasApp = () => {
     let initialX, initialY;
     let isDrawing = false;
     // Establecer el fondo blanco
-    context.fillStyle = '#ffffff'; // Puedes ajustar el color al que desees
-    context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+    if(imgTarea.rutaimagen === ""){
+      context.fillStyle = '#ffffff'; // Puedes ajustar el color al que desees
+      context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+    }
+    // 
 
     const preventDefault = (evt) => {
       evt.preventDefault();
@@ -192,7 +194,6 @@ export const CanvasApp = () => {
 
   const guardarImagen = () => {
     const canvas = mainCanvasRef.current;
-    // Resto de tu lógica para dibujar en el canvas
   
     // Guardar la imagen
     const dataURL = canvas.toDataURL();
@@ -353,7 +354,7 @@ export const CanvasApp = () => {
           background:
             imgTarea.rutaimagen === ""
               ? "white"
-              : "url('https://www.dibujos.org/img/encuentra-el-camino-a-los-ninos-b2528.jpg') center/contain no-repeat no-repeat, white",
+              : `url('${imgTarea.rutaimagen}') center/contain no-repeat no-repeat`,
           borderRadius: "25px",
         }}
       ></canvas>
