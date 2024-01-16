@@ -116,7 +116,7 @@ CREATE TABLE `imagenes` (
   `estado` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`idimagenes`),
   UNIQUE KEY `nombreimagen_UNIQUE` (`nombreimagen`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `imagenes` (
 
 LOCK TABLES `imagenes` WRITE;
 /*!40000 ALTER TABLE `imagenes` DISABLE KEYS */;
-INSERT INTO `imagenes` VALUES (1,'LEON','CLEON',2,1),(2,'OSO','COSO',2,1),(3,'VACA','CMUUU',2,1),(4,'MONO','CMONO',2,1),(5,'LOBO','CLOBO',2,1),(6,'TIGRE','CTIGRE',2,1),(7,'ARRIBA','ARRIBA',1,1),(8,'DERECHA','DERECHA',1,1),(9,'ABAJO','ABAJO',1,1),(10,'IZQUIERDA','IZQUIERDA',1,1),(11,'TAREA1','TAREA1',3,1),(12,'GLOBOVERDE','GLOBOVERDE',4,1),(13,'GLOBOROJO','GLOBOROJO',4,1),(14,'GLOBOAZUL','GLOBOAZUL',4,1),(19,'prueba','../imagenesJuegos/arrow-derecha.svg',1,0),(22,'IZQUIERDA1','../imagenesJuegos/arrow-izquierda.svg',3,1),(23,'porueba','../imagenesJuegos/arrow-izquierda.svg',1,0),(25,'Nose','../imagenesJuegos/arrow-down.svg',1,1),(26,'Nose1','../imagenesJuegos/arrow-derecha.svg',1,1);
+INSERT INTO `imagenes` VALUES (34,'Arriba','/imagenesJuego/arrow-up.svg',1,1),(35,'Abajo','/imagenesJuego/arrow-down.svg',1,1),(36,'Izquierda','/imagenesJuego/arrow-izquierda.svg',1,1),(37,'Derecha','/imagenesJuego/arrow-derecha.svg',1,1),(38,'Barrer','/imagenesJuego/imagen1.png',2,1),(39,'Tomar','/imagenesJuego/imagen2.png',2,1),(40,'Ahorrar','/imagenesJuego/imagen3.png',2,1),(41,'BatidoGuineo','/imagenesJuego/imagen4.png',2,1),(42,'Te','/imagenesJuego/imagen5.png',2,1),(43,'Helado','/imagenesJuego/imagen6.png',2,1),(44,'Carro','/imagenesJuego/imagen7.png',2,1),(45,'Avion','/imagenesJuego/imagen8.png',2,1),(46,'Bicicleta','/imagenesJuego/imagen9.png',2,1),(47,'Tarea1','/imagenesJuego/actividad1.jpg',3,1),(48,'TareaLineas1','/imagenesJuego/preescritura-para-dos-anos.png',3,1);
 /*!40000 ALTER TABLE `imagenes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,7 +164,7 @@ CREATE TABLE `juego1` (
 
 LOCK TABLES `juego1` WRITE;
 /*!40000 ALTER TABLE `juego1` DISABLE KEYS */;
-INSERT INTO `juego1` VALUES (1,7,8,8,7,15,1);
+INSERT INTO `juego1` VALUES (1,34,37,35,36,15,1);
 /*!40000 ALTER TABLE `juego1` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,7 +218,7 @@ CREATE TABLE `juego2` (
 
 LOCK TABLES `juego2` WRITE;
 /*!40000 ALTER TABLE `juego2` DISABLE KEYS */;
-INSERT INTO `juego2` VALUES (1,1,2,3,4,5,6,1,2,3,1,3);
+INSERT INTO `juego2` VALUES (1,38,39,40,41,42,43,44,45,46,1,3);
 /*!40000 ALTER TABLE `juego2` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,7 +247,7 @@ CREATE TABLE `juego3` (
 
 LOCK TABLES `juego3` WRITE;
 /*!40000 ALTER TABLE `juego3` DISABLE KEYS */;
-INSERT INTO `juego3` VALUES (1,1,1);
+INSERT INTO `juego3` VALUES (1,48,1);
 /*!40000 ALTER TABLE `juego3` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +286,7 @@ CREATE TABLE `juego4` (
 
 LOCK TABLES `juego4` WRITE;
 /*!40000 ALTER TABLE `juego4` DISABLE KEYS */;
-INSERT INTO `juego4` VALUES (1,1,2,3,1,5,1);
+INSERT INTO `juego4` VALUES (1,NULL,NULL,NULL,1,NULL,1);
 /*!40000 ALTER TABLE `juego4` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,7 +306,7 @@ CREATE TABLE `jugada` (
   PRIMARY KEY (`idjugada`),
   KEY `FK_est_est_idx` (`idestudiante`),
   CONSTRAINT `FK_est_est` FOREIGN KEY (`idestudiante`) REFERENCES `estudiantes` (`idestudiantes`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,7 +315,7 @@ CREATE TABLE `jugada` (
 
 LOCK TABLES `jugada` WRITE;
 /*!40000 ALTER TABLE `jugada` DISABLE KEYS */;
-INSERT INTO `jugada` VALUES (1,1,'juego1','10-01-2024',3),(2,1,'juego1','11-01-2024',1),(107,1,'juego2','13-01-2024',1),(136,1,'juego2','13-01-2024',1),(137,1,'juego2','13-01-2024',0),(138,3,'juego2','13-01-2024',1),(164,3,'juego1','14-01-2024',2),(165,3,'juego1','14-01-2024',0),(166,3,'juego1','14-01-2024',3);
+INSERT INTO `jugada` VALUES (1,1,'juego1','10-01-2024',3),(2,1,'juego1','11-01-2024',1),(107,1,'juego2','13-01-2024',1),(136,1,'juego2','13-01-2024',1),(137,1,'juego2','13-01-2024',0),(138,3,'juego2','13-01-2024',1),(164,3,'juego1','14-01-2024',2),(165,3,'juego1','14-01-2024',0),(166,3,'juego1','14-01-2024',3),(167,3,'juego2','15-01-2024',1),(168,3,'juego1','15-01-2024',3),(169,3,'juego1','15-01-2024',3),(170,3,'juego2','15-01-2024',0);
 /*!40000 ALTER TABLE `jugada` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,4 +357,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-14 22:21:46
+-- Dump completed on 2024-01-15 19:54:29
