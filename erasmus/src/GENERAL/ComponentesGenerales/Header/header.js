@@ -20,7 +20,7 @@ const ContenedorPrincipal = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: orangered;
+  background-color: var(--color-p);
   min-height: 50px;
   width: 100%;
   position: relative;
@@ -54,7 +54,7 @@ const ContenedorCuenta = styled.div`
 const SubMenu = styled.div`
   position: absolute;
   top: 100%;
-  background-color: orangered;
+  background-color: var(--color-p);
   max-width: 160px;
   display: ${(props) => (props.open ? "flex" : "none")};
   flex-direction: column;

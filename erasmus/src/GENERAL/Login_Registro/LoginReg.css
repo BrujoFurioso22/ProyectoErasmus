@@ -44,8 +44,8 @@
   
   .botonLogin {
     border-radius: 20px;
-    border: 1px solid #ff4b2b;
-    background-color: #ff4b2b;
+    border: 1px solid var(--color-boton);
+    background-color: var(--color-boton);
     color: #ffffff;
     font-size: 12px;
     font-weight: bold;
@@ -94,7 +94,7 @@
     overflow: hidden;
     width: 800px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 520px;
   }
   
   .form-container {
@@ -158,9 +158,9 @@
   }
   
   .overlay {
-    background: #ff416c;
-    background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    background: var(--color-p);
+    background: -webkit-linear-gradient(to right, var(--color-p), var(--color-boton));
+    background: linear-gradient(to right, var(--color-p), var(--color-boton));
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;

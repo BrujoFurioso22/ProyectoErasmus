@@ -7,7 +7,7 @@ import { useAuthContext } from "CONFIG/context/authcontext";
 const SidebarContainer = styled.div`
   width: ${({ open }) => (open ? "200px" : "50px")};
   height: 100vh;
-  background-color: orangered;
+  background-color: var(--color-p);
   color: #fff;
   overflow: hidden;
   transition: width 0.3s ease;

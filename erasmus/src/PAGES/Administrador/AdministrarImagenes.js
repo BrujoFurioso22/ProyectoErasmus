@@ -38,7 +38,7 @@ const ContendorOpciones = styled.div`
 
 const BotonesOpciones = styled.button`
   padding: 10px 20px;
-  background-color: ${(props) => (props.activo === "true" ? "red" : "white")};
+  background-color: ${(props) => (props.activo === "true" ? "var(--color-boton)" : "white")};
   color: ${(props) => (props.activo === "true" ? "white" : "black")};
   border-radius: 15px;
   border: none;
@@ -87,7 +87,7 @@ const FormStyled = styled.form`
   .botonSubir {
     border: none;
     border-radius: 10px;
-    background-color: rgb(9, 21, 196);
+    background-color: var(--color-boton);
     color: white;
     padding: 4px 10px;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.6);
@@ -96,12 +96,12 @@ const FormStyled = styled.form`
   }
   input[type="submit"] {
     border: none;
-    background-color: rgba(2, 252, 135, 0.81);
+    background-color: var(--color-p);
     border-radius: 10px;
     padding: 15px 15px;
     outline: none;
     font-weight: 700;
-    color: rgb(0, 0, 0);
+    color: var(--color-blanco);
   }
 `;
 

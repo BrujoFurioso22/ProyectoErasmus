@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const ContenedorSeccion = styled.div`
   width: 300px;
-  background-color: orangered;
+  background-color: var(--color-boton);
   margin: 20px;
   border-radius: 20px;
   user-select: none;

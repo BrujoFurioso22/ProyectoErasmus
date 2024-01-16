@@ -10,11 +10,6 @@ import { BotonJugar } from "STYLED-COMPONENTS/Botones";
 import star from "SOURCES/star.svg";
 import neutral from "SOURCES/neutral.svg";
 
-import img1 from "SOURCES/JUEGO1/arrow-up.svg";
-import img2 from "SOURCES/JUEGO1/arrow-down.svg";
-import img3 from "SOURCES/JUEGO1/arrow-izquierda.svg";
-import img4 from "SOURCES/JUEGO1/arrow-derecha.svg";
-
 import styled from "styled-components";
 
 import "./assets/styles/boton_iniciar.css";
@@ -22,10 +17,10 @@ import "./assets/styles/boton_iniciar.css";
 const numJuego = "juego1"; //no tocar esto
 
 const direcciones1 = [
-  { direccion: "ARRIBA", imagen: img1 },
-  { direccion: "ABAJO", imagen: img2 },
-  { direccion: "IZQUIERDA", imagen: img3 },
-  { direccion: "DERECHA", imagen: img4 },
+  { direccion: "ARRIBA" },
+  { direccion: "ABAJO" },
+  { direccion: "IZQUIERDA"},
+  { direccion: "DERECHA"},
 ];
 
 const direcciones = {
@@ -142,7 +137,6 @@ export function Game1() {
   const [arregloAleatorio, setArregloAleatorio] = useState([]); //Arreglo el cual se generara aleatoriamente
   const [indiceActual, setIndiceActual] = useState(0); //Estado para indicar en que ronda va el juego
   const [habilitar, sethabilitar] = useState(true); // Estado para activar o desactivar los botones
-  const [finJuego, setFinJuego] = useState(false); //Estado para decir que el juego se acabo y poder guardar algunos datos
   const [imagenesJuego, setImagenesJuego] = useState({
     img1: "",
     img2: "",
@@ -151,7 +145,6 @@ export function Game1() {
   });
 
   const opcionesDirecciones = direcciones1.map((item) => item.direccion);
-  const opcionesImagenes = direcciones1.map((item) => item.imagen);
 
   function generarArregloAleatorio() {
     const nuevoArreglo = [];
@@ -244,7 +237,6 @@ export function Game1() {
     setArregloAleatorio([]);
     setAccionInicioJuego(false);
     sethabilitar(true);
-    setFinJuego(true);
   };
 
   //Funcion a llamar para poder iniciar el juego, se establece en 0 algunas variables para poder empezar

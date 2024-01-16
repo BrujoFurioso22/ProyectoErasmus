@@ -8,6 +8,8 @@ import {
 import styled from "styled-components";
 import "./boton.css";
 import "./botonVerificar.css";
+import { BotonJugar } from "STYLED-COMPONENTS/Botones";
+
 import star from "SOURCES/star.svg";
 import neutral from "SOURCES/neutral.svg";
 
@@ -55,8 +57,8 @@ const ContendorContenido = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: blanchedalmond;
-    border: 4px outset rgba(0, 0, 0, 0.264);
+    background-color: #63b4ff;
+    border: 4px outset var(--color-blanco);
     border-radius: 10px;
     padding: 10px;
     transition: 0.5s ease all;
@@ -73,20 +75,20 @@ const ContendorContenido = styled.div`
   }
 `;
 
-const BotonJugar = styled.button`
-  padding: 10px 25px;
-  outline: none;
-  border: none;
-  border-radius: 7px;
-  transition: all 0.3s ease;
-  cursor: pointer;
+// const BotonJugar = styled.button`
+//   padding: 10px 25px;
+//   outline: none;
+//   border: none;
+//   border-radius: 7px;
+//   transition: all 0.3s ease;
+//   cursor: pointer;
 
-  &:hover {
-    background-color: rgba(137, 43, 226, 0.63);
-    color: aliceblue;
-    box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-  }
-`;
+//   &:hover {
+//     background-color: rgba(137, 43, 226, 0.63);
+//     color: aliceblue;
+//     box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+//   }
+// `;
 
 const ContenedorCuadrosContenedores = styled.div`
   width: 100%;
@@ -200,7 +202,6 @@ export function Game2() {
   const [estrellas, setEstrellas] = useState(-1);
   const [jsonImages, setJsonImages] = useState([]);
 
-
   const buscarRutaImagenPorId = (idimg, jsonArr) => {
     // Buscar el objeto en el arreglo que coincida con el idimg proporcionado
     const imagenEncontrada = jsonArr.find(
@@ -225,7 +226,7 @@ export function Game2() {
         jsonFiltrado[key] = ids[key];
       }
     }
-    let jsonFinal = []
+    let jsonFinal = [];
 
     for (const key in jsonFiltrado) {
       if (key.startsWith("img")) {
@@ -454,20 +455,21 @@ export function Game2() {
               Numero de cartas
               <br /> a memorizar: {numCartas}
             </span>
-            <div className="buttons">
-              <button
+            <div className="buttons" style={{ opacity: mostrarJugar ? "1" : "0" }}>
+              <BotonJugar
+                
+                disabled={!mostrarJugar}
+                handleClick={ IniciarJuego}
+                texto={haJugado === 0 ? "JUGAR" : "JUGAR DE NUEVO"}
+              />
+              {/* <BotonJugar
                 disabled={!mostrarJugar}
                 style={{ opacity: mostrarJugar ? "1" : "0" }}
                 onClick={IniciarJuego}
                 className="btn"
               >
-                <span></span>
-                <p
-                  data-start="Go"
-                  data-text="jugando"
-                  data-title={haJugado === 0 ? "Jugar" : "Jugar de nuevo"}
-                ></p>
-              </button>
+                <span>{haJugado === 0 ? "Jugar" : "Jugar de nuevo"}</span>
+              </BotonJugar> */}
             </div>
           </ContenedorCentrados>
           {iniciarJuego === 1 && (

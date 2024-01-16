@@ -5,9 +5,9 @@ const Boton = styled.div`
   width: 150px;
   min-height: 100px;
   height: auto;
-  background-color: rgb(165, 56, 165);
+  background-color: var(--color-boton);
   color: white;
-  border: 2px dashed rgba(0, 0, 0, 0.431);
+  border: 2px dashed var(--color-p);
   border-radius: 25px;
   user-select: none;
   transition: all 0.3s ease;
@@ -15,7 +15,7 @@ const Boton = styled.div`
   justify-content: center;
   flex-direction: column;
   &.seleccionado {
-    background-color: rgba(130, 238, 231, 0.507);
+    background-color: var(--color-p);
     transform: scale(1.2);
   }
   &:hover {

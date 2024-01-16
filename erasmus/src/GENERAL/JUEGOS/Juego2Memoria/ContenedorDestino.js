@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 
 const ContenedorImagenesArrastradas = styled.div`
-  background-color: rgb(185, 185, 185);
+  background-color: var(--color-p);
   min-width: 200px;
   max-width: 100%;
   width: max-content;

@@ -27,7 +27,7 @@ const ContenedorTools = styled.div`
 const BotonTools = styled.div`
   border: none;
   border-radius: 8px;
-  background-color: blue;
+  background-color: var(--color-boton);
   color: white;
   padding: 6px 15px;
   cursor: pointer;
@@ -257,8 +257,11 @@ export const CanvasApp = () => {
     const mainCanvas = mainCanvasRef.current;
     const context = mainCanvas.getContext("2d");
     context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-    context.fillStyle = '#ffffff'; // Puedes ajustar el color al que desees
-    context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+    if(imgTarea.rutaimagen === ""){
+      context.fillStyle = '#ffffff'; // Puedes ajustar el color al que desees
+      context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+    }
+    
   };
   const toggleBorrador = () => {
     if (eraserMode) {

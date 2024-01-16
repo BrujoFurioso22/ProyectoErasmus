@@ -12,7 +12,7 @@
     width: 160px;
     height: 50px;
     background-color: white;
-    color: #568fa6;
+    color: var(--color-negro);
     position: relative;
     overflow: hidden;
     font-size: 14px;
