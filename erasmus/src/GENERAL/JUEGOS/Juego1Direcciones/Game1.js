@@ -353,6 +353,7 @@ export function Game1() {
             imagen={imagenesJuego.img4}
           />
         </div>
+        <div className="cambiarModo"> </div>
         <div className="mensaje-central">
           {iniciarJuego === true ? (
             <ContenedorCentral>

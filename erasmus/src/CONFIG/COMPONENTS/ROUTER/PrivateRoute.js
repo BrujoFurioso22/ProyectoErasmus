@@ -15,11 +15,5 @@ export default function PrivateRoute() {
   } else {
     indexPage = ROUTES.PRINCIPAL;
   }
-
-  return (
-    <div>
-      <Navigate style={{ display: "none" }} to={indexPage}  />
-      <Outlet />
-    </div>
-  );
+  return <div>{tipoUsu ? <Outlet /> : <Navigate to={indexPage} />}</div>;
 }

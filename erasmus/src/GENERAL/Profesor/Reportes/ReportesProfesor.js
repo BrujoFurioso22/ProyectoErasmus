@@ -1,5 +1,15 @@
 import React from "react";
-import { ContendorPadre } from "STYLED-COMPONENTS/Estructura";
+import styled from "styled-components";
+
+const ContenedorPrincipal = styled.div`
+display: flex;
+justify-content: center;
+padding: 20px;
+`
 export const ReportesProfesor = () => {
-  return <ContendorPadre>ReportesProfesor</ContendorPadre>;
+  return (
+    <ContenedorPrincipal style={{ paddingTop: "15px" }}>
+      ReportesProfesor
+    </ContenedorPrincipal>
+  );
 };
