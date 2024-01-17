@@ -49,3 +49,43 @@ export async function ConsultaIDprofesor(correoprofesor) {
     return [];
   }
 }
+export async function ConsultaReporteEstJuego(idestudiante, numjuego) {
+  try {
+    const res = await axios.get(
+      `${url}/profesor/obtenerReporteEstJuego/${idestudiante}/${numjuego}`
+    );
+    return res.data;
+  } catch (err) {
+    return [];
+  }
+}
+export async function ConsultaReporteEstJuegoTotal(idestudiante, numjuego) {
+  try {
+    const res = await axios.get(
+      `${url}/profesor/obtenerReporteEstJuegoTotal/${idestudiante}/${numjuego}`
+    );
+    return res.data;
+  } catch (err) {
+    return [];
+  }
+}
+export async function ConsultaReporteEstJuegoFecha(idestudiante, numjuego, fechaI, fechaF) {
+  try {
+    const res = await axios.get(
+      `${url}/profesor/obtenerReporteEstJuegoFecha/${idestudiante}/${numjuego}/${fechaI}/${fechaF}`
+    );
+    return res.data;
+  } catch (err) {
+    return [];
+  }
+}
+export async function ConsultaReporteEstJuegoTotalFecha(idestudiante, numjuego,fechaI,fechaF) {
+  try {
+    const res = await axios.get(
+      `${url}/profesor/obtenerReporteEstJuegoTotalFecha/${idestudiante}/${numjuego}/${fechaI}/${fechaF}`
+    );
+    return res.data;
+  } catch (err) {
+    return [];
+  }
+}

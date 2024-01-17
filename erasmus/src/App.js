@@ -23,6 +23,7 @@ import { ConfiguracionEstudiantes } from "PAGES/ConfiguracionEstudiantes";
 import { ReportesProf } from "PAGES/ReportesProf";
 import AdminRoute from "CONFIG/COMPONENTS/ROUTER/AdminRoute";
 import { AdminPage } from "PAGES/Administrador/AdministrarImagenes";
+import { PrincipalPage } from "PAGES/Principal";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -44,7 +45,7 @@ export default function App() {
         {
           index: true,
           path: ROUTES.PRINCIPAL,
-          element: <Principal />,
+          element: <PrincipalPage />,
         },
         {
           path: ROUTES.PERFIL,
@@ -58,11 +59,6 @@ export default function App() {
           path: "/",
           element: <ProfesorRoute />,
           children: [
-            {
-              index: true,
-              path: ROUTES.PRINCIPAL,
-              element: <Principal />,
-            },
             {
               path: ROUTES.CONFIGURACION_JUEGOS,
               element: <ConfiguracionJuegos />,
@@ -81,11 +77,6 @@ export default function App() {
           path: "/",
           element: <EstudianteRoute />,
           children: [
-            {
-              index: true,
-              path: ROUTES.PRINCIPAL,
-              element: <Principal />,
-            },
             {
               path: ROUTES.JUEGOS.J1,
               element: <Juego1 />,

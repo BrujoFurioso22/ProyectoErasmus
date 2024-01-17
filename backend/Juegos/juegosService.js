@@ -178,7 +178,7 @@ export const crearConfiguracionesJuegos4 = (req, res) => {
 export const guardarPuntajeJuego = (req, res) => {
   // Obtener datos del cuerpo de la solicitud
   const { juego, fechajugada, calificacion, idestudiante } = req.body;
-  const insertUserQuery1 = `INSERT INTO baseerasmus.jugada (idestudiante,juego,fecha_jugada,calificacion) VALUES('${idestudiante}','${juego}','${fechajugada}','${calificacion}');`;
+  const insertUserQuery1 = `INSERT INTO baseerasmus.jugada (idestudiante,juego,fechajugada,calificacion) VALUES('${idestudiante}','${juego}','${fechajugada}','${calificacion}');`;
   db.query(insertUserQuery1, (insertErr, insertData) => {
     if (insertErr) return res.json(insertErr);
     return res.json({

@@ -219,9 +219,9 @@ export function Game1() {
     const fecha = new Date();
     const dia = fecha.getDate().toString().padStart(2, "0");
     const mes = (fecha.getMonth() + 1).toString().padStart(2, "0"); // Meses van de 0 a 11
-    const año = fecha.getFullYear();
+    const anio = fecha.getFullYear();
 
-    const fechaFormateada = `${dia}-${mes}-${año}`;
+    const fechaFormateada = `${anio}-${mes}-${dia}`;
     return fechaFormateada;
   };
 

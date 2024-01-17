@@ -5,12 +5,12 @@ import { ROUTES } from "CONFIG/ROUTES/paths";
 const ContenedorPrincipal = styled.div`
   display: flex;
   justify-content: flex-start;
-  align-items: center ;
-  padding-top: 5rem;
-
+  align-items: center;
   flex-direction: column;
+  padding-top: 5rem;
   height: calc(100vh - 50px);
 `;
+
 
 const ContenedorJuegos = styled.div`
   display: flex;
@@ -19,31 +19,28 @@ const ContenedorJuegos = styled.div`
   align-items: center;
   flex-wrap: wrap;
 `;
-const juegos = [
+
+const secciones = [
   {
-    nombre: "Direcciones",
-    path: ROUTES.JUEGOS.J1,
+    nombre: "Configuración Juegos",
+    path: ROUTES.CONFIGURACION_JUEGOS,
   },
   {
-    nombre: "Memoria",
-    path: ROUTES.JUEGOS.J2,
+    nombre: "Configuración Estudiantes",
+    path: ROUTES.CONFIGURACION_ESTUDIANTES,
   },
   {
-    nombre: "Pizarrón",
-    path: ROUTES.JUEGOS.J3,
-  },
-  {
-    nombre: "Globos Colores",
-    path: ROUTES.JUEGOS.J4,
+    nombre: "Reportes",
+    path: ROUTES.REPORTES_PROFESOR,
   },
 ];
-export const Principal = () => {
+export const PrincipalProfesor = () => {
   return (
     <ContenedorPrincipal>
-      <h1>Bienvenido, Listo para jugar?</h1>
+      <h1>Bienvenido, Profesor</h1>
 
       <ContenedorJuegos>
-        {juegos.map((item, index) => (
+        {secciones.map((item, index) => (
           <SeccionesJuegos key={index} juego={item} conteo={index} />
         ))}
       </ContenedorJuegos>
