@@ -11,7 +11,6 @@ const ContenedorPrincipal = styled.div`
   height: calc(100vh - 50px);
 `;
 
-
 const ContenedorJuegos = styled.div`
   display: flex;
   width: 100%;

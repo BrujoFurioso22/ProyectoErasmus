@@ -54,7 +54,7 @@ const ButtonStyled = styled.button`
   border-radius: 8px;
   border: none;
   padding: 5px 10px;
-  background-color: rgba(21, 78, 210, 1);
+  background-color: var(--color-boton);
   color: white;
 `;
 

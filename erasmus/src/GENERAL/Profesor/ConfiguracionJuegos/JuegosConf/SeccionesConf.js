@@ -15,103 +15,6 @@ import {
 } from "CONFIG/BACKEND/Consultas/Juegos";
 import { ActualizarConfiguracion1 } from "CONFIG/BACKEND/Consultas/Juegos";
 
-const datos1 = [
-  {
-    value: 1,
-    texto: "1",
-  },
-  {
-    value: 2,
-    texto: "2",
-  },
-  {
-    value: 3,
-    texto: "3",
-  },
-  {
-    value: 4,
-    texto: "4",
-  },
-];
-const datos2 = [
-  {
-    value: 1,
-    texto: "1",
-  },
-  {
-    value: 2,
-    texto: "2",
-  },
-  {
-    value: 3,
-    texto: "3",
-  },
-  {
-    value: 4,
-    texto: "4",
-  },
-  {
-    value: 5,
-    texto: "6",
-  },
-  {
-    value: 6,
-    texto: "6",
-  },
-  {
-    value: 7,
-    texto: "7",
-  },
-  {
-    value: 8,
-    texto: "8",
-  },
-  {
-    value: 9,
-    texto: "9",
-  },
-];
-const datos3 = [
-  {
-    value: 1,
-    texto: "1",
-  },
-  {
-    value: 2,
-    texto: "3",
-  },
-  {
-    value: 4,
-    texto: "4",
-  },
-  {
-    value: 5,
-    texto: "6",
-  },
-];
-const datos4 = [
-  {
-    value: 1,
-    texto: "Globo verde",
-  },
-  {
-    value: 2,
-    texto: "Globo amarillo",
-  },
-  {
-    value: 3,
-    texto: "Globo rojo",
-  },
-  {
-    value: 4,
-    texto: "Globo azul",
-  },
-  {
-    value: 5,
-    texto: "Globo naranja",
-  },
-];
-
 const puntajejuego1 = [
   {
     value: 5,
@@ -144,6 +47,18 @@ const puntajejuego2 = [
 const Contenedor = styled.div`
   display: flex;
   justify-content: center;
+  transition: all 0.5s ease;
+  transition: width 3s ease;
+  animation: anim 0.5s ease;
+
+  @keyframes anim {
+    0%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
+  }
 `;
 const SelectStyled = styled.select`
   border-radius: 8px;
@@ -152,7 +67,7 @@ const SelectStyled = styled.select`
 const BotonStyled = styled.button`
   padding: 8px 15px;
   color: white;
-  background-color: rgba(0, 88, 210, 0.87);
+  background-color: var(--color-boton);
   border: none;
   border-radius: 15px;
 `;

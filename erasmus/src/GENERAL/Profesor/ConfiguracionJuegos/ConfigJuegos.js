@@ -38,7 +38,7 @@ const ContenedorTabs = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: rgba(0, 0, 0, 0.32);
+      background-color: rgba(0, 0, 0, 0.13);
       padding: 16px 20px;
       border-radius: 10px;
       cursor: pointer;
@@ -47,7 +47,7 @@ const ContenedorTabs = styled.div`
       column-gap: 8px;
 
       &.active {
-        background-color: red;
+        background-color: var(--color-p);
         color: white;
       }
     }
@@ -64,6 +64,7 @@ const ContenedorConfiguraciones = styled.div`
   min-width: 500px;
   border-radius: 15px;
   background-color: whitesmoke;
+  transition: all 2s ease;
 
 `;
 
