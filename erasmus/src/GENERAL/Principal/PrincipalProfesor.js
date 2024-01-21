@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { SeccionesJuegos } from "GENERAL/Principal/SeccionesJuegos";
+import { SeccionesProfesor } from "./SeccionesProfesor";
 import { ROUTES } from "CONFIG/ROUTES/paths";
 const ContenedorPrincipal = styled.div`
   display: flex;
@@ -40,7 +40,7 @@ export const PrincipalProfesor = () => {
 
       <ContenedorJuegos>
         {secciones.map((item, index) => (
-          <SeccionesJuegos key={index} juego={item} conteo={index} />
+          <SeccionesProfesor key={index} secciones={item} conteo={index} />
         ))}
       </ContenedorJuegos>
     </ContenedorPrincipal>

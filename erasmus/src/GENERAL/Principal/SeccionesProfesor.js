@@ -33,7 +33,7 @@ const BotonJugar = styled(Link)`
 
   &:hover {
     h3 {
-      transform: translateX(50px) scale(1.1);
+      transform: translateX(20px) scale(1.1);
     }
   }
 `;
@@ -42,7 +42,7 @@ const StyledH3 = styled.h3`
   transition: transform 0.3s ease;
 `;
 
-export const SeccionesJuegos = ({ secciones, conteo }) => {
+export const SeccionesProfesor = ({ secciones, conteo }) => {
   return (
     <ContenedorSeccion>
       <ContenedorSeccionInterior>
