@@ -12,6 +12,7 @@ import { BotonJugar } from "STYLED-COMPONENTS/Botones";
 
 import star from "SOURCES/star.svg";
 import neutral from "SOURCES/neutral.svg";
+import { Loader } from "STYLED-COMPONENTS/Loader/loader";
 
 const numJuego = "juego2";
 
@@ -201,6 +202,44 @@ export function Game2() {
   const [numCartas, setNumCartas] = useState(3);
   const [estrellas, setEstrellas] = useState(-1);
   const [jsonImages, setJsonImages] = useState([]);
+  const [mostrarLoader, setMostrarLoader] = useState(false);
+
+  const DecirTexto = (text, delay) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (win === "") {
+          setMostrarLoader(true);
+        }
+        const synth = window.speechSynthesis;
+        const utterThis = new SpeechSynthesisUtterance(text);
+
+        // Personalizar la voz
+        const voices = synth.getVoices();
+        utterThis.voice = voices.find((voice) => voice.lang === "es-ES");
+
+        // Establecer el idioma
+        utterThis.lang = "es-ES";
+        utterThis.rate = 0.7;
+
+        // Hablar el texto
+        synth.speak(utterThis);
+
+        // Manejar el evento onend
+        utterThis.onend = () => {
+          console.log("La síntesis de voz ha terminado");
+          // Resolver la promesa cuando termine la síntesis de voz
+          resolve();
+        };
+
+        // Manejar cualquier error
+        utterThis.onerror = (error) => {
+          console.error("Error en la síntesis de voz", error);
+          // Rechazar la promesa en caso de error
+          reject(error);
+        };
+      }, delay);
+    });
+  };
 
   const buscarRutaImagenPorId = (idimg, jsonArr) => {
     // Buscar el objeto en el arreglo que coincida con el idimg proporcionado
@@ -295,17 +334,30 @@ export function Game2() {
   };
 
   const IniciarJuego = () => {
-    Resetear();
-    setIniciarJuego(1);
-    obtenerImagenesAleatorias(jsonImages, numCartas);
-    setMostrarImagenes(1);
-    setMostrarJugar(false);
-    setHaJugado(1);
+    setMostrarLoader(true);
+    DecirTexto(
+      "Observa las imágenes en el cuadro. Luego, coloca las imágenes en el mismo orden en el rectángulo vacío. Puedes arrastrar o seleccionar las imágenes. ¡Buena suerte!",
+      500
+    )
+      .then(() => {
+        Resetear();
+        // Realizar una acción después de que termine de hablar
+        setMostrarLoader(false);
+        setIniciarJuego(1);
+        obtenerImagenesAleatorias(jsonImages, numCartas);
+        setMostrarImagenes(1);
+        setMostrarJugar(false);
+        setHaJugado(1);
 
-    setTimeout(() => {
-      setMostrarImagenes(0);
-      setEditable(true);
-    }, 5000);
+        setTimeout(() => {
+          setMostrarImagenes(0);
+          setEditable(true);
+        }, 6000);
+      })
+      .catch((error) => {
+        // Manejar cualquier error que pueda ocurrir durante la síntesis de voz
+        console.error("Error durante la síntesis de voz", error);
+      });
   };
 
   // Función para obtener un arreglo aleatorio sin repeticiones
@@ -443,26 +495,33 @@ export function Game2() {
             </React.Fragment>
           )}
         </div>
-        <div className="contendor-2">
-          <ContenedorCentrados style={{ gap: "20px" }}>
-            <span
-              style={{
-                backgroundColor: "white",
-                padding: "3px 10px",
-                borderRadius: "10px",
-              }}
-            >
-              Numero de cartas
-              <br /> a memorizar: {numCartas}
-            </span>
-            <div className="buttons" style={{ opacity: mostrarJugar ? "1" : "0" }}>
-              <BotonJugar
-                
-                disabled={!mostrarJugar}
-                handleClick={ IniciarJuego}
-                texto={haJugado === 0 ? "JUGAR" : "JUGAR DE NUEVO"}
-              />
-              {/* <BotonJugar
+        {mostrarLoader === true ? (
+          <div className="contendor-2">
+            <Loader />
+          </div>
+        ) : (
+          <div className="contendor-2">
+            <ContenedorCentrados style={{ gap: "20px" }}>
+              <span
+                style={{
+                  backgroundColor: "white",
+                  padding: "3px 10px",
+                  borderRadius: "10px",
+                }}
+              >
+                Numero de cartas
+                <br /> a memorizar: {numCartas}
+              </span>
+              <div
+                className="buttons"
+                style={{ opacity: mostrarJugar ? "1" : "0" }}
+              >
+                <BotonJugar
+                  disabled={!mostrarJugar}
+                  handleClick={IniciarJuego}
+                  texto={haJugado === 0 ? "JUGAR" : "JUGAR DE NUEVO"}
+                />
+                {/* <BotonJugar
                 disabled={!mostrarJugar}
                 style={{ opacity: mostrarJugar ? "1" : "0" }}
                 onClick={IniciarJuego}
@@ -470,58 +529,59 @@ export function Game2() {
               >
                 <span>{haJugado === 0 ? "Jugar" : "Jugar de nuevo"}</span>
               </BotonJugar> */}
-            </div>
-          </ContenedorCentrados>
-          {iniciarJuego === 1 && (
-            <ContenedorCuadrosContenedores>
-              {mostrarImagenes === 1 ? (
-                <ContenedorImagenesArrastradas>
-                  {imagenesAleatorias.map((imagen, index) => (
-                    <DestinoContenedor key={index} id={imagen.idimagenes}>
-                      <img
-                        className="destino-imagen"
-                        src={imagen.rutaimagen}
-                        alt={imagen.nombreimagen}
-                      />
-                    </DestinoContenedor>
-                  ))}
-                </ContenedorImagenesArrastradas>
-              ) : (
-                <ContenedorDestino
-                  imagenesEnContenedor={imagenesEnContenedor}
-                  dejar={() => (editable ? handleDrop() : "")}
-                  idimg={ID}
-                  jsonImages={jsonImages}
-                  removeImage={removeImage}
-                />
-              )}
-              {win !== "" && (
-                <ContenedorImagenesArrastradas
-                  className={`${win ? "correcto" : "erroneo"}`}
-                >
-                  {imagenesAleatorias.map((imagen, index) => (
-                    <DestinoContenedor key={index} id={imagen.idimagenes}>
-                      <img
-                        className="destino-imagen"
-                        src={imagen.rutaimagen}
-                        alt={imagen.nombreimagen}
-                      />
-                    </DestinoContenedor>
-                  ))}
-                </ContenedorImagenesArrastradas>
-              )}
-              {imagenesEnContenedor.length === numCartas &&
-                mostrarVerificar && (
-                  <button
-                    onClick={() => VerificarJuego()}
-                    className="botonVerificar"
-                  >
-                    Verificar Respuesta
-                  </button>
+              </div>
+            </ContenedorCentrados>
+            {iniciarJuego === 1 && (
+              <ContenedorCuadrosContenedores>
+                {mostrarImagenes === 1 ? (
+                  <ContenedorImagenesArrastradas>
+                    {imagenesAleatorias.map((imagen, index) => (
+                      <DestinoContenedor key={index} id={imagen.idimagenes}>
+                        <img
+                          className="destino-imagen"
+                          src={imagen.rutaimagen}
+                          alt={imagen.nombreimagen}
+                        />
+                      </DestinoContenedor>
+                    ))}
+                  </ContenedorImagenesArrastradas>
+                ) : (
+                  <ContenedorDestino
+                    imagenesEnContenedor={imagenesEnContenedor}
+                    dejar={() => (editable ? handleDrop() : "")}
+                    idimg={ID}
+                    jsonImages={jsonImages}
+                    removeImage={removeImage}
+                  />
                 )}
-            </ContenedorCuadrosContenedores>
-          )}
-        </div>
+                {win !== "" && (
+                  <ContenedorImagenesArrastradas
+                    className={`${win ? "correcto" : "erroneo"}`}
+                  >
+                    {imagenesAleatorias.map((imagen, index) => (
+                      <DestinoContenedor key={index} id={imagen.idimagenes}>
+                        <img
+                          className="destino-imagen"
+                          src={imagen.rutaimagen}
+                          alt={imagen.nombreimagen}
+                        />
+                      </DestinoContenedor>
+                    ))}
+                  </ContenedorImagenesArrastradas>
+                )}
+                {imagenesEnContenedor.length === numCartas &&
+                  mostrarVerificar && (
+                    <button
+                      onClick={() => VerificarJuego()}
+                      className="botonVerificar"
+                    >
+                      Verificar Respuesta
+                    </button>
+                  )}
+              </ContenedorCuadrosContenedores>
+            )}
+          </div>
+        )}
       </ContendorContenido>
     </ContendorGlobal>
   );

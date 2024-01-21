@@ -9,6 +9,7 @@ import {
 import { BotonJugar } from "STYLED-COMPONENTS/Botones";
 import star from "SOURCES/star.svg";
 import neutral from "SOURCES/neutral.svg";
+import { Loader } from "STYLED-COMPONENTS/Loader/loader";
 
 import styled from "styled-components";
 
@@ -16,19 +17,6 @@ import "./assets/styles/boton_iniciar.css";
 
 const numJuego = "juego1"; //no tocar esto
 
-const direcciones1 = [
-  { direccion: "ARRIBA" },
-  { direccion: "ABAJO" },
-  { direccion: "IZQUIERDA"},
-  { direccion: "DERECHA"},
-];
-
-const direcciones = {
-  arriba: "ARRIBA",
-  abajo: "ABAJO",
-  izquierda: "IZQUIERDA",
-  derecha: "DERECHA",
-};
 
 const ContenedorGlobal = styled.div`
   width: 100%;
@@ -143,16 +131,64 @@ export function Game1() {
     img3: "",
     img4: "",
   });
+  const [mostrarLoader, setMostrarLoader] = useState(false);
 
-  const opcionesDirecciones = direcciones1.map((item) => item.direccion);
+
+  const DecirTexto = (text, delay) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (iniciarJuego === false) {
+          setMostrarLoader(true);
+        }
+        const synth = window.speechSynthesis;
+        const utterThis = new SpeechSynthesisUtterance(text);
+
+        // Personalizar la voz
+        const voices = synth.getVoices();
+        utterThis.voice = voices.find((voice) => voice.lang === "es-ES");
+
+        // Establecer el idioma
+        utterThis.lang = "es-ES";
+        utterThis.rate = 0.7;
+
+        // Hablar el texto
+        synth.speak(utterThis);
+
+        // Manejar el evento onend
+        utterThis.onend = () => {
+          console.log("La síntesis de voz ha terminado");
+          // Resolver la promesa cuando termine la síntesis de voz
+          resolve();
+        };
+
+        // Manejar cualquier error
+        utterThis.onerror = (error) => {
+          console.error("Error en la síntesis de voz", error);
+          // Rechazar la promesa en caso de error
+          reject(error);
+        };
+      }, delay);
+    });
+  };
+
 
   function generarArregloAleatorio() {
     const nuevoArreglo = [];
+
+    const nombresImagenes = [];
+
+    for (const key in imagenesJuego) {
+      if (imagenesJuego.hasOwnProperty(key)) {
+        nombresImagenes.push(imagenesJuego[key].nombreimagen);
+      }
+    }
+    console.log(nombresImagenes)
+
     for (let i = 0; i < numRondas; i++) {
       const indiceAleatorio = Math.floor(
-        Math.random() * opcionesDirecciones.length
+        Math.random() * nombresImagenes.length
       );
-      nuevoArreglo.push(opcionesDirecciones[indiceAleatorio]);
+      nuevoArreglo.push(nombresImagenes[indiceAleatorio]);
     }
     return nuevoArreglo;
   }
@@ -161,20 +197,24 @@ export function Game1() {
     const imagenEncontrada = jsonArr.find(
       (imagen) => imagen.idimagenes === idimg
     );
-  
+
     // Si se encuentra la imagen, devolver el objeto de la imagen, de lo contrario, devolver un objeto con la ruta predeterminada
     return imagenEncontrada
       ? imagenEncontrada
-      : { idimagenes: 0, rutaimagen: "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg" };
+      : {
+          idimagenes: 0,
+          nombreimagen:"vacio",
+          rutaimagen:
+            "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg",
+        };
   };
-  
 
   const ConsultarRondas = async () => {
     const res = await ConsultaRondasJuego1(localStorage.getItem("id"));
     console.log(res);
     if (res.length > 0) {
       setNumRondas(res[0].numRondas);
-      console.log(res[0]);
+      // console.log(res[0]);
       const resimg = await ConsultarInfoImagenes();
 
       if (resimg.length > 0) {
@@ -187,7 +227,7 @@ export function Game1() {
         }));
       }
 
-      console.log(buscarRutaImagenPorId(res[0].img1, resimg));
+      // console.log(buscarRutaImagenPorId(res[0].img1, resimg));
     }
   };
 
@@ -208,6 +248,9 @@ export function Game1() {
   const mostrarSiguienteAccion = () => {
     if (indiceActual < arregloAleatorio.length) {
       setaccion(arregloAleatorio[indiceActual]);
+      DecirTexto(arregloAleatorio[indiceActual], 800);
+      
+
       setIndiceActual(indiceActual + 1);
     } else {
       setaccion("Fin del Juego");
@@ -303,17 +346,30 @@ export function Game1() {
 
   //Funcion para iniciar el juego
   const handleIniciarJuego = (value) => {
-    setTimeout(() => {
-      setIniciarJuego(value);
-      setcontador(4);
-      setPuntaje(0);
-      setTimeout(() => {
-        setAccionInicioJuego(true);
-      }, 5000);
+    DecirTexto(
+      "selecciona los rectangulos de acuerdo a la indicacion que se escuchara a continuacion",
+      500
+    )
+      .then(() => {
+        // Realizar una acción después de que termine de hablar
 
-      const nuevoArreglo = generarArregloAleatorio();
-      setArregloAleatorio(nuevoArreglo);
-    }, 1000);
+        setTimeout(() => {
+          setMostrarLoader(false);
+          setIniciarJuego(value);
+          setcontador(4);
+          setPuntaje(0);
+          setTimeout(() => {
+            setAccionInicioJuego(true);
+          }, 5000);
+
+          const nuevoArreglo = generarArregloAleatorio();
+          setArregloAleatorio(nuevoArreglo);
+        }, 1000);
+      })
+      .catch((error) => {
+        // Manejar cualquier error que pueda ocurrir durante la síntesis de voz
+        console.error("Error durante la síntesis de voz", error);
+      });
   };
 
   const renderStars = (numRondas) => {
@@ -336,8 +392,8 @@ export function Game1() {
         <div className="boton-arriba">
           <Botones
             habilitar={habilitar}
-            texto={!habilitar ? direcciones.arriba : "?"}
-            indicacion={direcciones.arriba}
+            texto={!habilitar ? imagenesJuego.img1 : "?"}
+            indicacion={imagenesJuego.img1}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
             imagen={imagenesJuego.img1}
@@ -346,8 +402,8 @@ export function Game1() {
         <div className="boton-izquierda">
           <Botones
             habilitar={habilitar}
-            texto={!habilitar ? direcciones.izquierda : "?"}
-            indicacion={direcciones.izquierda}
+            texto={!habilitar ? imagenesJuego.img4 : "?"}
+            indicacion={imagenesJuego.img4}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
             imagen={imagenesJuego.img4}
@@ -355,52 +411,58 @@ export function Game1() {
         </div>
         <div className="cambiarModo"> </div>
         <div className="mensaje-central">
-          {iniciarJuego === true ? (
-            <ContenedorCentral>
-              {AccionInicioJuego && <span>Ronda: {indiceActual}</span>}
-              <span style={{ fontWeight: "600", fontSize: "25px" }}>
-                {accion}
-              </span>
-            </ContenedorCentral>
-          ) : iniciarJuego === false && hajugado === true ? (
-            <ContenedorCentral>
-              <h3
-                style={{
-                  backgroundColor: "white",
-                  padding: "4px 8px",
-                  borderRadius: "8px",
-                  textAlign: "center",
-                }}
-              >
-                {puntaje === numRondas
-                  ? "Felicidades has acertado todo"
-                  : "Lo siento, intenta de nuevo"}
-              </h3>
-              {puntaje === numRondas ? (
-                <React.Fragment>{renderStars(numRondas)}</React.Fragment>
-              ) : (
-                <ContenedorStars>
-                  <img src={neutral} alt="Imagen Neutral" />
-                </ContenedorStars>
-              )}
+          {mostrarLoader !== true ? (
+            iniciarJuego === true ? (
+              <ContenedorCentral>
+                {AccionInicioJuego && <span>Ronda: {indiceActual}</span>}
+                <span style={{ fontWeight: "600", fontSize: "25px", textTransform:"uppercase"}}>
+                  {accion}
+                </span>
+              </ContenedorCentral>
+            ) : iniciarJuego === false && hajugado === true ? (
+              <ContenedorCentral>
+                <h3
+                  style={{
+                    backgroundColor: "white",
+                    padding: "4px 8px",
+                    borderRadius: "8px",
+                    textAlign: "center",
+                  }}
+                >
+                  {puntaje === numRondas
+                    ? "Felicidades has acertado todo"
+                    : "Lo siento, intenta de nuevo"}
+                </h3>
+                {puntaje === numRondas ? (
+                  <React.Fragment>{renderStars(numRondas)}</React.Fragment>
+                ) : (
+                  <ContenedorStars>
+                    <img src={neutral} alt="Imagen Neutral" />
+                  </ContenedorStars>
+                )}
 
+                <BotonJugar
+                  handleClick={() => handleIniciarJuego(true)}
+                  texto="JUGAR DE NUEVO"
+                />
+              </ContenedorCentral>
+            ) : (
               <BotonJugar
                 handleClick={() => handleIniciarJuego(true)}
-                texto="JUGAR DE NUEVO"
+                texto="JUGAR"
               />
-            </ContenedorCentral>
+            )
           ) : (
-            <BotonJugar
-              handleClick={() => handleIniciarJuego(true)}
-              texto="JUGAR"
-            />
+            <div>
+              <Loader />
+            </div>
           )}
         </div>
         <div className="boton-derecha">
           <Botones
             habilitar={habilitar}
-            texto={!habilitar ? direcciones.derecha : "?"}
-            indicacion={direcciones.derecha}
+            texto={!habilitar ? imagenesJuego.img2 : "?"}
+            indicacion={imagenesJuego.img2}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
             imagen={imagenesJuego.img2}
@@ -409,8 +471,8 @@ export function Game1() {
         <div className="boton-abajo">
           <Botones
             habilitar={habilitar}
-            texto={!habilitar ? direcciones.abajo : "?"}
-            indicacion={direcciones.abajo}
+            texto={!habilitar ? imagenesJuego.img3 : "?"}
+            indicacion={imagenesJuego.img3}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
             imagen={imagenesJuego.img3}

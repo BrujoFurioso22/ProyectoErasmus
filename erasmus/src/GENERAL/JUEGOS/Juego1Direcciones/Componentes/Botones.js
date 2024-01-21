@@ -64,9 +64,9 @@ export const Botones = ({
       <Boton
         disabled={habilitar}
         className={`${botonSeleccionado !== "" ? "seleccionado" : ""}`}
-        onClick={() => handleClickButton(indicacion)}
+        onClick={() => handleClickButton(indicacion.nombreimagen)}
       >
-        <span>{texto}</span>
+        <span style={{textTransform: "uppercase"}}>{texto.nombreimagen}</span>
         {!habilitar && <img src={imagen.rutaimagen} alt="img" />}
       </Boton>
     </div>

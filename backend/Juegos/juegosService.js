@@ -150,7 +150,14 @@ export const crearConfiguracionesJuegos2 = (req, res) => {
 export const crearConfiguracionesJuegos3 = (req, res) => {
   // Obtener datos del cuerpo de la solicitud
   const { idimg1, idprofesor } = req.body;
-  const insertUserQuery1 = `UPDATE baseerasmus.juego3 SET juego3.img1 = '${idimg1}' WHERE juego3.idprofesor = '${idprofesor}'`;
+  let insertUserQuery1 = ``;
+  if (idimg1 !== null){
+    insertUserQuery1 = `UPDATE baseerasmus.juego3 SET juego3.img1 = '${idimg1}' WHERE juego3.idprofesor = '${idprofesor}'`;
+  }else{
+    insertUserQuery1 = `UPDATE baseerasmus.juego3 SET juego3.img1 = ${idimg1} WHERE juego3.idprofesor = '${idprofesor}'`;
+
+  }
+
   db.query(insertUserQuery1, (insertErr, insertData) => {
     if (insertErr) return res.json(insertErr);
     return res.json({

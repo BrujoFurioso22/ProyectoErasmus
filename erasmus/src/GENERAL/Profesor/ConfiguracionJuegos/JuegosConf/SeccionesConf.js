@@ -52,10 +52,10 @@ const Contenedor = styled.div`
   animation: anim 0.5s ease;
 
   @keyframes anim {
-    0%{
+    0% {
       opacity: 0;
     }
-    100%{
+    100% {
       opacity: 1;
     }
   }
@@ -73,7 +73,7 @@ const BotonStyled = styled.button`
 `;
 
 export const SeccionesConf1 = () => {
-  const [mensaje,setMensaje]=useState("")
+  const [mensaje, setMensaje] = useState("");
   const [numRondas, setNumRondas] = useState(0);
   const [imagenes, setImagenes] = useState([]);
   const [valorImagenes, setValorImagenes] = useState([
@@ -196,7 +196,14 @@ export const SeccionesConf1 = () => {
       >
         {SelectOptions2Juego1(puntajejuego1, "Puntaje/Estrellas")}
       </Contenedor>
-      <Contenedor style={{ paddingTop: "15px", flexDirection:"column", alignItems:"center", gap:"15px"  }}>
+      <Contenedor
+        style={{
+          paddingTop: "15px",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "15px",
+        }}
+      >
         <BotonStyled
           onClick={() =>
             GuardarConfiguracionJuego1(
@@ -207,14 +214,18 @@ export const SeccionesConf1 = () => {
         >
           Guardar Configuración
         </BotonStyled>
-        {mensaje === "¡Actualización Correcta!" && (<label style={{color:"green"}}>{mensaje}</label>)}
-        {mensaje === "¡Ha ocurrido un error!" && (<label style={{color:"red"}}>{mensaje}</label>)}
+        {mensaje === "¡Actualización Correcta!" && (
+          <label style={{ color: "green" }}>{mensaje}</label>
+        )}
+        {mensaje === "¡Ha ocurrido un error!" && (
+          <label style={{ color: "red" }}>{mensaje}</label>
+        )}
       </Contenedor>
     </Contenedor>
   );
 };
 export const SeccionesConf2 = () => {
-  const [mensaje, setMensaje]= useState("")
+  const [mensaje, setMensaje] = useState("");
   const [numCartas, setNumCartas] = useState(0);
   const [imagenes, setImagenes] = useState([]);
   const [valorImagenes, setValorImagenes] = useState([
@@ -365,7 +376,14 @@ export const SeccionesConf2 = () => {
       >
         {SelectOptions2Juego2(puntajejuego2, "Puntaje/Estrellas")}
       </Contenedor>
-      <Contenedor style={{ paddingTop: "15px", flexDirection:"column", alignItems:"center", gap:"15px" }}>
+      <Contenedor
+        style={{
+          paddingTop: "15px",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "15px",
+        }}
+      >
         <BotonStyled
           onClick={() =>
             GuardarConfiguracionJuego2(
@@ -376,14 +394,18 @@ export const SeccionesConf2 = () => {
         >
           Guardar Configuración
         </BotonStyled>
-        {mensaje === "¡Actualización Correcta!" && (<label style={{color:"green"}}>{mensaje}</label>)}
-        {mensaje === "¡Ha ocurrido un error!" && (<label style={{color:"red"}}>{mensaje}</label>)}
+        {mensaje === "¡Actualización Correcta!" && (
+          <label style={{ color: "green" }}>{mensaje}</label>
+        )}
+        {mensaje === "¡Ha ocurrido un error!" && (
+          <label style={{ color: "red" }}>{mensaje}</label>
+        )}
       </Contenedor>
     </Contenedor>
   );
 };
 export const SeccionesConf3 = () => {
-  const [mensaje,setMensaje]=useState("")
+  const [mensaje, setMensaje] = useState("");
   const [imagenes, setImagenes] = useState([]);
   const [valorImagenes, setValorImagenes] = useState([{ id: 1, imgid: 0 }]);
 
@@ -391,15 +413,17 @@ export const SeccionesConf3 = () => {
     const nuevoEstado = [...valorImagenes];
 
     const objetoActualizado = nuevoEstado.find((item) => item.id === id);
+
     if (objetoActualizado) {
       objetoActualizado.imgid = nuevoValor;
     }
+
     setValorImagenes(nuevoEstado);
   };
 
   const valueImgs = (id) => {
     const res = valorImagenes.find((item) => item.id === id);
-    const re = res.imgid;
+    const re = res.imgid === null ? "0" : res.imgid;
     return re;
   };
 
@@ -409,7 +433,7 @@ export const SeccionesConf3 = () => {
     if (resp.length > 0) {
       setImagenes(resp);
       if (resp1.length > 0) {
-        actualizarValorImgId(1, resp1[0].img1 === null ? 0 : resp1[0].img1);
+        actualizarValorImgId(1, resp1[0].img1 === null ? "0" : resp1[0].img1);
       }
     }
   };
@@ -425,10 +449,13 @@ export const SeccionesConf3 = () => {
           id=""
           value={valueImgs(queimg)}
           onChange={(e) =>
-            actualizarValorImgId(queimg, parseInt(e.target.value))
+            actualizarValorImgId(
+              queimg,
+              e.target.value === "0" ? null : parseInt(e.target.value)
+            )
           }
         >
-          <option value="0">Seleccionar</option>
+          <option value="0">Lienzo en Blanco</option>
           {data.map((item, index) => (
             <option key={index} value={item.idimagenes}>
               {item.nombreimagen}
@@ -441,7 +468,12 @@ export const SeccionesConf3 = () => {
 
   const GuardarConfiguracionJuego3 = async (fetch) => {
     const idp = localStorage.getItem("id");
-    const res = await ActualizarConfiguracion3(valueImgs(1), idp, fetch);
+    const val = valueImgs(1);
+    const res = await ActualizarConfiguracion3(
+      val === "0" ? null : val,
+      idp,
+      fetch
+    );
     res.message === "Actualizada Correcta del Juego"
       ? setMensaje("¡Actualización Correcta!")
       : setMensaje("¡Ha ocurrido un error!");
@@ -459,7 +491,14 @@ export const SeccionesConf3 = () => {
         {SelectOptions1Juego3(imagenes, "Imagen a dibujar", 1)}
       </Contenedor>
       <h6>En este juego no se lleva puntaje, es para tareas y dibujo libre</h6>
-      <Contenedor style={{ paddingTop: "15px", flexDirection:"column", alignItems:"center", gap:"15px" }}>
+      <Contenedor
+        style={{
+          paddingTop: "15px",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "15px",
+        }}
+      >
         <BotonStyled
           onClick={() =>
             GuardarConfiguracionJuego3(ConsultarImagenesyConfiguraciones)
@@ -467,8 +506,12 @@ export const SeccionesConf3 = () => {
         >
           Guardar Configuración
         </BotonStyled>
-        {mensaje === "¡Actualización Correcta!" && (<label style={{color:"green"}}>{mensaje}</label>)}
-        {mensaje === "¡Ha ocurrido un error!" && (<label style={{color:"red"}}>{mensaje}</label>)}
+        {mensaje === "¡Actualización Correcta!" && (
+          <label style={{ color: "green" }}>{mensaje}</label>
+        )}
+        {mensaje === "¡Ha ocurrido un error!" && (
+          <label style={{ color: "red" }}>{mensaje}</label>
+        )}
       </Contenedor>
     </Contenedor>
   );
@@ -618,7 +661,14 @@ export const SeccionesConf4 = () => {
       >
         {SelectOptions3Juego4(imagenes, "Color Correcto")}
       </Contenedor>
-      <Contenedor style={{ paddingTop: "15px", flexDirection:"column", alignItems:"center", gap:"15px" }}>
+      <Contenedor
+        style={{
+          paddingTop: "15px",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "15px",
+        }}
+      >
         <BotonStyled
           onClick={() =>
             GuardarConfiguracionJuego4(
@@ -630,8 +680,12 @@ export const SeccionesConf4 = () => {
         >
           Guardar Configuración
         </BotonStyled>
-        {mensaje === "¡Actualización Correcta!" && (<label style={{color:"green"}}>{mensaje}</label>)}
-        {mensaje === "¡Ha ocurrido un error!" && (<label style={{color:"red"}}>{mensaje}</label>)}
+        {mensaje === "¡Actualización Correcta!" && (
+          <label style={{ color: "green" }}>{mensaje}</label>
+        )}
+        {mensaje === "¡Ha ocurrido un error!" && (
+          <label style={{ color: "red" }}>{mensaje}</label>
+        )}
       </Contenedor>
     </Contenedor>
   );
