@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Header } from "GENERAL/ComponentesGenerales/Header/header";
 import { Sidebar } from "GENERAL/ComponentesGenerales/Sidebar/Sidebar";
 import { Game1 } from "GENERAL/JUEGOS/Juego1Direcciones/Game1";
+import { Game1Handtrack } from "GENERAL/JUEGOS/Juego1Direcciones/Game1Handtrack";
 import {
   ContenedorPrincipal,
   ContenedorHome,
@@ -30,7 +31,8 @@ export const Juego1 = () => {
       <ContenedorHome>
         <Header />
         <ContenedorSecciones>
-          {asignado ? <Game1 /> : <PaginaSinAsignacion />}
+          {/* {asignado ? <Game1 /> : <PaginaSinAsignacion />} */}
+          {asignado ? <Game1Handtrack /> : <PaginaSinAsignacion />}
         </ContenedorSecciones>
       </ContenedorHome>
     </ContenedorPrincipal>
