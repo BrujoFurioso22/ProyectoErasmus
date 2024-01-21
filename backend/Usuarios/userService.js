@@ -45,7 +45,7 @@ export const validateUser = (req, res) => {
 
 export const createUser = (req, res) => {
   // Obtener datos del cuerpo de la solicitud
-  const { nombre, tipo, correo, password, institucion, sexo } = req.body;
+  const { nombre, tipo, correo, password, institucion, sexo, cedula} = req.body;
   let tabla = "";
 
   if (tipo === "EST") {
@@ -68,13 +68,13 @@ export const createUser = (req, res) => {
     }
 
     // Si el usuario no existe, realizar la inserción en la base de datos
-    const insertUserQuery = `INSERT INTO ${tabla} (nombre, correo, contrasena, tipodeusuario, institucion, sexo) VALUES ('${nombre}' ,'${correo}', '${password}', '${tipo}', '${institucion}' ,'${sexo}')`;
+    const insertUserQuery = `INSERT INTO ${tabla} (nombre, correo, contrasena, tipodeusuario, institucion, sexo, cedula) VALUES ('${nombre}' ,'${correo}', '${password}', '${tipo}', '${institucion}' ,'${sexo}', '${cedula}')`;
     db.query(insertUserQuery, (insertErr, insertData) => {
       if (insertErr) return res.json(insertErr);
 
       return res.json({
         message: "Usuario creado correctamente",
-        usuario: { nombre, institucion, sexo, tipo, correo, password },
+        usuario: { nombre, institucion, sexo, tipo, correo, password, cedula },
       });
     });
   });

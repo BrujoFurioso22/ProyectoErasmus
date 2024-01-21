@@ -70,9 +70,9 @@ export function InicioSesion() {
           className="inputLogin"
         />
         <span style={{ color: "red" }}>{mensajeError}</span>
-        <a className="aLogin" href="/">
+        {/* <a className="aLogin" href="/">
           Olvidaste tu contraseña?
-        </a>
+        </a> */}
         <button className="botonLogin">Iniciar Sesión</button>
       </form>
     </div>

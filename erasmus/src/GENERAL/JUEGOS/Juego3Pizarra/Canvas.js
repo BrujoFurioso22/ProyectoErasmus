@@ -30,6 +30,8 @@ const BotonTools = styled.div`
   background-color: var(--color-boton);
   color: white;
   padding: 6px 15px;
+  display: flex;
+  gap: 10px;
   cursor: pointer;
 `;
 const ContenedorColores = styled.div`
@@ -87,7 +89,7 @@ export const CanvasApp = () => {
     let isDrawing = false;
 
     const setInitialBackground = () => {
-      setPrimeraCarga(true)
+      setPrimeraCarga(true);
       if (imgTarea.rutaimagen === "") {
         context.fillStyle = "#ffffff";
         context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
@@ -195,114 +197,8 @@ export const CanvasApp = () => {
   };
 
   useEffect(() => {
-    // const mainCanvas = mainCanvasRef.current;
-    // const context = mainCanvas.getContext("2d");
-
-    // let initialX, initialY;
-    // let isDrawing = false;
-    // console.log(primeraCarga);
-    // // Establecer el fondo blanco
-    // if (imgTarea.rutaimagen === "" && primeraCarga === false) {
-    //   setPrimeraCarga(true)
-    //   context.fillStyle = "#ffffff"; // Puedes ajustar el color al que desees
-    //   context.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
-    // }
-    // //
-
-    // const preventDefault = (evt) => {
-    //   evt.preventDefault();
-    // };
-
-    // const obtenerCoordenadas = (evt) => {
-    //   const rect = mainCanvas.getBoundingClientRect();
-    //   const x = evt.clientX - rect.left;
-    //   const y = evt.clientY - rect.top;
-    //   return { x, y };
-    // };
-
-    // const dibujar = (cursorX, cursorY) => {
-    //   context.beginPath();
-    //   context.moveTo(initialX, initialY);
-    //   context.lineWidth = brushSize;
-    //   context.strokeStyle = brushColor;
-    //   context.lineCap = "round";
-    //   context.lineJoin = "round";
-    //   context.lineTo(cursorX, cursorY);
-    //   context.stroke();
-
-    //   initialX = cursorX;
-    //   initialY = cursorY;
-    // };
-
-    // const iniciarDibujo = (x, y) => {
-    //   initialX = x;
-    //   initialY = y;
-    //   dibujar(initialX, initialY);
-    //   isDrawing = true;
-    // };
-
-    // const detenerDibujo = () => {
-    //   isDrawing = false;
-    // };
-
-    // const mouseDown = (evt) => {
-    //   const { x, y } = obtenerCoordenadas(evt);
-    //   iniciarDibujo(x, y);
-    // };
-
-    // const mouseMoving = (evt) => {
-    //   if (!isDrawing) return;
-    //   const { x, y } = obtenerCoordenadas(evt);
-    //   dibujar(x, y);
-    // };
-
-    // const mouseUp = () => {
-    //   detenerDibujo();
-    // };
-
-    // const touchStart = (evt) => {
-    //   const touch = evt.touches[0];
-    //   const { clientX, clientY } = touch;
-    //   const { x, y } = obtenerCoordenadas({ clientX, clientY });
-    //   iniciarDibujo(x, y);
-    // };
-
-    // const touchMove = (evt) => {
-    //   if (!isDrawing) return;
-    //   const touch = evt.touches[0];
-    //   const { clientX, clientY } = touch;
-    //   const { x, y } = obtenerCoordenadas({ clientX, clientY });
-    //   dibujar(x, y);
-    // };
-
-    // const touchEnd = () => {
-    //   detenerDibujo();
-    // };
-
-    // mainCanvas.addEventListener("mousedown", mouseDown);
-    // mainCanvas.addEventListener("mouseup", mouseUp);
-    // mainCanvas.addEventListener("mousemove", mouseMoving);
-
-    // mainCanvas.addEventListener("touchstart", touchStart);
-    // mainCanvas.addEventListener("touchmove", touchMove);
-    // mainCanvas.addEventListener("touchend", touchEnd);
-    // mainCanvas.addEventListener("touchmove", preventDefault, {
-    //   passive: false,
-    // });
-
-    // return () => {
-    //   // Limpiar event listeners al desmontar el componente
-    //   mainCanvas.removeEventListener("mousedown", mouseDown);
-    //   mainCanvas.removeEventListener("mouseup", mouseUp);
-    //   mainCanvas.removeEventListener("mousemove", mouseMoving);
-
-    //   mainCanvas.removeEventListener("touchstart", touchStart);
-    //   mainCanvas.removeEventListener("touchmove", touchMove);
-    //   mainCanvas.removeEventListener("touchend", touchEnd);
-    //   mainCanvas.removeEventListener("touchmove", preventDefault);
-    // };
-    const cleanup = CargarCanvas(primeraCarga);
-    return cleanup;
+    const cargar = CargarCanvas(primeraCarga);
+    return cargar;
   }, [brushSize, brushColor, primeraCarga]);
 
   const BrushColor = (color) => {
@@ -459,11 +355,19 @@ export const CanvasApp = () => {
                 : guardarImagenConTarea()
             }
           >
-            Guardar Imagen
+            Guardar Imagen<i className="bi bi-floppy-fill"></i>
           </BotonTools>
-          <BotonTools onClick={limpiarPizarron}>Limpiar</BotonTools>
+          <BotonTools onClick={limpiarPizarron}>Limpiar<i class="bi bi-trash-fill"></i></BotonTools>
           <BotonTools onClick={toggleBorrador}>
-            {eraserMode ? "Pincel" : "Borrador"}
+            {eraserMode ? (
+              <>
+                Pincel<i class="bi bi-brush"></i>
+              </>
+            ) : (
+              <>
+                Borrador<i class="bi bi-eraser-fill"></i>
+              </>
+            )}
           </BotonTools>
         </div>
       </ContenedorTools>

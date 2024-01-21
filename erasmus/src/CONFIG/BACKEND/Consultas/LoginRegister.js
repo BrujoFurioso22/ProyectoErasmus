@@ -14,7 +14,8 @@ export async function CrearUsuario(
   correo,
   password,
   institucion,
-  sexo
+  sexo,
+  cedula,
 ) {
   // console.log(`${url}`);
   const res = await axios.post(`${url}/usuarios/crear`, {
@@ -24,6 +25,7 @@ export async function CrearUsuario(
     password: password,
     institucion: institucion,
     sexo: sexo,
+    cedula:cedula,
   });
   // console.log(res.data);
   return res.data;

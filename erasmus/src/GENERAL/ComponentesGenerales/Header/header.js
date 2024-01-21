@@ -72,6 +72,10 @@ const SubMenu = styled.div`
       background-color: rgba(0, 0, 0, 0.3);
     }
   }
+  div{
+    display: flex;
+    gap: 10px;
+  }
 `;
 
 const LinkStyled = styled(Link)`
@@ -84,6 +88,10 @@ const LinkStyled = styled(Link)`
   color: white;
   &:hover {
     background-color: rgba(0, 0, 0, 0.3);
+  }
+  div{
+    display: flex;
+    gap: 10px;
   }
 `;
 
@@ -113,9 +121,9 @@ export const Header = () => {
         </ContenedorCuenta>
         <SubMenu open={subMenuCuenta}>
           <LinkStyled to={ROUTES.PERFIL}>
-            <div>Ver Perfil</div>
+            <div> <i class="bi bi-person-vcard-fill"></i> Ver Perfil</div>
           </LinkStyled>
-          <div onClick={logout}>Cerrar Sesión</div>
+          <div onClick={logout}> <i class="bi bi-door-open-fill"></i> Cerrar Sesión</div>
         </SubMenu>
       </ContenedorN1>
     </ContenedorPrincipal>

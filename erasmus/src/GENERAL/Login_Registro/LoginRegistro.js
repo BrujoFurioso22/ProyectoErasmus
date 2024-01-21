@@ -47,7 +47,7 @@ export const LoginRegistro = () => {
             <div className="overlay-panel overlay-left">
               <h1 className="h1Login">Bienvenido!</h1>
               <p className="pLogin">
-                Por favor inicia sesión con tus datos personales
+                ¿Ya tienes una cuenta? Inicia sesión ahora.
               </p>
               <button
                 className="botonLogin ghost"
@@ -59,7 +59,7 @@ export const LoginRegistro = () => {
             </div>
             <div className="overlay-panel overlay-right">
               <h1 className="h1Login">Hola, ¿necesitas una cuenta?</h1>
-              <p className="pLogin">Ingresa tus datos y registrate</p>
+              <p className="pLogin">Llena la información necesaria para registrarte en nuestra plataforma</p>
               <button
                 className="botonLogin ghost"
                 id="signUp"

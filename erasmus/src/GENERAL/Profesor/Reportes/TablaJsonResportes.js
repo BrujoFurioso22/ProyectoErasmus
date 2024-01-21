@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { EliminarAsignacion } from "CONFIG/BACKEND/Consultas/Profesor";
 
 const Tabla = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  table-layout: fixed;
+  /* table-layout: fixed; */
 
   th,
   td {
