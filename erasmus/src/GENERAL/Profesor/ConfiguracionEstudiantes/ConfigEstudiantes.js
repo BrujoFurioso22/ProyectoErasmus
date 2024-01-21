@@ -80,6 +80,7 @@ export const ConfigEstudiantes = () => {
           idLocalStorage,
           ConsultaEstudiantesTabla
         );
+        // console.log(mensaje);
         mensaje.data.message === "Usuario ya asignado" &&
           setMensaje("*El estudiante ya esta asignado");
         setTimeout(() => {

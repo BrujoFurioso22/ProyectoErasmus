@@ -41,7 +41,7 @@ export const asignarEstudiantesAProfesor = (req, res) => {
   const { idestudiante, idprofesor } = req.body;
 
   // Verificar si el usuario ya existe
-  const checkUserQuery = `SELECT * FROM baseerasmus.asignados WHERE iddeestudiante = '${idestudiante}' and iddeprofesor = '${idprofesor}'`;
+  const checkUserQuery = `SELECT * FROM baseerasmus.asignados WHERE iddeestudiante = '${idestudiante}'`;
 
   db.query(checkUserQuery, (checkErr, checkData) => {
     if (checkErr) return res.json(checkErr);

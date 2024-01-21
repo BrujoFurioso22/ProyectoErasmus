@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { ContendorPadre } from "STYLED-COMPONENTS/Estructura";
 import { ConsultarUsuario } from "CONFIG/BACKEND/Consultas/LoginRegister";
-import { Prev } from "react-bootstrap/esm/PageItem";
 const ContenedorN1 = styled.div`
   display: flex;
   justify-content: space-between;
@@ -59,7 +58,7 @@ const FormStyled = styled.form`
     justify-content: space-between;
     column-gap: 20px;
     align-items: center;
-    label{
+    label {
       font-weight: 600;
     }
   }
@@ -72,6 +71,8 @@ export const AdministrarPerfil = () => {
   const [datosUsuario, setDatosUsuario] = useState({
     nombre: "",
     institucion: "",
+    sexo: "",
+    cedula: "",
     correo: "",
     contrasena: "",
   });
@@ -95,6 +96,8 @@ export const AdministrarPerfil = () => {
     setDatosUsuario({
       nombre: datos.nombre,
       institucion: datos.institucion,
+      cedula: datos.cedula,
+      sexo: datos.sexo === "F" ? "Femenino":"Masculino",
       correo: datos.correo,
       contrasena: datos.contrasena,
     });
@@ -152,6 +155,14 @@ export const AdministrarPerfil = () => {
             <div>
               <label>Institución</label>
               <InputStyled type="text" value={datosUsuario.institucion} />
+            </div>
+            <div>
+              <label>Cédula</label>
+              <InputStyled type="text" value={datosUsuario.cedula} />
+            </div>
+            <div>
+              <label>Sexo</label>
+              <InputStyled type="text" value={datosUsuario.sexo} />
             </div>
             <div>
               <label>Correo</label>

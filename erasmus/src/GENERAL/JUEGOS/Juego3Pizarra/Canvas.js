@@ -167,7 +167,7 @@ export const CanvasApp = () => {
     };
 
     // Establecer el fondo blanco al inicio
-    console.log(carga);
+    // console.log(carga);
     if (!carga) {
       setInitialBackground();
     }
