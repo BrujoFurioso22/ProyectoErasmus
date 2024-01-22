@@ -55,11 +55,12 @@ CREATE TABLE `asignados` (
   `iddeestudiante` int NOT NULL,
   `iddeprofesor` int NOT NULL,
   PRIMARY KEY (`idasignados`),
+  UNIQUE KEY `iddeestudiante_UNIQUE` (`iddeestudiante`),
   KEY `fk_ide_idu_idx` (`iddeestudiante`),
   KEY `fk_idp_idu_idx` (`iddeprofesor`),
   CONSTRAINT `fk_ide_idu` FOREIGN KEY (`iddeestudiante`) REFERENCES `estudiantes` (`idestudiantes`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_idp_idu` FOREIGN KEY (`iddeprofesor`) REFERENCES `profesores` (`idprofesores`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +69,7 @@ CREATE TABLE `asignados` (
 
 LOCK TABLES `asignados` WRITE;
 /*!40000 ALTER TABLE `asignados` DISABLE KEYS */;
-INSERT INTO `asignados` VALUES (12,1,1),(15,3,1);
+INSERT INTO `asignados` VALUES (12,1,1),(15,3,1),(23,2,13),(24,4,1);
 /*!40000 ALTER TABLE `asignados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,8 +88,9 @@ CREATE TABLE `estudiantes` (
   `institucion` varchar(45) NOT NULL,
   `sexo` varchar(1) NOT NULL DEFAULT 'M',
   `tipodeusuario` varchar(3) NOT NULL DEFAULT 'EST',
+  `cedula` varchar(13) DEFAULT NULL,
   PRIMARY KEY (`idestudiantes`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +99,7 @@ CREATE TABLE `estudiantes` (
 
 LOCK TABLES `estudiantes` WRITE;
 /*!40000 ALTER TABLE `estudiantes` DISABLE KEYS */;
-INSERT INTO `estudiantes` VALUES (1,'Pedro Figueroa','pedro@gmail.com','1234','UDA','M','EST'),(2,'Sthefany Peñafiel','tefy@gmail.com','1234','UDA','M','EST'),(3,'Diego Barbecho','diego@gmail.com','1234','UDA','M','EST');
+INSERT INTO `estudiantes` VALUES (1,'Pedro Figueroa','pedro@gmail.com','1234','UDA','M','EST',NULL),(2,'Sthefany Peñafiel','tefy@gmail.com','1234','UDA','M','EST',NULL),(3,'Diego Barbecho','diego@gmail.com','1234','UDA','M','EST','0106652613'),(4,'Pepito Camelo','pepito@gmail.com','1234','Universidad del Azuay','M','EST','0102928345');
 /*!40000 ALTER TABLE `estudiantes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,7 +118,7 @@ CREATE TABLE `imagenes` (
   `estado` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`idimagenes`),
   UNIQUE KEY `nombreimagen_UNIQUE` (`nombreimagen`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +127,7 @@ CREATE TABLE `imagenes` (
 
 LOCK TABLES `imagenes` WRITE;
 /*!40000 ALTER TABLE `imagenes` DISABLE KEYS */;
-INSERT INTO `imagenes` VALUES (34,'Arriba','/imagenesJuego/arrow-up.svg',1,1),(35,'Abajo','/imagenesJuego/arrow-down.svg',1,1),(36,'Izquierda','/imagenesJuego/arrow-izquierda.svg',1,1),(37,'Derecha','/imagenesJuego/arrow-derecha.svg',1,1),(38,'Barrer','/imagenesJuego/imagen1.png',2,1),(39,'Tomar','/imagenesJuego/imagen2.png',2,1),(40,'Ahorrar','/imagenesJuego/imagen3.png',2,1),(41,'BatidoGuineo','/imagenesJuego/imagen4.png',2,1),(42,'Te','/imagenesJuego/imagen5.png',2,1),(43,'Helado','/imagenesJuego/imagen6.png',2,1),(44,'Carro','/imagenesJuego/imagen7.png',2,1),(45,'Avion','/imagenesJuego/imagen8.png',2,1),(46,'Bicicleta','/imagenesJuego/imagen9.png',2,1),(47,'Tarea1','/imagenesJuego/actividad1.jpg',3,1),(48,'TareaLineas1','/imagenesJuego/preescritura-para-dos-anos.png',3,1);
+INSERT INTO `imagenes` VALUES (34,'Arriba','/imagenesJuego/arrow-up.svg',1,1),(35,'Abajo','/imagenesJuego/arrow-down.svg',1,1),(36,'Izquierda','/imagenesJuego/arrow-izquierda.svg',1,1),(37,'Derecha','/imagenesJuego/arrow-derecha.svg',1,1),(38,'Barrer','/imagenesJuego/imagen1.png',2,1),(39,'Tomar','/imagenesJuego/imagen2.png',2,1),(40,'Ahorrar','/imagenesJuego/imagen3.png',2,1),(41,'BatidoGuineo','/imagenesJuego/imagen4.png',2,1),(42,'Te','/imagenesJuego/imagen5.png',2,1),(43,'Helado','/imagenesJuego/imagen6.png',2,1),(44,'Carro','/imagenesJuego/imagen7.png',2,1),(45,'Avion','/imagenesJuego/imagen8.png',2,1),(46,'Bicicleta','/imagenesJuego/imagen9.png',2,1),(47,'Tarea1','/imagenesJuego/actividad1.jpg',3,1),(48,'TareaLineas1','/imagenesJuego/preescritura-para-dos-anos.png',3,0),(49,'Avatar','/imagenesJuego/diego.svg',1,0);
 /*!40000 ALTER TABLE `imagenes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -155,7 +157,7 @@ CREATE TABLE `juego1` (
   CONSTRAINT `fk_3` FOREIGN KEY (`img3`) REFERENCES `imagenes` (`idimagenes`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_4` FOREIGN KEY (`img4`) REFERENCES `imagenes` (`idimagenes`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_profesor_config` FOREIGN KEY (`idprofesor`) REFERENCES `profesores` (`idprofesores`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +166,7 @@ CREATE TABLE `juego1` (
 
 LOCK TABLES `juego1` WRITE;
 /*!40000 ALTER TABLE `juego1` DISABLE KEYS */;
-INSERT INTO `juego1` VALUES (1,34,37,35,36,15,1);
+INSERT INTO `juego1` VALUES (1,34,37,35,36,5,1),(11,NULL,NULL,NULL,NULL,5,13),(12,NULL,NULL,NULL,NULL,5,14);
 /*!40000 ALTER TABLE `juego1` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +211,7 @@ CREATE TABLE `juego2` (
   CONSTRAINT `FK_j2i8_img` FOREIGN KEY (`img8`) REFERENCES `imagenes` (`idimagenes`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_j2i9_img` FOREIGN KEY (`img9`) REFERENCES `imagenes` (`idimagenes`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_profesor_p` FOREIGN KEY (`idprofesor`) REFERENCES `profesores` (`idprofesores`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +220,7 @@ CREATE TABLE `juego2` (
 
 LOCK TABLES `juego2` WRITE;
 /*!40000 ALTER TABLE `juego2` DISABLE KEYS */;
-INSERT INTO `juego2` VALUES (1,38,39,40,41,42,43,44,45,46,1,3);
+INSERT INTO `juego2` VALUES (1,38,39,40,41,42,43,44,45,46,1,3),(5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,13,3),(6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,14,3);
 /*!40000 ALTER TABLE `juego2` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,7 +240,7 @@ CREATE TABLE `juego3` (
   KEY `FK_profesor_config3_idx` (`idprofesor`),
   CONSTRAINT `FK_j3i1_img` FOREIGN KEY (`img1`) REFERENCES `imagenes` (`idimagenes`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_profesor_config3` FOREIGN KEY (`idprofesor`) REFERENCES `profesores` (`idprofesores`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +249,7 @@ CREATE TABLE `juego3` (
 
 LOCK TABLES `juego3` WRITE;
 /*!40000 ALTER TABLE `juego3` DISABLE KEYS */;
-INSERT INTO `juego3` VALUES (1,48,1);
+INSERT INTO `juego3` VALUES (1,47,1),(6,NULL,13),(7,NULL,14);
 /*!40000 ALTER TABLE `juego3` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,7 +279,7 @@ CREATE TABLE `juego4` (
   CONSTRAINT `FK_j4i2_img` FOREIGN KEY (`img2`) REFERENCES `imagenes` (`idimagenes`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_j4i3_img` FOREIGN KEY (`img3`) REFERENCES `imagenes` (`idimagenes`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_profesor_config4` FOREIGN KEY (`idprofesor`) REFERENCES `profesores` (`idprofesores`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,7 +288,7 @@ CREATE TABLE `juego4` (
 
 LOCK TABLES `juego4` WRITE;
 /*!40000 ALTER TABLE `juego4` DISABLE KEYS */;
-INSERT INTO `juego4` VALUES (1,NULL,NULL,NULL,1,NULL,1);
+INSERT INTO `juego4` VALUES (1,NULL,NULL,NULL,1,NULL,1),(5,NULL,NULL,NULL,1,NULL,13),(6,NULL,NULL,NULL,1,NULL,14);
 /*!40000 ALTER TABLE `juego4` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -301,12 +303,12 @@ CREATE TABLE `jugada` (
   `idjugada` int NOT NULL AUTO_INCREMENT,
   `idestudiante` int NOT NULL,
   `juego` varchar(6) NOT NULL,
-  `fecha_jugada` varchar(10) NOT NULL,
   `calificacion` int NOT NULL,
+  `fechajugada` datetime DEFAULT NULL,
   PRIMARY KEY (`idjugada`),
   KEY `FK_est_est_idx` (`idestudiante`),
   CONSTRAINT `FK_est_est` FOREIGN KEY (`idestudiante`) REFERENCES `estudiantes` (`idestudiantes`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,7 +317,7 @@ CREATE TABLE `jugada` (
 
 LOCK TABLES `jugada` WRITE;
 /*!40000 ALTER TABLE `jugada` DISABLE KEYS */;
-INSERT INTO `jugada` VALUES (1,1,'juego1','10-01-2024',3),(2,1,'juego1','11-01-2024',1),(107,1,'juego2','13-01-2024',1),(136,1,'juego2','13-01-2024',1),(137,1,'juego2','13-01-2024',0),(138,3,'juego2','13-01-2024',1),(164,3,'juego1','14-01-2024',2),(165,3,'juego1','14-01-2024',0),(166,3,'juego1','14-01-2024',3),(167,3,'juego2','15-01-2024',1),(168,3,'juego1','15-01-2024',3),(169,3,'juego1','15-01-2024',3),(170,3,'juego2','15-01-2024',0);
+INSERT INTO `jugada` VALUES (1,1,'juego1',3,'2024-01-15 00:00:00'),(2,1,'juego1',1,'2023-02-20 00:00:00'),(171,3,'juego1',3,'2024-01-16 00:00:00'),(172,3,'juego1',1,'2024-01-15 00:00:00'),(173,3,'juego1',1,'2024-01-15 00:00:00'),(174,3,'juego1',1,'2024-01-15 00:00:00'),(175,3,'juego1',1,'2024-01-16 00:00:00'),(176,3,'juego1',1,'2024-01-16 00:00:00'),(177,3,'juego1',1,'2024-01-14 00:00:00'),(178,3,'juego1',1,'2024-01-16 00:00:00'),(179,3,'juego1',1,'2024-01-16 00:00:00'),(180,3,'juego1',1,'2024-01-16 00:00:00'),(181,3,'juego1',1,'2024-01-16 00:00:00'),(182,3,'juego1',1,'2024-01-16 00:00:00'),(183,3,'juego1',1,'2024-01-16 00:00:00'),(184,3,'juego1',1,'2024-01-16 00:00:00'),(185,3,'juego1',1,'2024-01-16 00:00:00'),(186,3,'juego1',0,'2024-01-16 00:00:00'),(187,3,'juego2',0,'2024-01-16 00:00:00'),(188,3,'juego2',0,'2024-01-16 00:00:00'),(189,3,'juego1',0,'2024-01-20 00:00:00'),(190,3,'juego1',0,'2024-01-20 00:00:00'),(191,3,'juego1',1,'2024-01-20 00:00:00'),(192,3,'juego1',1,'2024-01-20 00:00:00'),(193,3,'juego1',1,'2024-01-20 00:00:00'),(194,3,'juego2',1,'2024-01-20 00:00:00'),(195,3,'juego2',0,'2024-01-20 00:00:00'),(196,3,'juego2',1,'2024-01-20 00:00:00'),(197,3,'juego2',1,'2024-01-20 00:00:00'),(198,3,'juego2',1,'2024-01-20 00:00:00'),(199,3,'juego2',0,'2024-01-20 00:00:00'),(200,3,'juego2',1,'2024-01-20 00:00:00'),(201,3,'juego2',1,'2024-01-20 00:00:00'),(202,3,'juego1',0,'2024-01-21 00:00:00'),(203,3,'juego1',0,'2024-01-21 00:00:00'),(204,3,'juego1',0,'2024-01-21 00:00:00'),(205,3,'juego1',0,'2024-01-21 00:00:00'),(206,3,'juego1',1,'2024-01-21 00:00:00'),(207,3,'juego2',0,'2024-01-21 00:00:00'),(208,3,'juego1',0,'2024-01-22 00:00:00'),(209,3,'juego1',0,'2024-01-22 00:00:00'),(210,3,'juego1',1,'2024-01-22 00:00:00'),(211,3,'juego1',0,'2024-01-22 00:00:00'),(212,3,'juego1',0,'2024-01-22 00:00:00'),(213,3,'juego1',1,'2024-01-22 00:00:00'),(214,3,'juego1',1,'2024-01-22 00:00:00'),(215,3,'juego1',1,'2024-01-22 00:00:00'),(216,3,'juego1',1,'2024-01-22 00:00:00'),(217,3,'juego1',1,'2024-01-22 00:00:00'),(218,3,'juego1',1,'2024-01-22 00:00:00'),(219,3,'juego1',1,'2024-01-22 00:00:00');
 /*!40000 ALTER TABLE `jugada` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,8 +336,9 @@ CREATE TABLE `profesores` (
   `institucion` varchar(45) NOT NULL,
   `sexo` varchar(1) NOT NULL DEFAULT 'M',
   `tipodeusuario` varchar(2) NOT NULL DEFAULT 'PR',
+  `cedula` varchar(13) DEFAULT NULL,
   PRIMARY KEY (`idprofesores`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -344,7 +347,7 @@ CREATE TABLE `profesores` (
 
 LOCK TABLES `profesores` WRITE;
 /*!40000 ALTER TABLE `profesores` DISABLE KEYS */;
-INSERT INTO `profesores` VALUES (1,'Elisa Ampuero','eli@gmail.com','1234','UDA','F','PR');
+INSERT INTO `profesores` VALUES (1,'Elisa Ampuero','eli@gmail.com','1234','UDA','F','PR',NULL),(13,'Fabian Carvajal','fabian@gmail.com','123','Universidad del Azuay','M','PR','0106652613'),(14,'Kevin Campoverde','kev@gmail.com','1234','Universidad del Azuay','M','PR','0102695621');
 /*!40000 ALTER TABLE `profesores` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -357,4 +360,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-15 19:54:29
+-- Dump completed on 2024-01-22 18:26:07
