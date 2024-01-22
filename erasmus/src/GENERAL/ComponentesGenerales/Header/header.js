@@ -113,7 +113,7 @@ export const Header = () => {
           <Logo alt="LogoUDA" src={logo}></Logo>
         </a>
       </ContenedorN1>
-      <ContenedorN1>FOS ERASMUS</ContenedorN1>
+      <ContenedorN1>Programa de Estimulación Visual</ContenedorN1>
       <ContenedorN1>
         <ContenedorCuenta onClick={toggleSubMenu}>
           <i className="bi bi-person-circle" />

@@ -47,7 +47,7 @@ const juegos = [
 export const Principal = () => {
   return (
     <ContenedorPrincipal>
-      <h1>Bienvenido, Listo para jugar?</h1>
+      <h1 style={{color:"white", padding:"10px 0"}}>Bienvenido, Listo para jugar?</h1>
 
       <ContenedorJuegos>
         {juegos.map((item, index) => (

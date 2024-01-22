@@ -14,10 +14,12 @@ export function Registrarse() {
     cedula: "",
     email: "",
     password: "",
+    confpassword:""
   });
   const [mensajeError, setMensajeError] = useState("");
   const [validacion, setValidacion] = useState(0);
   const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [mostrarConfPassword, setMostrarConfPassword] = useState(false);
 
   const CreacionUsuario = async () => {
     try {
@@ -59,6 +61,9 @@ export function Registrarse() {
   const toggleMostrarPassword = () => {
     setMostrarPassword(!mostrarPassword);
   };
+  const toggleMostrarConfPassword = () => {
+    setMostrarConfPassword(!mostrarConfPassword);
+  };
 
   const handleOnSubmit = async (evt) => {
     evt.preventDefault();
@@ -81,6 +86,14 @@ export function Registrarse() {
       setMensajeError("Elija un sexo.");
       return; // Evitar que la acción del formulario se ejecute
     }
+    const psw1 = usuario.password;
+    const psw2 = usuario.confpassword;
+
+    if (psw1 !== psw2) {
+      setValidacion(0);
+      setMensajeError("Las contraseñas coinciden");
+      return; // Evitar que la acción del formulario se ejecute
+    }
 
     await CreacionUsuario();
 
@@ -92,6 +105,7 @@ export function Registrarse() {
       cedula: "",
       email: "",
       password: "",
+      confpassword: "",
     });
   };
 
@@ -181,6 +195,34 @@ export function Registrarse() {
             onClick={toggleMostrarPassword}
           >
             {mostrarPassword ? (
+              <i className="bi bi-eye-slash-fill"></i>
+            ) : (
+              <i className="bi bi-eye-fill"></i>
+            )}
+          </span>
+        </div>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <input
+            type={mostrarConfPassword ? "text" : "password"}
+            name="confpassword"
+            value={usuario.confpassword}
+            onChange={handleChange}
+            placeholder="Confirmar Contraseña"
+            className="inputLogin"
+            required={true}
+          />
+          <span
+            style={{ userSelect: "none", cursor: "pointer", fontSize:"20px" }}
+            onClick={toggleMostrarConfPassword}
+          >
+            {mostrarConfPassword ? (
               <i className="bi bi-eye-slash-fill"></i>
             ) : (
               <i className="bi bi-eye-fill"></i>

@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+
 
 const Boton = styled.div`
   width: 150px;
@@ -48,29 +49,55 @@ export const Botones = ({
   setaccion,
   verificarAccion,
   imagen,
-  refe,
+  handtracking,
 }) => {
   const [botonSeleccionado, setBotonSeleccionado] = useState("");
+  const [btnHabilitar, setBtnHabilitar] = useState(true);
+
   const handleClickButton = (direccion) => {
-    console.log(direccion);
-    setBotonSeleccionado(direccion);
-    setaccion(direccion);
-    verificarAccion(direccion);
-    setTimeout(() => {
-      setBotonSeleccionado("");
-    }, 500);
+    console.log(handtracking)
+    if (handtracking) {
+      if (btnHabilitar) {
+        setBtnHabilitar(false);
+        console.log(btnHabilitar);
+        setBotonSeleccionado(direccion);
+        setaccion(direccion);
+        verificarAccion(direccion);
+        setTimeout(() => {
+          setBotonSeleccionado("");
+        }, 500);
+      }
+    } else {
+      console.log(direccion)
+      setBotonSeleccionado(direccion);
+      setaccion(direccion);
+      verificarAccion(direccion);
+      setTimeout(() => {
+        setBotonSeleccionado("");
+      }, 500);
+    }
   };
+  useEffect(() => {
+    if (handtracking) {
+      const timeoutId = setTimeout(() => {
+        setBtnHabilitar(true);
+      }, 2000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [btnHabilitar]);
 
   return (
     <div>
       <Boton
-        ref={refe}
         id={imagen.nombreimagen}
         disabled={habilitar}
-        className={`button-click ${botonSeleccionado !== "" ? "seleccionado" : ""}`}
+        className={`button-click ${
+          botonSeleccionado !== "" ? "seleccionado" : ""
+        }`}
         onClick={() => handleClickButton(indicacion.nombreimagen)}
       >
-        <span style={{textTransform: "uppercase"}}>{texto.nombreimagen}</span>
+        <span style={{ textTransform: "uppercase" }}>{texto.nombreimagen}</span>
         {!habilitar && <img src={imagen.rutaimagen} alt="img" />}
       </Boton>
     </div>

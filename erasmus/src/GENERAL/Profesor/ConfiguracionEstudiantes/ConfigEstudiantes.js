@@ -100,7 +100,7 @@ export const ConfigEstudiantes = () => {
   return (
     <ContendorPadre>
       <ContenedorTabs>
-        <h2>Configuración Estudiantes</h2>
+        <h2 style={{color:"white"}}>Configuración Estudiantes</h2>
         <ContendorPadre
           style={{
             justifyContent: "center",

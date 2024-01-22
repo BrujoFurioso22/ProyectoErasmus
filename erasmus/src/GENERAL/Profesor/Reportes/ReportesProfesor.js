@@ -16,8 +16,9 @@ import html2pdf from "html2pdf.js";
 
 const ContenedorPrincipal = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  flex-direction: column;
   padding: 20px;
   height: 100%;
   width: 100%;
@@ -27,7 +28,7 @@ const ContenedorSeccionPadre = styled.div`
   justify-content: center;
   padding: 15px;
   flex-direction: row;
-  height: 70%;
+  height: 75%;
   width: 85%;
   gap: 20px;
 `;
@@ -211,7 +212,9 @@ export const ReportesProfesor = () => {
 
   return (
     <ContenedorPrincipal style={{ paddingTop: "15px" }}>
+      <h2 style={{color:"white"}}>Reportes Estudiantes</h2>
       <ContenedorSeccionPadre>
+        
         <ContenedorSeccion
           style={{ width: "20%", overflowY: "auto", flexDirection: "column" }}
         >

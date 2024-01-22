@@ -83,7 +83,7 @@ export const ConfigJuegos = () => {
         paddingTop: "20px",
       }}
     >
-      <h2>Configuración de Juegos </h2>
+      <h2 style={{color:"white"}}>Configuración de Juegos </h2>
       <ContenedorTabs>
         <ul className="tabs">
           <li

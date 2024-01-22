@@ -128,24 +128,11 @@ export const AdministrarPerfil = () => {
         alignItems: "center",
         flexDirection: "column",
         gap: "20px",
+        paddingTop:"2rem"
       }}
     >
-      <h2>AdministrarPerfil</h2>
+      <h2 style={{color:"white"}}>Información Perfil</h2>
       <ContenedorN1>
-        {/* <ContenedorN2>
-          <ImageContainer>
-            <img src={imageURL} alt="Imagen" style={{ maxWidth: "100%" }} />
-            <HiddenInput
-              type="file"
-              onChange={handleImageChange}
-              accept="image/*"
-              ref={fileInputRef}
-            />
-            <ChangeImageButton onClick={handleClick}>
-              Cambiar Imagen
-            </ChangeImageButton>
-          </ImageContainer>
-        </ContenedorN2> */}
         <ContenedorN2>
           <FormStyled>
             <div>

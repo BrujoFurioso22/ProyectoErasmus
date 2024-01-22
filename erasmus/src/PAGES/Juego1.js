@@ -11,14 +11,25 @@ import {
 } from "STYLED-COMPONENTS/Estructura";
 import { ConsultaSiTieneProfesor } from "CONFIG/BACKEND/Consultas/Juegos";
 import { PaginaSinAsignacion } from "./PaginaSinAsignacion";
+import { Loader } from "STYLED-COMPONENTS/Loader/loader";
+
+const ContenedorLoader = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 
 export const Juego1 = () => {
-  const [asignado, setAsignado] = useState(false);
+  const [asignado, setAsignado] = useState(null);
 
   const VerificarSiTieneProfesor = async () => {
     const resp = await ConsultaSiTieneProfesor(localStorage.getItem("id"));
     if (resp.length > 0) {
       setAsignado(true);
+    }else{
+      setAsignado(false)
     }
   };
   useEffect(() => {
@@ -31,8 +42,8 @@ export const Juego1 = () => {
       <ContenedorHome>
         <Header />
         <ContenedorSecciones>
-          {asignado ? <Game1 /> : <PaginaSinAsignacion />}
-          {/* {asignado ? <Game1Handtrack /> : <PaginaSinAsignacion />} */}
+          {/* {asignado ? <Game1 /> : <PaginaSinAsignacion />} */}
+          {asignado === null ? <ContenedorLoader><Loader/></ContenedorLoader> : asignado === true ?<Game1Handtrack /> : <PaginaSinAsignacion />}
         </ContenedorSecciones>
       </ContenedorHome>
     </ContenedorPrincipal>

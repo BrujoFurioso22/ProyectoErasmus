@@ -12,7 +12,6 @@ const AboutContainer = styled.div`
   background-color: whitesmoke;
   margin-top: 15px;
   border-radius: 20px;
-
 `;
 
 const Title = styled.h1`
@@ -28,22 +27,40 @@ const TeamList = styled.ul`
   padding: 0;
   display: flex;
   justify-content: center;
-  gap: 40px;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const TeamMember = styled.li`
   display: flex;
   justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  row-gap: 5px;
   background-color: rgba(0, 0, 0, 0.14);
   padding: 10px 20px;
   border-radius: 25px;
   cursor: pointer;
-  p{
+  gap: 20px;
+
+  .contenedorImagen{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color:rgba(0, 0, 0, 0.20);
+    padding: 10px;
+    border-radius: 20px;
+    span {
     font-weight: 600;
+    }
   }
+  .contenedorInfo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
 `;
 
 const Image = styled.img`
@@ -60,26 +77,37 @@ export const AcercaDe = () => {
         Bienvenido a nuestra página de "Acerca De". Aquí encontrarás información
         sobre nuestro equipo de trabajo.
       </Description>
-      <Description>
-        Proyecto Erasmus
-      </Description>
+      <Description>Proyecto Estimulación Visual</Description>
 
       <TeamList>
         <TeamMember>
-          <Image src={logo1} alt="Miembro 1" />
-          <p>Diego Barbecho</p>
+          <div className="contenedorImagen">
+            <Image src={logo1} alt="Miembro 1" />
+            <span>Diego Barbecho</span>
+          </div>
+          <div className="contenedorInfo">
+            <span>diego.barbecho@es.uazuay.edu.ec</span>
+          </div>
         </TeamMember>
         <TeamMember>
-          <Image src={logo2} alt="Miembro 2" />
-          <p>Pedro Figueroa</p>
+          <div className="contenedorImagen">
+            <Image src={logo2} alt="Miembro 2" />
+            <span>Pedro Figueroa</span>
+          </div>
+          <div className="contenedorInfo">
+            <span>pedro.figueroa@es.uazuay.edu.ec</span>
+          </div>
         </TeamMember>
         <TeamMember>
-          <Image src={logo3} alt="Miembro 3" />
-          <p>Sthefany Peñafiel</p>
+          <div className="contenedorImagen">
+            <Image src={logo3} alt="Miembro 3" />
+            <span>Sthefany Peñafiel</span>
+          </div>
+          <div className="contenedorInfo">
+            <span>sthefanyyt@es.uazuay.edu.ec</span>
+          </div>
         </TeamMember>
       </TeamList>
-
-      
     </AboutContainer>
   );
 };

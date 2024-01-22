@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Botones } from "./Componentes/Botones";
 import { Puntaje } from "./Componentes/Puntaje";
 import {
@@ -14,26 +14,28 @@ import { Loader } from "STYLED-COMPONENTS/Loader/loader";
 import styled from "styled-components";
 
 import "./assets/styles/boton_iniciar.css";
+import "./assets/styles/checkbox.css"
 
 import openI from "SOURCES/openhand.svg";
 import closeI from "SOURCES/closehand.svg";
 
 import * as handTrack from "handtrackjs";
 
-const defaultParams = {
-  flipHorizontal: false,
-  outputStride: 16,
-  imageScaleFactor: 1,
-  maxNumBoxes: 20,
-  iouThreshold: 0.2,
-  scoreThreshold: 0.6,
-  modelType: "ssd320fpnlite",
-  modelSize: "large",
-  bboxLineWidth: "2",
-  fontSize: 17,
-};
 
 const numJuego = "juego1"; //no tocar esto
+
+const defaultParams = {
+  flipHorizontal: true,
+  outputStride: 16,
+  imageScaleFactor: 0.5,
+  maxNumBoxes: 20,
+  iouThreshold: 0.8,
+  scoreThreshold: 0.6,
+  modelType: "ssd320fpnlite",
+  modelSize: "medium",
+  bboxLineWidth: "1",
+  fontSize: 17,
+};
 
 const ContenedorGlobal = styled.div`
   width: 100%;
@@ -80,6 +82,17 @@ const ContenedorBotones = styled.div`
   .cambiarModo {
     grid-column: 3;
     grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    .tituloH{
+      background-color: var(--color-p);
+      color: white;
+      padding: 2px 8px;
+      border-radius:10px ;
+    }
   }
 `;
 const PuntajeStyled = styled.div`
@@ -147,6 +160,7 @@ const ContenedorVideo = styled.div`
     top: 0;
     left: 0;
     width: 100%;
+    height: 30px;
   }
 `;
 
@@ -179,9 +193,8 @@ export function Game1Handtrack() {
   const [mostrarLoader, setMostrarLoader] = useState(false);
   const [handtrackingActivado, setHandtrackingActivado] = useState(false);
   const [handClosed, setHandClosed] = useState(false);
-  const [botonRef, setBotonRef] = useState(null);
   const [lastClickedButton, setLastClickedButton] = useState(null);
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [activadoHandT, setActivadoHandT] = useState(false);
 
   const DecirTexto = (text, delay) => {
     return new Promise((resolve, reject) => {
@@ -205,14 +218,14 @@ export function Game1Handtrack() {
 
         // Manejar el evento onend
         utterThis.onend = () => {
-          console.log("La síntesis de voz ha terminado");
+          // console.log("La síntesis de voz ha terminado");
           // Resolver la promesa cuando termine la síntesis de voz
           resolve();
         };
 
         // Manejar cualquier error
         utterThis.onerror = (error) => {
-          console.error("Error en la síntesis de voz", error);
+          // console.error("Error en la síntesis de voz", error);
           // Rechazar la promesa en caso de error
           reject(error);
         };
@@ -230,7 +243,7 @@ export function Game1Handtrack() {
         nombresImagenes.push(imagenesJuego[key].nombreimagen);
       }
     }
-    console.log(nombresImagenes);
+    // console.log(nombresImagenes);
 
     for (let i = 0; i < numRondas; i++) {
       const indiceAleatorio = Math.floor(
@@ -259,7 +272,7 @@ export function Game1Handtrack() {
 
   const ConsultarRondas = async () => {
     const res = await ConsultaRondasJuego1(localStorage.getItem("id"));
-    console.log(res);
+    // console.log(res);
     if (res.length > 0) {
       setNumRondas(res[0].numRondas);
       // console.log(res[0]);
@@ -289,7 +302,7 @@ export function Game1Handtrack() {
       }
     }
     const res = await guardarPuntaje(idest, numJuego, fechaActual, estrellas);
-    console.log(res);
+    // console.log(res);
   };
 
   //Funcion para poder mostrar la siguiente opcion despues de que haya seleccionado un boton el jugador
@@ -359,21 +372,31 @@ export function Game1Handtrack() {
   }, []);
 
   const verificarAccion = (botonPresionado) => {
+    // console.log(habilitar);
     if (!habilitar) {
-      const objetoRect = document
-        .getElementById("objetoMover")
-        .getBoundingClientRect();
-      const botonRect = document
-        .getElementById(botonPresionado)
-        .getBoundingClientRect();
+      if (handtrackingActivado) {
+        const objetoRect = document
+          .getElementById("objetoMover")
+          .getBoundingClientRect();
+        const botonRect = document
+          .getElementById(botonPresionado)
+          .getBoundingClientRect();
 
-      if (
-        objetoRect.left < botonRect.right &&
-        objetoRect.right > botonRect.left &&
-        objetoRect.top < botonRect.bottom &&
-        objetoRect.bottom > botonRect.top
-      ) {
-        // El objeto está sobre el botón, realiza la acción
+        if (
+          objetoRect.left < botonRect.right &&
+          objetoRect.right > botonRect.left &&
+          objetoRect.top < botonRect.bottom &&
+          objetoRect.bottom > botonRect.top
+        ) {
+          // El objeto está sobre el botón, realiza la acción
+          if (botonPresionado === arregloAleatorio[indiceActual - 1]) {
+            setPuntaje(puntaje + 1);
+            mostrarSiguienteAccion();
+          } else {
+            mostrarSiguienteAccion();
+          }
+        }
+      } else {
         if (botonPresionado === arregloAleatorio[indiceActual - 1]) {
           setPuntaje(puntaje + 1);
           mostrarSiguienteAccion();
@@ -394,7 +417,7 @@ export function Game1Handtrack() {
   useEffect(() => {
     const interval = setInterval(() => {
       if (contador >= 1) {
-        console.log(contador);
+        // console.log(contador);
         setcontador(contador - 1);
         if (contador === 1) {
           setaccion("");
@@ -453,129 +476,122 @@ export function Game1Handtrack() {
   /*-----------------------------------------------------------------------------------------------------*/
 
   const videoRef = useRef(null);
-  const [handPosition, setHandPosition] = useState({ x: 0, y: 0 });
+  const [handPosition, setHandPosition] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     const runHandDetection = async () => {
-      const video = videoRef.current;
-      const contenedor = document.getElementById("contenedorGlobal");
-      const contenedorRect = contenedor.getBoundingClientRect();
-      const defaultParams = {
-        flipHorizontal: true,
-        outputStride: 16,
-        imageScaleFactor: 0.5,
-        maxNumBoxes: 20,
-        iouThreshold: 0.8,
-        scoreThreshold: 0.6,
-        modelType: "ssd320fpnlite",
-        modelSize: "medium",
-        bboxLineWidth: "1",
-        fontSize: 17,
-      };
+      // console.log(handtrackingActivado);
+      if (handtrackingActivado) {
+        setActivadoHandT(true);
+        const video = videoRef.current;
 
-      const model = await handTrack.load(defaultParams);
-      await handTrack.startVideo(video);
+        if (!video) {
+          // console.error("La referencia al video no está disponible.");
+          return;
+        }
+        const contenedor = document.getElementById("contenedorGlobal");
+        const contenedorRect = contenedor.getBoundingClientRect();
+        const model = await handTrack.load(defaultParams);
+        await handTrack.startVideo(video);
+        // console.log(model);
+        // video.onloadeddata = (event) => {
+        const detectHand = async () => {
+          const predictions = await model.detect(video);
 
-      const detectHand = async () => {
-        const predictions = await model.detect(video);
+          predictions.forEach((prediction) => {
+            const { label, bbox } = prediction;
+            const [x, y] = bbox;
 
-        predictions.forEach((prediction) => {
-          const { label, bbox } = prediction;
-          const [x, y] = bbox;
+            const xGlobal = (x + 50) * (contenedorRect.width / video.width);
+            const yGlobal = (y + 70) * (contenedorRect.height / video.height);
 
-          const xGlobal = x * (contenedorRect.width / video.width) + 50;
-          const yGlobal = y * (contenedorRect.height / video.height) + 50;
-
-          if (label === "closed") {
+            // if (label === "closed") {
             // console.log("¡Mano cerrada detectada!");
-            setHandClosed(true);
-            setHandPosition({ x: xGlobal, y: yGlobal });
-            // console.log(botonRef)
-            // if(botonRef) {
-            //   botonRef.click();
-            // }
-            handleButtonClick(xGlobal, yGlobal);
-            setIsButtonClicked(true);
-            setTimeout(() => {
-              setIsButtonClicked(false);
-            }, 4000);
+            //   setHandClosed(true);
+            //   setHandPosition({ x: xGlobal, y: yGlobal });
+            //   setLastClickedButton(null);
 
-            // Reset last clicked button when hand is closed
-          } else if (label === "open") {
-            // console.log("¡Mano abierta detectada!");
-            // console.log("X: "+xGlobal+" / Y: "+yGlobal);
-            setHandClosed(false);
-            setHandPosition({ x: xGlobal, y: yGlobal });
-            setLastClickedButton(null);
-          } else if (label === "pinchtipoo") {
-            console.log("¡Escribir!");
-          }
-        });
+            // setIsButtonClicked(true);
+            // setTimeout(() => {
+            //   setIsButtonClicked(false);
+            // }, 4000);
+            // } else
+            if (label === "open") {
+              // console.log("¡Mano abierta detectada!");
+              // console.log("X: "+xGlobal+" / Y: "+yGlobal);
+              setHandClosed(false);
+              setHandPosition({ x: xGlobal, y: yGlobal });
+              handleButtonClick(xGlobal, yGlobal);
+            }
+          });
 
-        requestAnimationFrame(detectHand);
-      };
+          requestAnimationFrame(detectHand);
+        };
+        detectHand();
+        // };
 
-      detectHand();
-
-      return () => {
-        model.dispose();
-      };
-    };
-
-    runHandDetection();
-  }, []);
-
-  const handleButtonClick = (x, y) => {
-    const buttons = document.getElementsByClassName("button-click");
-    const buttonWidth = buttons[0].offsetWidth;
-    const buttonHeight = buttons[0].offsetHeight;
-
-    let clickedButton = null;
-
-    Array.from(buttons).forEach((button) => {
-      const rect = button.getBoundingClientRect();
-      const buttonX = rect.left + rect.width / 2;
-      const buttonY = rect.top + rect.height / 2;
-
-      if (
-        x >= buttonX - buttonWidth / 2 &&
-        x <= buttonX + buttonWidth / 2 &&
-        y >= buttonY - buttonHeight / 2 &&
-        y <= buttonY + buttonHeight / 2
-      ) {
-        clickedButton = button;
+        return () => {
+          model.dispose();
+        };
+      } else {
+        if (activadoHandT) {
+          window.location.reload();
+        }
       }
-    });
-    
+    };
+    runHandDetection();
+  }, [handtrackingActivado]);
+
+  const handleButtonClick = useCallback(
+    (x, y) => {
+      const buttons = document.getElementsByClassName("button-click");
+      const buttonWidth = buttons[0].offsetWidth;
+      const buttonHeight = buttons[0].offsetHeight;
+
+      let clickedButton = null;
+
+      Array.from(buttons).forEach((button) => {
+        const rect = button.getBoundingClientRect();
+        const buttonX = rect.left + rect.width / 2 - 70;
+        const buttonY = rect.top + rect.height / 2 - 70;
+
+        if (
+          x >= buttonX - buttonWidth / 2 &&
+          x <= buttonX + buttonWidth / 2 &&
+          y >= buttonY - buttonHeight / 2 &&
+          y <= buttonY + buttonHeight / 2
+        ) {
+          clickedButton = button;
+        }
+      });
+
       if (clickedButton && clickedButton !== lastClickedButton) {
-        // clickedButton.click();
-        console.log("clicked:"+clickedButton)
-    console.log("last:"+clickedButton)
+        clickedButton.click();
         setLastClickedButton(clickedButton);
       }
-    
-  };
+    },
+    [lastClickedButton]
+  );
 
-  // useEffect(() => {
-  //   // Aquí implementarás el código para el handtracking
-  //   // ...
-  //   console.log(handClosed)
-  //   console.log(botonRef)
-  //   // Cuando handtracking detecta "close", simula un clic en el botón
-  //   if (handClosed && botonRef) {
-  //     botonRef.click();
-  //   }
-  // }, [handClosed]);
+  const toggleHandtracking = () => {
+    setHandtrackingActivado(!handtrackingActivado);
+  };
 
   return (
     <ContenedorGlobal id="contenedorGlobal">
       <ObjetoMover
         id="objetoMover"
-        style={{ top: handPosition.y, left: handPosition.x }}
+        style={{
+          opacity: handtrackingActivado ? "1" : "0",
+          top: handPosition.y,
+          left: handPosition.x,
+        }}
         className={handClosed ? "close" : "open"}
         src={handClosed ? closeI : openI}
       ></ObjetoMover>
-      <ContenedorVideo>
+      <ContenedorVideo
+        style={{ display: !handtrackingActivado ? "none" : "block" }}
+      >
         <video ref={videoRef} autoPlay={true}></video>
       </ContenedorVideo>
       <ContenedorBotones>
@@ -586,13 +602,13 @@ export function Game1Handtrack() {
         </PuntajeStyled>
         <div className="boton-arriba">
           <Botones
-            refe={(ref) => setBotonRef(ref)}
             habilitar={habilitar}
             texto={!habilitar ? imagenesJuego.img1 : "?"}
             indicacion={imagenesJuego.img1}
             setaccion={setaccion}
             verificarAccion={verificarAccion}
             imagen={imagenesJuego.img1}
+            handtracking={handtrackingActivado}
           />
         </div>
         <div className="boton-izquierda">
@@ -603,12 +619,19 @@ export function Game1Handtrack() {
             setaccion={setaccion}
             verificarAccion={verificarAccion}
             imagen={imagenesJuego.img4}
+            handtracking={handtrackingActivado}
           />
         </div>
         <div className="cambiarModo">
-          {/* <button onClick={toggleHandtracking}>
-              {handtrackingActivado ? "Desactivar" : "Activar"} Handtracking
-            </button> */}
+          <span className="tituloH">Handtracking</span>
+          <label className="switch">
+            <input
+              type="checkbox"
+              value={handtrackingActivado}
+              onClick={toggleHandtracking}
+            />
+            <span className="slider"></span>
+          </label>
         </div>
         <div className="mensaje-central">
           {mostrarLoader !== true ? (
@@ -672,6 +695,7 @@ export function Game1Handtrack() {
             setaccion={setaccion}
             verificarAccion={verificarAccion}
             imagen={imagenesJuego.img2}
+            handtracking={handtrackingActivado}
           />
         </div>
         <div className="boton-abajo">
@@ -682,6 +706,7 @@ export function Game1Handtrack() {
             setaccion={setaccion}
             verificarAccion={verificarAccion}
             imagen={imagenesJuego.img3}
+            handtracking={handtrackingActivado}
           />
         </div>
       </ContenedorBotones>

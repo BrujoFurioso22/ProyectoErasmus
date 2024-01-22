@@ -7,7 +7,7 @@ const ContenedorPrincipal = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  padding-top: 5rem;
+  padding-top: 2rem;
   height: calc(100vh - 50px);
 `;
 
@@ -36,7 +36,7 @@ const secciones = [
 export const PrincipalProfesor = () => {
   return (
     <ContenedorPrincipal>
-      <h1>Bienvenido, Profesor</h1>
+      <h1 style={{color:"white", padding:"10px 0"}}>Bienvenido, Profesor</h1>
 
       <ContenedorJuegos>
         {secciones.map((item, index) => (
