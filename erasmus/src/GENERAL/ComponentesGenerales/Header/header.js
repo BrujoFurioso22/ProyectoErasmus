@@ -121,9 +121,9 @@ export const Header = () => {
         </ContenedorCuenta>
         <SubMenu open={subMenuCuenta}>
           <LinkStyled to={ROUTES.PERFIL}>
-            <div> <i class="bi bi-person-vcard-fill"></i> Ver Perfil</div>
+            <div> <i className="bi bi-person-vcard-fill"></i> Ver Perfil</div>
           </LinkStyled>
-          <div onClick={logout}> <i class="bi bi-door-open-fill"></i> Cerrar Sesión</div>
+          <div onClick={logout}> <i className="bi bi-door-open-fill"></i> Cerrar Sesión</div>
         </SubMenu>
       </ContenedorN1>
     </ContenedorPrincipal>

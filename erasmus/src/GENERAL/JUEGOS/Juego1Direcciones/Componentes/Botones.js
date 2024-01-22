@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 
 const Boton = styled.div`
@@ -48,6 +48,7 @@ export const Botones = ({
   setaccion,
   verificarAccion,
   imagen,
+  refe,
 }) => {
   const [botonSeleccionado, setBotonSeleccionado] = useState("");
   const handleClickButton = (direccion) => {
@@ -59,11 +60,14 @@ export const Botones = ({
       setBotonSeleccionado("");
     }, 500);
   };
+
   return (
     <div>
       <Boton
+        ref={refe}
+        id={imagen.nombreimagen}
         disabled={habilitar}
-        className={`${botonSeleccionado !== "" ? "seleccionado" : ""}`}
+        className={`button-click ${botonSeleccionado !== "" ? "seleccionado" : ""}`}
         onClick={() => handleClickButton(indicacion.nombreimagen)}
       >
         <span style={{textTransform: "uppercase"}}>{texto.nombreimagen}</span>

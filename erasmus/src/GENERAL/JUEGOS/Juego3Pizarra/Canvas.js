@@ -357,15 +357,15 @@ export const CanvasApp = () => {
           >
             Guardar Imagen<i className="bi bi-floppy-fill"></i>
           </BotonTools>
-          <BotonTools onClick={limpiarPizarron}>Limpiar<i class="bi bi-trash-fill"></i></BotonTools>
+          <BotonTools onClick={limpiarPizarron}>Limpiar<i className="bi bi-trash-fill"></i></BotonTools>
           <BotonTools onClick={toggleBorrador}>
             {eraserMode ? (
               <>
-                Pincel<i class="bi bi-brush"></i>
+                Pincel<i className="bi bi-brush"></i>
               </>
             ) : (
               <>
-                Borrador<i class="bi bi-eraser-fill"></i>
+                Borrador<i className="bi bi-eraser-fill"></i>
               </>
             )}
           </BotonTools>

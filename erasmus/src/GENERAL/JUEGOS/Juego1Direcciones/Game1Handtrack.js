@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Botones } from "./Componentes/Botones";
 import { Puntaje } from "./Componentes/Puntaje";
 import {
@@ -15,8 +15,25 @@ import styled from "styled-components";
 
 import "./assets/styles/boton_iniciar.css";
 
-const numJuego = "juego1"; //no tocar esto
+import openI from "SOURCES/openhand.svg";
+import closeI from "SOURCES/closehand.svg";
 
+import * as handTrack from "handtrackjs";
+
+const defaultParams = {
+  flipHorizontal: false,
+  outputStride: 16,
+  imageScaleFactor: 1,
+  maxNumBoxes: 20,
+  iouThreshold: 0.2,
+  scoreThreshold: 0.6,
+  modelType: "ssd320fpnlite",
+  modelSize: "large",
+  bboxLineWidth: "2",
+  fontSize: 17,
+};
+
+const numJuego = "juego1"; //no tocar esto
 
 const ContenedorGlobal = styled.div`
   width: 100%;
@@ -25,6 +42,7 @@ const ContenedorGlobal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;
 const ContenedorBotones = styled.div`
   display: grid;
@@ -58,6 +76,10 @@ const ContenedorBotones = styled.div`
   .boton-abajo {
     grid-column: 2;
     grid-row: 3;
+  }
+  .cambiarModo {
+    grid-column: 3;
+    grid-row: 1;
   }
 `;
 const PuntajeStyled = styled.div`
@@ -114,6 +136,29 @@ const ContenedorStars = styled.div`
   }
 `;
 
+const ContenedorVideo = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 0%;
+  top: 0;
+  left: 0;
+  video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+`;
+
+const ObjetoMover = styled.img`
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: blueviolet;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.51);
+`;
+
 export function Game1Handtrack() {
   const [numRondas, setNumRondas] = useState(5);
   const [accion, setaccion] = useState(""); //Es el estado que se mostrara en el medio del juego para que el jugador sepa que tiene que tocar
@@ -132,7 +177,11 @@ export function Game1Handtrack() {
     img4: "",
   });
   const [mostrarLoader, setMostrarLoader] = useState(false);
-
+  const [handtrackingActivado, setHandtrackingActivado] = useState(false);
+  const [handClosed, setHandClosed] = useState(false);
+  const [botonRef, setBotonRef] = useState(null);
+  const [lastClickedButton, setLastClickedButton] = useState(null);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const DecirTexto = (text, delay) => {
     return new Promise((resolve, reject) => {
@@ -171,7 +220,6 @@ export function Game1Handtrack() {
     });
   };
 
-
   function generarArregloAleatorio() {
     const nuevoArreglo = [];
 
@@ -182,7 +230,7 @@ export function Game1Handtrack() {
         nombresImagenes.push(imagenesJuego[key].nombreimagen);
       }
     }
-    console.log(nombresImagenes)
+    console.log(nombresImagenes);
 
     for (let i = 0; i < numRondas; i++) {
       const indiceAleatorio = Math.floor(
@@ -203,7 +251,7 @@ export function Game1Handtrack() {
       ? imagenEncontrada
       : {
           idimagenes: 0,
-          nombreimagen:"vacio",
+          nombreimagen: "vacio",
           rutaimagen:
             "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg",
         };
@@ -249,7 +297,6 @@ export function Game1Handtrack() {
     if (indiceActual < arregloAleatorio.length) {
       setaccion(arregloAleatorio[indiceActual]);
       DecirTexto(arregloAleatorio[indiceActual], 800);
-      
 
       setIndiceActual(indiceActual + 1);
     } else {
@@ -313,12 +360,34 @@ export function Game1Handtrack() {
 
   const verificarAccion = (botonPresionado) => {
     if (!habilitar) {
-      if (botonPresionado === arregloAleatorio[indiceActual - 1]) {
-        setPuntaje(puntaje + 1);
-        mostrarSiguienteAccion();
-      } else {
-        mostrarSiguienteAccion();
+      const objetoRect = document
+        .getElementById("objetoMover")
+        .getBoundingClientRect();
+      const botonRect = document
+        .getElementById(botonPresionado)
+        .getBoundingClientRect();
+
+      if (
+        objetoRect.left < botonRect.right &&
+        objetoRect.right > botonRect.left &&
+        objetoRect.top < botonRect.bottom &&
+        objetoRect.bottom > botonRect.top
+      ) {
+        // El objeto está sobre el botón, realiza la acción
+        if (botonPresionado === arregloAleatorio[indiceActual - 1]) {
+          setPuntaje(puntaje + 1);
+          mostrarSiguienteAccion();
+        } else {
+          mostrarSiguienteAccion();
+        }
       }
+
+      // if (botonPresionado === arregloAleatorio[indiceActual - 1]) {
+      //   setPuntaje(puntaje + 1);
+      //   mostrarSiguienteAccion();
+      // } else {
+      //   mostrarSiguienteAccion();
+      // }
     }
   };
 
@@ -381,8 +450,134 @@ export function Game1Handtrack() {
     return <ContenedorStars>{stars}</ContenedorStars>;
   };
 
+  /*-----------------------------------------------------------------------------------------------------*/
+
+  const videoRef = useRef(null);
+  const [handPosition, setHandPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const runHandDetection = async () => {
+      const video = videoRef.current;
+      const contenedor = document.getElementById("contenedorGlobal");
+      const contenedorRect = contenedor.getBoundingClientRect();
+      const defaultParams = {
+        flipHorizontal: true,
+        outputStride: 16,
+        imageScaleFactor: 0.5,
+        maxNumBoxes: 20,
+        iouThreshold: 0.8,
+        scoreThreshold: 0.6,
+        modelType: "ssd320fpnlite",
+        modelSize: "medium",
+        bboxLineWidth: "1",
+        fontSize: 17,
+      };
+
+      const model = await handTrack.load(defaultParams);
+      await handTrack.startVideo(video);
+
+      const detectHand = async () => {
+        const predictions = await model.detect(video);
+
+        predictions.forEach((prediction) => {
+          const { label, bbox } = prediction;
+          const [x, y] = bbox;
+
+          const xGlobal = x * (contenedorRect.width / video.width) + 50;
+          const yGlobal = y * (contenedorRect.height / video.height) + 50;
+
+          if (label === "closed") {
+            // console.log("¡Mano cerrada detectada!");
+            setHandClosed(true);
+            setHandPosition({ x: xGlobal, y: yGlobal });
+            // console.log(botonRef)
+            // if(botonRef) {
+            //   botonRef.click();
+            // }
+            handleButtonClick(xGlobal, yGlobal);
+            setIsButtonClicked(true);
+            setTimeout(() => {
+              setIsButtonClicked(false);
+            }, 4000);
+
+            // Reset last clicked button when hand is closed
+          } else if (label === "open") {
+            // console.log("¡Mano abierta detectada!");
+            // console.log("X: "+xGlobal+" / Y: "+yGlobal);
+            setHandClosed(false);
+            setHandPosition({ x: xGlobal, y: yGlobal });
+            setLastClickedButton(null);
+          } else if (label === "pinchtipoo") {
+            console.log("¡Escribir!");
+          }
+        });
+
+        requestAnimationFrame(detectHand);
+      };
+
+      detectHand();
+
+      return () => {
+        model.dispose();
+      };
+    };
+
+    runHandDetection();
+  }, []);
+
+  const handleButtonClick = (x, y) => {
+    const buttons = document.getElementsByClassName("button-click");
+    const buttonWidth = buttons[0].offsetWidth;
+    const buttonHeight = buttons[0].offsetHeight;
+
+    let clickedButton = null;
+
+    Array.from(buttons).forEach((button) => {
+      const rect = button.getBoundingClientRect();
+      const buttonX = rect.left + rect.width / 2;
+      const buttonY = rect.top + rect.height / 2;
+
+      if (
+        x >= buttonX - buttonWidth / 2 &&
+        x <= buttonX + buttonWidth / 2 &&
+        y >= buttonY - buttonHeight / 2 &&
+        y <= buttonY + buttonHeight / 2
+      ) {
+        clickedButton = button;
+      }
+    });
+    
+      if (clickedButton && clickedButton !== lastClickedButton) {
+        // clickedButton.click();
+        console.log("clicked:"+clickedButton)
+    console.log("last:"+clickedButton)
+        setLastClickedButton(clickedButton);
+      }
+    
+  };
+
+  // useEffect(() => {
+  //   // Aquí implementarás el código para el handtracking
+  //   // ...
+  //   console.log(handClosed)
+  //   console.log(botonRef)
+  //   // Cuando handtracking detecta "close", simula un clic en el botón
+  //   if (handClosed && botonRef) {
+  //     botonRef.click();
+  //   }
+  // }, [handClosed]);
+
   return (
-    <ContenedorGlobal>
+    <ContenedorGlobal id="contenedorGlobal">
+      <ObjetoMover
+        id="objetoMover"
+        style={{ top: handPosition.y, left: handPosition.x }}
+        className={handClosed ? "close" : "open"}
+        src={handClosed ? closeI : openI}
+      ></ObjetoMover>
+      <ContenedorVideo>
+        <video ref={videoRef} autoPlay={true}></video>
+      </ContenedorVideo>
       <ContenedorBotones>
         <PuntajeStyled>
           {/* <Puntaje  puntaje={puntaje} puntajetotal={numRondas} />
@@ -391,6 +586,7 @@ export function Game1Handtrack() {
         </PuntajeStyled>
         <div className="boton-arriba">
           <Botones
+            refe={(ref) => setBotonRef(ref)}
             habilitar={habilitar}
             texto={!habilitar ? imagenesJuego.img1 : "?"}
             indicacion={imagenesJuego.img1}
@@ -409,13 +605,23 @@ export function Game1Handtrack() {
             imagen={imagenesJuego.img4}
           />
         </div>
-        <div className="cambiarModo"> </div>
+        <div className="cambiarModo">
+          {/* <button onClick={toggleHandtracking}>
+              {handtrackingActivado ? "Desactivar" : "Activar"} Handtracking
+            </button> */}
+        </div>
         <div className="mensaje-central">
           {mostrarLoader !== true ? (
             iniciarJuego === true ? (
               <ContenedorCentral>
                 {AccionInicioJuego && <span>Ronda: {indiceActual}</span>}
-                <span style={{ fontWeight: "600", fontSize: "25px", textTransform:"uppercase"}}>
+                <span
+                  style={{
+                    fontWeight: "600",
+                    fontSize: "25px",
+                    textTransform: "uppercase",
+                  }}
+                >
                   {accion}
                 </span>
               </ContenedorCentral>

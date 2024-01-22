@@ -31,8 +31,8 @@ export const Juego1 = () => {
       <ContenedorHome>
         <Header />
         <ContenedorSecciones>
-          {/* {asignado ? <Game1 /> : <PaginaSinAsignacion />} */}
-          {asignado ? <Game1Handtrack /> : <PaginaSinAsignacion />}
+          {asignado ? <Game1 /> : <PaginaSinAsignacion />}
+          {/* {asignado ? <Game1Handtrack /> : <PaginaSinAsignacion />} */}
         </ContenedorSecciones>
       </ContenedorHome>
     </ContenedorPrincipal>
