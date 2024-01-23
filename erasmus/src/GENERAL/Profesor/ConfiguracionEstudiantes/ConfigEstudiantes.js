@@ -38,7 +38,7 @@ const ContenedorTabs = styled.div`
 const nombresPersonalizados = {
   nombre: "Nombre Estudiante",
   correo: "Correo",
-  institucion: "Institucion",
+  institucion: "Institución",
   sexo: "Sexo",
 };
 

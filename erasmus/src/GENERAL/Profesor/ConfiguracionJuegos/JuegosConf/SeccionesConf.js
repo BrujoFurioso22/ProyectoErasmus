@@ -181,7 +181,7 @@ export const SeccionesConf1 = () => {
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 1</h5>
-      <h6>Selecciona que imagenes desea mostrar</h6>
+      <h6>Selecciona que imágenes desea mostrar</h6>
       <Contenedor
         style={{ flexDirection: "row", gap: "10px", flexWrap: "wrap" }}
       >
@@ -348,7 +348,7 @@ export const SeccionesConf2 = () => {
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 2</h5>
-      <h6>Selecciona que imagenes desea mostrar</h6>
+      <h6>Selecciona que imágenes desea mostrar</h6>
       <Contenedor
         style={{ flexDirection: "row", gap: "10px", flexWrap: "wrap" }}
       >
@@ -486,7 +486,7 @@ export const SeccionesConf3 = () => {
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 3</h5>
-      <h6>Selecciona la imagen a mostrar</h6>
+      <h6>Selecciona la imágen a mostrar</h6>
       <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
         {SelectOptions1Juego3(imagenes, "Imagen a dibujar", 1)}
       </Contenedor>
@@ -641,7 +641,7 @@ export const SeccionesConf4 = () => {
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 4</h5>
-      <h6>Selecciona que imagenes desea mostrar</h6>
+      <h6>Selecciona que imágenes desea mostrar</h6>
       <Contenedor
         style={{ flexDirection: "row", gap: "10px", flexWrap: "wrap" }}
       >

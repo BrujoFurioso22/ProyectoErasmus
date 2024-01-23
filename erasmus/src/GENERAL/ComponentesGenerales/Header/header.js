@@ -102,6 +102,7 @@ const Logo = styled.img`
 export const Header = () => {
   const [subMenuCuenta, setsubMenuCuenta] = useState(false);
   const { logout } = useAuthContext();
+  const tipoUsu = localStorage.getItem("tipo");
 
   const toggleSubMenu = () => {
     setsubMenuCuenta(!subMenuCuenta);
@@ -120,9 +121,10 @@ export const Header = () => {
           <span>{localStorage.getItem("nombre")}</span>
         </ContenedorCuenta>
         <SubMenu open={subMenuCuenta}>
-          <LinkStyled to={ROUTES.PERFIL}>
+          {tipoUsu !== "ADM" && (<LinkStyled to={ROUTES.PERFIL}>
             <div> <i className="bi bi-person-vcard-fill"></i> Ver Perfil</div>
-          </LinkStyled>
+          </LinkStyled>)}
+          
           <div onClick={logout}> <i className="bi bi-door-open-fill"></i> Cerrar Sesión</div>
         </SubMenu>
       </ContenedorN1>

@@ -38,7 +38,8 @@ const ContendorOpciones = styled.div`
 
 const BotonesOpciones = styled.button`
   padding: 10px 20px;
-  background-color: ${(props) => (props.activo === "true" ? "var(--color-boton)" : "white")};
+  background-color: ${(props) =>
+    props.activo === "true" ? "var(--color-boton)" : "white"};
   color: ${(props) => (props.activo === "true" ? "white" : "black")};
   border-radius: 15px;
   border: none;
@@ -59,6 +60,7 @@ const Cont1 = styled.div`
   flex-direction: column;
   padding: 15px 0;
   gap: 10px;
+  overflow-y: auto;
 `;
 
 const TablaStyled = styled.table``;
@@ -103,6 +105,12 @@ const FormStyled = styled.form`
     font-weight: 700;
     color: var(--color-blanco);
   }
+`;
+
+const ContTabla = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 `;
 
 export const AdminPage = () => {
@@ -194,11 +202,13 @@ export const AdminPage = () => {
         </FormStyled>
 
         <span style={{ fontWeight: "13px", color: "red" }}>{mensaje}</span>
-        <TablaJsonImgs
-          jsonData={data}
-          nombresPersonalizados={nombresPersonalizados}
-          consultaDatos={Consulta}
-        />
+        <ContTabla>
+          <TablaJsonImgs
+            jsonData={data}
+            nombresPersonalizados={nombresPersonalizados}
+            consultaDatos={Consulta}
+          />
+        </ContTabla>
       </Cont1>
     );
   };
