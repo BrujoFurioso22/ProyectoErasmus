@@ -174,11 +174,12 @@ export async function ActualizarConfiguracion2(
     return [];
   }
 }
-export async function ActualizarConfiguracion3(idimg1, idprofesor, fetch) {
+export async function ActualizarConfiguracion3(idimg1, idprofesor, ordenJuego, fetch) {
   try {
     const res = await axios.post(`${url}/juegos/actualizarConfig3`, {
       idimg1: idimg1,
       idprofesor: idprofesor,
+      ordenJuego: ordenJuego,
     });
     fetch();
     return res.data;

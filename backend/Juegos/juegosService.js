@@ -18,7 +18,7 @@ export const consultarConfigJuego2Estudiante = (req, res) => {
 };
 export const consultarConfigJuego3Estudiante = (req, res) => {
   const estudianteID = req.params.idestudiante;
-  const q = `SELECT juego3.idjuego3, juego3.img1, juego3.idprofesor FROM baseerasmus.estudiantes, baseerasmus.juego3, baseerasmus.asignados WHERE estudiantes.idestudiantes = asignados.iddeestudiante and asignados.iddeprofesor = juego3.idprofesor and iddeestudiante = '${estudianteID}' `;
+  const q = `SELECT juego3.idjuego3, juego3.img1, juego3.ordenJuego, juego3.idprofesor FROM baseerasmus.estudiantes, baseerasmus.juego3, baseerasmus.asignados WHERE estudiantes.idestudiantes = asignados.iddeestudiante and asignados.iddeprofesor = juego3.idprofesor and iddeestudiante = '${estudianteID}' `;
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -149,12 +149,12 @@ export const crearConfiguracionesJuegos2 = (req, res) => {
 };
 export const crearConfiguracionesJuegos3 = (req, res) => {
   // Obtener datos del cuerpo de la solicitud
-  const { idimg1, idprofesor } = req.body;
+  const { idimg1, idprofesor, ordenJuego } = req.body;
   let insertUserQuery1 = ``;
   if (idimg1 !== null){
-    insertUserQuery1 = `UPDATE baseerasmus.juego3 SET juego3.img1 = '${idimg1}' WHERE juego3.idprofesor = '${idprofesor}'`;
+    insertUserQuery1 = `UPDATE baseerasmus.juego3 SET juego3.ordenJuego = '${ordenJuego}', juego3.img1 = '${idimg1}' WHERE juego3.idprofesor = '${idprofesor}'`;
   }else{
-    insertUserQuery1 = `UPDATE baseerasmus.juego3 SET juego3.img1 = ${idimg1} WHERE juego3.idprofesor = '${idprofesor}'`;
+    insertUserQuery1 = `UPDATE baseerasmus.juego3 SET juego3.ordenJuego = '${ordenJuego}', juego3.img1 = ${idimg1} WHERE juego3.idprofesor = '${idprofesor}'`;
 
   }
 
@@ -162,7 +162,7 @@ export const crearConfiguracionesJuegos3 = (req, res) => {
     if (insertErr) return res.json(insertErr);
     return res.json({
       message: `Actualizada Correcta del Juego`,
-      datas: { idimg1, idprofesor },
+      datas: { idimg1, idprofesor,ordenJuego },
     });
   });
 };

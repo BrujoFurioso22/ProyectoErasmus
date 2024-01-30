@@ -40,6 +40,25 @@ const ContenedorColores = styled.div`
   align-items: center;
   flex-wrap: wrap;
 `;
+const ContenedorOrden = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  font-size: 14px;
+  padding: 3px 15px;
+  font-weight: 500;
+  color: black;
+  width: 95%;
+  border-radius: 10px;
+  box-shadow: 0px 0 5px 1px rgba(0, 0, 0, 0.76);
+  text-align: center;
+  z-index: 2;
+
+  i {
+    font-size: 20px;
+  }
+`;
 
 export const CanvasApp = () => {
   const mainCanvasRef = useRef(null);
@@ -49,6 +68,41 @@ export const CanvasApp = () => {
   const [colorGuard, setColorGuard] = useState("#000000");
   const [imgTarea, setImgTarea] = useState("white");
   const [primeraCarga, setPrimeraCarga] = useState(false);
+  const [orden, setOrden] = useState("");
+
+  const DecirTexto = (text, delay) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const synth = window.speechSynthesis;
+        const utterThis = new SpeechSynthesisUtterance(text);
+
+        // Personalizar la voz
+        const voices = synth.getVoices();
+        utterThis.voice = voices.find((voice) => voice.lang === "es-ES");
+
+        // Establecer el idioma
+        utterThis.lang = "es-ES";
+        utterThis.rate = 0.7;
+
+        // Hablar el texto
+        synth.speak(utterThis);
+
+        // Manejar el evento onend
+        utterThis.onend = () => {
+          console.log("La síntesis de voz ha terminado");
+          // Resolver la promesa cuando termine la síntesis de voz
+          resolve();
+        };
+
+        // Manejar cualquier error
+        utterThis.onerror = (error) => {
+          console.error("Error en la síntesis de voz", error);
+          // Rechazar la promesa en caso de error
+          reject(error);
+        };
+      }, delay);
+    });
+  };
 
   const buscarRutaImagenPorId = (idimg, jsonArr) => {
     // Buscar el objeto en el arreglo que coincida con el idimg proporcionado
@@ -68,10 +122,16 @@ export const CanvasApp = () => {
   const ConsultarImagen = async () => {
     const res = await ConsultaTareaJuego3(localStorage.getItem("id"));
     if (res.length > 0) {
+      // console.log(res[0].ordenJuego);
+      const ord = res[0].ordenJuego;
+      if (ord != null) {
+        setOrden(ord);
+        DecirTexto(ord, 500);
+      }
       const resimg = await ConsultarInfoImagenes();
       if (resimg.length > 0) {
         const resp = buscarRutaImagenPorId(res[0].img1, resimg);
-        console.log(resp);
+        // console.log(resp);
         setImgTarea(resp);
       }
     }
@@ -357,7 +417,9 @@ export const CanvasApp = () => {
           >
             Guardar Imagen<i className="bi bi-floppy-fill"></i>
           </BotonTools>
-          <BotonTools onClick={limpiarPizarron}>Limpiar<i className="bi bi-trash-fill"></i></BotonTools>
+          <BotonTools onClick={limpiarPizarron}>
+            Limpiar<i className="bi bi-trash-fill"></i>
+          </BotonTools>
           <BotonTools onClick={toggleBorrador}>
             {eraserMode ? (
               <>
@@ -371,19 +433,32 @@ export const CanvasApp = () => {
           </BotonTools>
         </div>
       </ContenedorTools>
-      <canvas
-        ref={mainCanvasRef}
-        width={window.innerWidth <= 1024 ? 800 : 1000}
-        height={window.innerHeight <= 768 ? 550 : 650}
-        style={{
-          border: "1px solid #000",
-          background:
-            imgTarea.rutaimagen === ""
-              ? "white"
-              : `url('${imgTarea.rutaimagen}') center/contain no-repeat no-repeat`,
-          borderRadius: "25px",
-        }}
-      ></canvas>
+      <ContenedorTools style={{ flexDirection: "column" }}>
+        <ContenedorOrden>
+          <span>
+            {orden}{" "}
+            <i
+              style={{ cursor: "pointer" }}
+              onClick={() => DecirTexto(orden, 500)}
+              className="bi bi-volume-up-fill"
+            ></i>
+          </span>
+        </ContenedorOrden>
+        <canvas
+          ref={mainCanvasRef}
+          width={window.innerWidth <= 1024 ? 800 : 1000}
+          height={window.innerHeight <= 768 ? 550 : 650}
+          style={{
+            border: "1px solid #000",
+            background:
+              imgTarea.rutaimagen === ""
+                ? "white"
+                : `url('${imgTarea.rutaimagen}') center/contain no-repeat no-repeat`,
+            borderRadius: "25px",
+            boxShadow: "0 0 5px 1px rgba(0, 0, 0, 0.57)",
+          }}
+        ></canvas>
+      </ContenedorTools>
     </ContenedorTools>
   );
 };

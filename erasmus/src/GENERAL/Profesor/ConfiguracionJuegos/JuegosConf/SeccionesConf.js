@@ -408,6 +408,7 @@ export const SeccionesConf3 = () => {
   const [mensaje, setMensaje] = useState("");
   const [imagenes, setImagenes] = useState([]);
   const [valorImagenes, setValorImagenes] = useState([{ id: 1, imgid: 0 }]);
+  const [orden, setOrden] = useState("");
 
   const actualizarValorImgId = (id, nuevoValor) => {
     const nuevoEstado = [...valorImagenes];
@@ -433,6 +434,8 @@ export const SeccionesConf3 = () => {
     if (resp.length > 0) {
       setImagenes(resp);
       if (resp1.length > 0) {
+        const ord = resp1[0].ordenJuego;
+        setOrden(ord);
         actualizarValorImgId(1, resp1[0].img1 === null ? "0" : resp1[0].img1);
       }
     }
@@ -472,6 +475,7 @@ export const SeccionesConf3 = () => {
     const res = await ActualizarConfiguracion3(
       val === "0" ? null : val,
       idp,
+      orden === "" ? null : orden,
       fetch
     );
     res.message === "Actualizada Correcta del Juego"
@@ -486,6 +490,22 @@ export const SeccionesConf3 = () => {
   return (
     <Contenedor style={{ flexDirection: "column", rowGap: "15px" }}>
       <h5>Configuración juego 3</h5>
+      <h6>Introduzca la orden a mostrar al estudiante</h6>
+      <Contenedor>
+        <input
+          style={{
+            borderRadius: "10px",
+            padding: "2px 10px",
+            border: "solid 1px black",
+            width:"100%",
+          }}
+          type="text"
+          name="orden"
+          id="orden"
+          value={orden}
+          onChange={(e) => setOrden(e.target.value)}
+        />
+      </Contenedor>
       <h6>Selecciona la imágen a mostrar</h6>
       <Contenedor style={{ flexDirection: "row", gap: "10px" }}>
         {SelectOptions1Juego3(imagenes, "Imagen a dibujar", 1)}
